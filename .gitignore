@@ -15,6 +15,7 @@ dist
 dist-ssr
 *.local
 types
+!src/types
 .eslintrc-auto-import.json
 
 # Editor

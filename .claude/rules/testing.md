@@ -1,5 +1,7 @@
 # 测试规范
 
+> 当前项目尚未安装 Vitest / @vue/test-utils，以下为推荐测试栈与编写规范；接入时在 `package.json` 中补充依赖并添加 `test` 脚本。
+
 ## 测试策略
 
 本项目采用分层测试策略：
@@ -15,7 +17,7 @@
 ```
 src/
 ├── api/
-│   ├── request.ts
+│   ├── request/
 │   ├── index.ts
 │   ├── modules/
 │   │   └── user.ts
@@ -73,6 +75,8 @@ describe("useAppStore", () => {
 ```
 
 ## 运行命令
+
+接入 Vitest 后建议在 `package.json` 中添加：
 
 ```bash
 npm test                # 运行所有测试

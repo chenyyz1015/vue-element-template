@@ -4,24 +4,37 @@
 
 ## 技术栈
 
-| 类别       | 技术                                                 |
-| ---------- | ---------------------------------------------------- |
-| 框架       | Vue 3 (Composition API + `<script setup lang="ts">`) |
-| 构建       | Vite 6                                               |
-| 语言       | TypeScript                                           |
-| 状态管理   | Pinia                                                |
-| UI 组件    | Element Plus                                         |
-| HTTP       | Axios                                                |
-| 样式       | UnoCSS                                               |
-| 组合式工具 | @vueuse/core（auto-import）                          |
-| 日期       | dayjs（中文 locale，auto-import）                    |
-| 工具函数   | lodash-es（按需手动 import）                         |
-| SVG 图标   | unplugin-svg-component（`src/assets/icons`）         |
-| 代码规范   | ESLint + Stylelint + Commitlint                      |
+
+| 类别     | 技术                                                   | 版本（`package.json`） |
+| ------ | ---------------------------------------------------- | ------------------ |
+| 框架     | Vue 3 (Composition API + `<script setup lang="ts">`) | ^3.5               |
+| 构建     | Vite                                                 | ^7                 |
+| 语言     | TypeScript                                           | ^5.9               |
+| 状态管理   | Pinia                                                | ^3                 |
+| UI 组件  | Element Plus                                         | ^2.14              |
+| HTTP   | Axios                                                | ^1.13              |
+| 样式     | UnoCSS                                               | ^66                |
+| 组合式工具  | @vueuse/core（auto-import）                            | ^14                |
+| 日期     | dayjs（中文 locale，auto-import）                         | ^1.11              |
+| 工具函数   | lodash-es（按需手动 import）                               | ^4.18              |
+| SVG 图标 | unplugin-svg-component（`src/assets/icons`）           | ^0.12              |
+| 代码规范   | ESLint + Stylelint + Commitlint                      | ^9 / ^17 / ^19     |
+
 
 ## 项目结构
 
 ```
+vite/
+├── plugins/                 # Vite 插件配置（每个插件一个 kebab-case 文件）
+│   ├── plugin-vue.ts
+│   ├── unocss.ts
+│   ├── unplugin-auto-import.ts
+│   ├── unplugin-vue-components.ts
+│   ├── unplugin-svg-component.ts
+│   └── index.ts
+└── scripts/
+    └── generate-element-var.ts  # 根据 theme.ts 生成 Element Plus SCSS 变量
+
 src/
 ├── assets/icons/            # SVG 图标（unplugin-svg-component）
 ├── components/              # 公共组件（kebab-case 目录 + index.vue，auto-import）
@@ -44,12 +57,14 @@ src/
 
 ### 组件命名规范
 
-| 类型           | 目录规范           | 入口文件    | 私有子组件                       |
-| -------------- | ------------------ | ----------- | -------------------------------- |
-| 非业务公共组件 | `com-*` kebab-case | `index.vue` | —                                |
-| 业务公共组件   | `biz-*` kebab-case | `index.vue` | —                                |
-| 页面           | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
-| 布局           | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
+
+| 类型      | 目录规范               | 入口文件        | 私有子组件                          |
+| ------- | ------------------ | ----------- | ------------------------------ |
+| 非业务公共组件 | `com-*` kebab-case | `index.vue` | —                              |
+| 业务公共组件  | `biz-*` kebab-case | `index.vue` | —                              |
+| 页面      | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
+| 布局      | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
+
 
 同级目录可放置 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件。
 
@@ -70,9 +85,8 @@ src/
 以下组件通过 `unplugin-vue-components` 按需自动引入，**无需手动 import**：
 
 - `<SvgIcon name="图标名" />`（图标放 `src/assets/icons/*.svg`，已在 `main.ts` 注册）
-
 - Element Plus 组件
-- `src/components/` 下公共组件（`com-*` 非业务型、`biz-*` 业务型）
+- `src/components/` 下公共组件（`com-`* 非业务型、`biz-*` 业务型）
 
 以下场景**需手动 import**：
 
@@ -123,11 +137,13 @@ npm run lint:fix     # 自动修复 lint 问题
 
 本项目遵循 Claude Code 官方推荐的项目结构，并兼容 Cursor 等主流 AI 开发工具：
 
-| 工具        | 配置文件                                         |
-| ----------- | ------------------------------------------------ |
-| Claude Code | `CLAUDE.md`、`.claude/`                          |
+
+| 工具          | 配置文件                                           |
+| ----------- | ---------------------------------------------- |
+| Claude Code | `CLAUDE.md`、`.claude/`                         |
 | Cursor      | `.cursor/rules/`、`.cursor/skills/`、`AGENTS.md` |
-| 通用        | `AGENTS.md`                                      |
+| 通用          | `AGENTS.md`                                    |
+
 
 详细 AI 工作流见 `.claude/commands/`、`.claude/skills/`、`.claude/agents/`。
 
@@ -135,10 +151,12 @@ npm run lint:fix     # 自动修复 lint 问题
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-| 变量                | 说明               | 默认值                 |
-| ------------------- | ------------------ | ---------------------- |
-| `VITE_APP_TITLE`    | 应用标题           | `Vue Element Template` |
-| `VITE_API_BASE_URL` | API 基础地址       | `/api`                 |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒）   | `60_000`               |
+
+| 变量                  | 说明       | 默认值                    |
+| ------------------- | -------- | ---------------------- |
+| `VITE_APP_TITLE`    | 应用标题     | `Vue Element Template` |
+| `VITE_API_BASE_URL` | API 基础地址 | `/api`                 |
+| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               |
+
 
 部署流程见 `.claude/skills/deploy/SKILL.md`。

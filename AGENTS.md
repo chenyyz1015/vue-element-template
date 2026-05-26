@@ -27,9 +27,8 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 以下组件通过 `unplugin-vue-components` 或插件注册，**禁止手动 import**：
 
 - `<SvgIcon name="xxx" />` — 图标目录 `src/assets/icons/`，`name` 为文件名（不含扩展名）
-
 - Element Plus 组件
-- `src/components/` — 公共组件（`com-*` 非业务型、`biz-*` 业务型）
+- `src/components/` — 公共组件（`com-`* 非业务型、`biz-*` 业务型）
 
 以下场景**需手动 import**：
 
@@ -39,14 +38,16 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 
 ### 组件目录规范
 
-| 类型           | 目录规范                     | 示例                                               |
-| -------------- | ---------------------------- | -------------------------------------------------- |
-| 非业务公共组件 | `com-*` + `index.vue`        | `components/com-page-header/index.vue`             |
-| 业务公共组件   | `biz-*` + `index.vue`        | `components/biz-user-card/index.vue`               |
-| 页面           | kebab-case + `index.vue`     | `views/user-profile/index.vue`                     |
+
+| 类型      | 目录规范                       | 示例                                                 |
+| ------- | -------------------------- | -------------------------------------------------- |
+| 非业务公共组件 | `com-`* + `index.vue`      | `components/com-page-header/index.vue`             |
+| 业务公共组件  | `biz-*` + `index.vue`      | `components/biz-user-card/index.vue`               |
+| 页面      | kebab-case + `index.vue`   | `views/user-profile/index.vue`                     |
 | 页面私有子组件 | PascalCase，放 `components/` | `views/home/components/CounterPanel.vue`           |
-| 布局           | kebab-case + `index.vue`     | `layouts/default-layout/index.vue`                 |
+| 布局      | kebab-case + `index.vue`   | `layouts/default-layout/index.vue`                 |
 | 布局私有子组件 | PascalCase，放 `components/` | `layouts/default-layout/components/SidebarNav.vue` |
+
 
 ### 代码规范
 
@@ -67,6 +68,10 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 ## 项目结构
 
 ```
+vite/
+├── plugins/                 # Vite 插件（kebab-case 单文件，见 vite/plugins/index.ts）
+└── scripts/                 # 构建脚本（如 generate-element-var.ts）
+
 src/
 ├── assets/icons/            # SVG 图标
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
@@ -83,15 +88,17 @@ src/
 
 ## AI 配置目录
 
-| 目录                | 用途           | 工具        |
-| ------------------- | -------------- | ----------- |
-| `CLAUDE.md`         | 项目级 AI 指令 | Claude Code |
-| `.claude/commands/` | 自定义斜杠命令 | Claude Code |
-| `.claude/rules/`    | 模块化规则     | Claude Code |
-| `.claude/skills/`   | 自动调用工作流 | Claude Code |
-| `.claude/agents/`   | 子 Agent 角色  | Claude Code |
-| `.cursor/rules/`    | Cursor 规则    | Cursor      |
-| `.cursor/skills/`   | Cursor Skills  | Cursor      |
+
+| 目录                  | 用途            | 工具          |
+| ------------------- | ------------- | ----------- |
+| `CLAUDE.md`         | 项目级 AI 指令     | Claude Code |
+| `.claude/commands/` | 自定义斜杠命令       | Claude Code |
+| `.claude/rules/`    | 模块化规则         | Claude Code |
+| `.claude/skills/`   | 自动调用工作流       | Claude Code |
+| `.claude/agents/`   | 子 Agent 角色    | Claude Code |
+| `.cursor/rules/`    | Cursor 规则     | Cursor      |
+| `.cursor/skills/`   | Cursor Skills | Cursor      |
+
 
 ## 常用命令
 

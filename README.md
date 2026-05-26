@@ -4,7 +4,7 @@
 
 ## 特性
 
-- ⚡️ Vite 6 — 极速开发体验
+- ⚡️ Vite 7 — 极速开发体验
 - 🖖 Vue 3 — Composition API + `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 🔷 TypeScript — 完整类型支持
 - 📦 Pinia — 官方状态管理
@@ -54,15 +54,28 @@ npm run build:stage
 
 ### Claude Code 命令
 
-| 命令                 | 说明       |
-| -------------------- | ---------- |
-| `/project:review`    | 代码审查   |
+
+| 命令                   | 说明       |
+| -------------------- | -------- |
+| `/project:review`    | 代码审查     |
 | `/project:fix-issue` | 修复 Issue |
-| `/project:deploy`    | 部署流程   |
+| `/project:deploy`    | 部署流程     |
+
 
 ## 项目结构
 
 ```
+vite/
+├── plugins/                       # Vite 插件配置（每个插件一个 kebab-case 文件）
+│   ├── plugin-vue.ts
+│   ├── unocss.ts
+│   ├── unplugin-auto-import.ts
+│   ├── unplugin-vue-components.ts
+│   ├── unplugin-svg-component.ts
+│   └── index.ts
+└── scripts/
+    └── generate-element-var.ts    # 根据 theme.ts 生成 Element Plus SCSS 变量
+
 src/
 ├── components/
 │   ├── com-hello-card/          # 非业务型公共组件（auto-import）
@@ -76,7 +89,7 @@ src/
 │       └── index.vue
 ├── router/
 ├── api/                         # HTTP 请求
-│   ├── request.ts               # Axios 封装
+│   ├── request/                 # Axios 封装
 │   ├── modules/                 # 业务 API 模块
 │   └── types/                   # 接口类型（模块名.d.ts）
 ├── stores/                        # Pinia Store（auto-import）
@@ -96,16 +109,18 @@ src/
 
 ## 组件命名规范
 
-| 类型                | 规范                                  | 示例                                            |
-| ------------------- | ------------------------------------- | ----------------------------------------------- |
-| 非业务公共组件      | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
-| 业务公共组件        | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
-| 页面                | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
-| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录   | `CounterPanel.vue`                              |
+
+| 类型         | 规范                                  | 示例                                              |
+| ---------- | ----------------------------------- | ----------------------------------------------- |
+| 非业务公共组件    | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
+| 业务公共组件     | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
+| 页面         | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
+| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录      | `CounterPanel.vue`                              |
+
 
 ## 主题定制
 
-默认定制色在 [`src/styles/theme.ts`](src/styles/theme.ts) 中维护（主色 `#2563eb` 等），会同步到 Element Plus 与 UnoCSS（`text-primary` 等工具类）。修改后重新运行 `npm run dev` 或 `npm run build` 即可。
+默认定制色在 `[src/styles/theme.ts](src/styles/theme.ts)` 中维护（主色 `#2563eb` 等），会同步到 Element Plus 与 UnoCSS（`text-primary` 等工具类）。修改后重新运行 `npm run dev` 或 `npm run build` 即可。
 
 ## 自动引入
 
@@ -121,7 +136,7 @@ src/
 
 ### SVG 图标
 
-将 `.svg` 放入 [`src/assets/icons/`](src/assets/icons/)，在模板中使用：
+将 `.svg` 放入 `[src/assets/icons/](src/assets/icons/)`，在模板中使用：
 
 ```vue
 <SvgIcon name="home" class="text-primary text-xl" />
@@ -135,11 +150,13 @@ src/
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-| 变量                | 说明               | 默认值                 |
-| ------------------- | ------------------ | ---------------------- |
-| `VITE_APP_TITLE`    | 应用标题           | `Vue Element Template` |
-| `VITE_API_BASE_URL` | API 基础地址       | `/api`                 |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒）   | `60_000`               |
+
+| 变量                  | 说明       | 默认值                    |
+| ------------------- | -------- | ---------------------- |
+| `VITE_APP_TITLE`    | 应用标题     | `Vue Element Template` |
+| `VITE_API_BASE_URL` | API 基础地址 | `/api`                 |
+| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               |
+
 
 开发环境 `vite.config.ts` 将 `/api` 代理至 `http://localhost:3000`；stage / production 部署时需自行配置反向代理。部署流程见 `.claude/skills/deploy/SKILL.md`。
 

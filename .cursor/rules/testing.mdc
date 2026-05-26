@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 测试规范
 
-- 使用 Vitest + @vue/test-utils
+- 推荐 Vitest + @vue/test-utils（当前尚未纳入项目依赖）
 - 测试文件放在 `__tests__/` 或与源文件同级的 `*.test.ts`
 - 测试行为而非实现，每个 case 验证一个行为
 - 不编写 trivial 测试

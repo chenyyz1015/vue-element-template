@@ -3,12 +3,12 @@ import { fileURLToPath } from "node:url";
 import { appTheme } from "../../src/styles/theme";
 
 const varScssPath = fileURLToPath(
-  new URL("../src/styles/element/var.scss", import.meta.url)
+  new URL("../../src/styles/element/var.scss", import.meta.url)
 );
 
 export function generateElementVarScss() {
   const { colors, radius } = appTheme;
-  const content = `// 由 scripts/generate-element-var.ts 根据 src/styles/theme.ts 生成，请勿手改
+  const content = `// 由 vite/scripts/generate-element-var.ts 根据 src/styles/theme.ts 生成，请勿手改
 @forward 'element-plus/theme-chalk/src/common/var' with (
   $colors: (
     'primary': (

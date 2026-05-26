@@ -1,4 +1,4 @@
-// 由 scripts/generate-element-var.ts 根据 src/styles/theme.ts 生成，请勿手改
+// 由 vite/scripts/generate-element-var.ts 根据 src/styles/theme.ts 生成，请勿手改
 @forward 'element-plus/theme-chalk/src/common/var' with (
   $colors: (
     'primary': (
