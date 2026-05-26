@@ -1,0 +1,108 @@
+# AGENTS.md
+
+> 通用 AI Agent 指令文件，兼容 Cursor、Windsurf、GitHub Copilot 等主流 AI 开发工具。
+
+## 项目概述
+
+Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Plus、Axios、UnoCSS、VueUse、dayjs、lodash-es、unplugin-svg-component。
+
+## 核心约定
+
+### 自动引入（重要）
+
+以下模块通过 `unplugin-auto-import` 自动引入，**禁止手动 import**：
+
+- `vue` — ref, computed, watch, onMounted 等
+- `vue-router` — useRouter, useRoute 等
+- `pinia` — defineStore, storeToRefs 等
+- `src/composables/` — 所有组合式函数
+- `src/stores/` — 所有 Pinia Store
+- `@vueuse/core` — 如 useLocalStorage、useDebounceFn
+- `dayjs` — 已配置中文 locale（勿 `import dayjs from 'dayjs'`）
+
+**需手动 import**：
+
+- `lodash-es` — 按函数引入（如 `import { cloneDeep } from 'lodash-es'`），禁止全量 import
+
+以下组件通过 `unplugin-vue-components` 或插件注册，**禁止手动 import**：
+
+- `<SvgIcon name="xxx" />` — 图标目录 `src/assets/icons/`，`name` 为文件名（不含扩展名）
+
+- Element Plus 组件
+- `src/components/` — 公共组件（`com-*` 非业务型、`biz-*` 业务型）
+
+以下场景**需手动 import**：
+
+- `src/layouts/` 布局组件（在 `App.vue` 或路由中）
+- 页面/布局 `components/` 下的私有子组件（PascalCase）
+- 同级目录的 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件
+
+### 组件目录规范
+
+| 类型           | 目录规范                     | 示例                                               |
+| -------------- | ---------------------------- | -------------------------------------------------- |
+| 非业务公共组件 | `com-*` + `index.vue`        | `components/com-page-header/index.vue`             |
+| 业务公共组件   | `biz-*` + `index.vue`        | `components/biz-user-card/index.vue`               |
+| 页面           | kebab-case + `index.vue`     | `views/user-profile/index.vue`                     |
+| 页面私有子组件 | PascalCase，放 `components/` | `views/home/components/CounterPanel.vue`           |
+| 布局           | kebab-case + `index.vue`     | `layouts/default-layout/index.vue`                 |
+| 布局私有子组件 | PascalCase，放 `components/` | `layouts/default-layout/components/SidebarNav.vue` |
+
+### 代码规范
+
+- Vue 组件：`<script setup lang="ts">` + `<style lang="scss" scoped>`
+- 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
+- 异步逻辑：统一 `async/await`，禁止 `.then()` / `.catch()` 链式调用
+- 配置文件：ESModule 格式
+- Lint：ESLint + Stylelint + Commitlint
+- 路径别名：`@/` → `src/`
+
+### 开发原则
+
+1. 最小改动范围 — 不做无关重构
+2. 遵循现有代码风格和命名约定
+3. 代码应自解释，仅在复杂逻辑处添加注释
+4. 不编写 trivial 测试
+
+## 项目结构
+
+```
+src/
+├── assets/icons/            # SVG 图标
+├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
+├── composables/             # 组合式函数（auto-import）
+├── layouts/                 # 布局（kebab-case + index.vue，手动引入）
+├── router/
+├── api/                     # HTTP 请求（request + modules + types）
+├── stores/                  # Pinia Store（auto-import）
+├── types/
+├── utils/                   # 通用工具函数
+└── views/                   # 页面（kebab-case + index.vue）
+    └── */components/        # 页面私有子组件（PascalCase，手动引入）
+```
+
+## AI 配置目录
+
+| 目录                | 用途           | 工具        |
+| ------------------- | -------------- | ----------- |
+| `CLAUDE.md`         | 项目级 AI 指令 | Claude Code |
+| `.claude/commands/` | 自定义斜杠命令 | Claude Code |
+| `.claude/rules/`    | 模块化规则     | Claude Code |
+| `.claude/skills/`   | 自动调用工作流 | Claude Code |
+| `.claude/agents/`   | 子 Agent 角色  | Claude Code |
+| `.cursor/rules/`    | Cursor 规则    | Cursor      |
+| `.cursor/skills/`   | Cursor Skills  | Cursor      |
+
+## 常用命令
+
+```bash
+npm run dev          # 开发服务器
+npm run build        # 类型检查 + 构建
+npm run build:stage  # 类型检查 + 预发构建
+npm run lint         # 代码检查
+npm run lint:fix     # 自动修复
+```
+
+## 提交规范
+
+Conventional Commits：`feat:`、`fix:`、`docs:`、`style:`、`refactor:`、`perf:`、`test:`、`build:`、`ci:`、`chore:`

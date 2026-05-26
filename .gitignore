@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build
+dist
+dist-ssr
+*.local
+types
+.eslintrc-auto-import.json
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env.local
+.env.*.local
+
+# AI personal overrides (local only)
+CLAUDE.local.md
+.claude/settings.local.json
+.cursor/settings.local.json
+
+# Test
+coverage

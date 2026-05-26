@@ -1,0 +1,18 @@
+---
+description: API 请求封装与接口约定
+globs: "src/api/**/*"
+alwaysApply: false
+---
+
+# API 约定
+
+- 所有 HTTP 请求通过 `src/api/request/` 封装（Axios）
+- 支持 `showError` / `skipAuth` / `skipBizCheck` / `cancelDuplicate` 等扩展配置
+- 业务接口按域拆分到 `src/api/modules/`
+- 类型定义放 `src/api/types/`，文件命名为 **模块名.d.ts**
+- 通用类型放 `common.d.ts`（ApiResponse、PageResult 等）
+- 业务代码从 `@/api` 或 `@/api/modules/xxx` 引入接口函数
+- 响应格式：`{ code, data, message }`，code 为 0 或 200 表示成功
+- API 函数命名：动词 + 名词 camelCase（`getUserList`）
+- 异步调用统一 `async/await`，禁止 `.then()` / `.catch()` 链式调用
+- 详细规范见 `.claude/rules/api-conventions.md`

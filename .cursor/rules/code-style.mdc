@@ -1,0 +1,21 @@
+---
+description: Vue 3 + TypeScript 代码风格规范，包括目录命名、自动引入约定
+alwaysApply: true
+---
+
+# 代码风格
+
+- 使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
+- 单文件组件顺序：script → template → style
+- 公共/页面/布局组件：kebab-case 目录 + `index.vue`
+- 非业务公共组件：`com-` 前缀；业务公共组件：`biz-` 前缀
+- 页面/布局私有子组件：PascalCase，放同级 `components/` 目录，手动 import
+- 辅助文件（types、constants、helpers）与组件同级目录放置
+- vue / vue-router / pinia / @vueuse/core / dayjs 及 composables、stores 禁止手动 import
+- SvgIcon 已在 main.ts 注册，图标放 src/assets/icons，模板中禁止 import SvgIcon
+- `src/components/` 公共组件禁止手动 import（自动注册为 PascalCase 组件名）
+- Element Plus 反馈 API（ElMessage、ElMessageBox、ElNotification、ElLoading）禁止手动 import
+- lodash-es 按需手动 import（禁止全量 import，不参与 auto-import）
+- 布局组件、私有子组件、辅助文件允许手动 import
+- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
+- 详细规范见 `.claude/rules/code-style.md`

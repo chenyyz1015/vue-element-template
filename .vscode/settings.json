@@ -1,0 +1,23 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.ts": "always",
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always",
+    "source.organizeImports": "never"
+  },
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off", "fixable": true },
+    { "rule": "format/*", "severity": "off", "fixable": true },
+    { "rule": "*-order", "severity": "off", "fixable": true }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "stylelint.validate": ["css", "scss", "vue"]
+}
