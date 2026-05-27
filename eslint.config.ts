@@ -10,7 +10,7 @@ export default antfu(
     jsonc: false,
     yaml: false,
     stylistic: false,
-    ignores: ["dist/**", "types/auto-imports.d.ts", "types/components.d.ts"],
+    ignores: ["node_modules/**", "dist/**", "types/**", "coverage/**"],
   },
   {
     languageOptions: {

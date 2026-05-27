@@ -14,13 +14,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "vite.config.ts",
-    "eslint.config.ts",
-    "stylelint.config.ts",
-    "commitlint.config.ts",
-    "prettier.config.ts",
-    "lint-staged.config.ts",
-    "vite/**/*.ts"
-  ]
+  "include": ["*.config.ts", "vite/**/*.ts"]
 }

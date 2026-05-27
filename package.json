@@ -9,10 +9,10 @@
     "build": "vue-tsc --noEmit && vite build",
     "build:stage": "vue-tsc --noEmit && vite build --mode stage",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,ts,vue}\" \"*.{ts,js,mjs}\" \"scripts/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.{js,ts,vue}\" \"*.{ts,js,mjs}\" \"scripts/**/*.ts\"",
-    "lint": "prettier --check \"src/**/*.{js,ts,vue}\" \"*.{ts,js,mjs}\" \"scripts/**/*.ts\" && eslint . && stylelint \"src/**/*.{css,scss,vue}\"",
-    "lint:fix": "prettier --write \"src/**/*.{js,ts,vue}\" \"*.{ts,js,mjs}\" \"scripts/**/*.ts\" && eslint . --fix && stylelint \"src/**/*.{css,scss,vue}\" --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue}\"",
+    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . && stylelint \"src/**/*.{css,scss,vue}\"",
+    "lint:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . --fix && stylelint \"src/**/*.{css,scss,vue}\" --fix",
     "prepare": "husky"
   },
   "dependencies": {

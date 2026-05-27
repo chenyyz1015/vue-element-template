@@ -1,7 +1,7 @@
-dist
 node_modules
-package-lock.json
+dist
 types
-.claude
-.cursor
-.github
+coverage
+
+package-lock.json
+.eslintrc-auto-import.json
