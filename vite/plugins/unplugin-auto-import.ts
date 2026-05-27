@@ -9,12 +9,13 @@ export function unpluginAutoImport(): PluginOption {
       "pinia",
       "@vueuse/core",
       "vue-router",
+      "vue-i18n",
       {
         from: "./src/utils/dayjs",
         imports: [["default", "dayjs"]],
       },
     ],
-    dirs: ["src/composables", "src/stores"],
+    dirs: ["src/composables", "src/stores/modules"],
     resolvers: [ElementPlusResolver({ importStyle: "sass" })],
     dts: "./types/auto-imports.d.ts",
     eslintrc: {

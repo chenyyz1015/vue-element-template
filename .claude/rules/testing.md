@@ -27,6 +27,10 @@ src/
 ├── composables/
 │   └── __tests__/
 │       └── useCounter.test.ts
+└── stores/
+    └── modules/
+        └── __tests__/
+            └── app.test.ts
 ```
 
 - 测试文件放在 `__tests__/` 目录或与源文件同级的 `*.test.ts`
@@ -90,4 +94,4 @@ npm run test:coverage   # 覆盖率报告
 
 - 优先覆盖核心业务逻辑和边界条件
 - 不编写仅验证框架行为的 trivial 测试
-- Mock 外部依赖（API、localStorage 等），不 Mock 被测模块本身
+- Mock 外部依赖（API、`@/utils/auth` / `@/utils/locale` 等封装），不 Mock 被测模块本身

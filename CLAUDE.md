@@ -11,7 +11,9 @@
 | 构建     | Vite                                                 | ^7                 |
 | 语言     | TypeScript                                           | ^5.9               |
 | 状态管理   | Pinia                                                | ^3                 |
+| 状态持久化  | pinia-plugin-persistedstate                            | ^4                 |
 | UI 组件  | Element Plus                                         | ^2.14              |
+| 国际化    | vue-i18n（Composition API，auto-import）                | ^11                |
 | HTTP   | Axios                                                | ^1.13              |
 | 样式     | UnoCSS                                               | ^66                |
 | 组合式工具  | @vueuse/core（auto-import）                            | ^14                |
@@ -46,12 +48,17 @@ src/
 ├── components/              # 公共组件（kebab-case 目录 + index.vue，auto-import）
 │   ├── com-hello-card/      # 非业务型（com- 前缀）
 │   └── com-page-header/
-├── composables/             # 组合式函数（auto-import）
+├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
+│   └── useLocale.ts         # 语言切换
+├── i18n/                    # 国际化（locales、createI18n）
 ├── layouts/                 # 布局组件（kebab-case 目录 + index.vue，手动引入）
 │   └── default-layout/
 ├── router/                  # 路由配置
 ├── api/                     # HTTP 请求（request + modules + types）
-├── stores/                  # Pinia Store（auto-import）
+├── stores/                  # Pinia
+│   ├── persisted-state.ts   # 持久化插件配置 + Pinia key 生成
+│   └── modules/             # Store 模块（auto-import，kebab-case）
+│       └── app.ts
 ├── styles/                  # 全局样式
 │   ├── index.scss
 │   └── element/
@@ -59,6 +66,10 @@ src/
 │       └── index.scss       # Element Plus base 样式
 ├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 通用工具函数
+│   ├── auth.ts              # Token 读写封装
+│   ├── locale.ts            # 语言偏好读写封装
+│   ├── dayjs.ts             # dayjs 预配置
+│   └── storage.ts           # 底层浏览器缓存封装
 └── views/                   # 页面组件（kebab-case 目录 + index.vue）
     ├── home/
     │   └── index.vue
@@ -91,8 +102,9 @@ src/
 - `vue`（ref, computed, watch 等）
 - `vue-router`（useRouter, useRoute 等）
 - `pinia`（defineStore, storeToRefs 等）
-- `src/composables/` 下的组合式函数
-- `src/stores/` 下的 Store
+- `vue-i18n`（useI18n 等）
+- `src/composables/` 下的组合式函数（文件名 `useXxx.ts`，箭头函数导出）
+- `src/stores/modules/` 下的 Store（kebab-case 文件名，箭头函数导出）
 - `@vueuse/core` 组合式 API
 - `dayjs`（`src/utils/dayjs.ts` 预配置）
 
@@ -107,7 +119,31 @@ src/
 - `src/layouts/` 布局组件（在 `App.vue` 或路由中）
 - 页面/布局 `components/` 下的私有子组件（PascalCase）
 - 同级目录的 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件
+- `src/i18n/index.ts`（`main.ts` 中注册 i18n 实例）
 - `lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`，禁止全量 import）
+
+### 国际化
+
+- 语言包放 `src/i18n/locales/`，类型基准为 `zh-CN.ts`（见 `src/i18n/types.ts`）
+- 组件内使用 `useI18n()` 的 `t()`，**禁止**手动 import `useI18n`
+- 路由标题使用 `meta.titleKey`，非硬编码字符串
+- 切换语言使用 `useLocale()`，通过 `src/utils/locale.ts` 持久化并同步 Element Plus locale
+
+### 缓存（Storage）
+
+- 底层：`src/utils/storage.ts`，导出 `storage.local` / `storage.session`
+- 逻辑 key 应使用 **UPPER_SNAKE_CASE**，不符合时在控制台 `console.warn`；物理 key 前缀 `VUE_ELEMENT_TEMPLATE_`
+- `get` / `set` 均支持泛型（`get<T>` / `set<T>`），自动 JSON 序列化与反序列化；`clear()` 仅清除带前缀的 key
+- **禁止**业务代码、composables、Store 模块直接 import `storage`
+- 业务缓存通过 `src/utils/` 封装文件读写（如 `auth.ts`、`locale.ts`）
+- Pinia 持久化：`src/stores/persisted-state.ts` 注册插件，并提供 `getPiniaPersistKey`（`app` → `PINIA_APP`）
+
+### Pinia 持久化
+
+- 插件：`pinia-plugin-persistedstate`，配置见 `src/stores/persisted-state.ts`（含 `getPiniaPersistKey`、`persistedState`）
+- Store 模块放 `src/stores/modules/`，文件名 kebab-case（如 `user-profile.ts`），导出 `useXxxStore`
+- 需持久化的 Store 在 `defineStore` 第三参数配置 `persist`
+- 仅持久化必要字段，临时 UI 状态（如 `loading`）使用 `pick` / `omit` 排除
 
 ### 代码规范
 

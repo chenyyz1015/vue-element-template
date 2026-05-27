@@ -161,9 +161,97 @@ const copy = cloneDeep(source);
 const onSearch = debounce(fetchList, 300);
 ```
 
+### Storage
+
+#### 底层封装（`src/utils/storage.ts`）
+
+- 导出 `storage.local`（`localStorage`）与 `storage.session`（`sessionStorage`）
+- 逻辑 key 应遵循 **UPPER_SNAKE_CASE**（如 `ACCESS_TOKEN`、`LOCALE`、`PINIA_APP`），不符合时在控制台 `console.warn`
+- 物理 key = 前缀 `VUE_ELEMENT_TEMPLATE_` + 逻辑 key
+- 方法：`get<T>(key, defaultValue?)`、`set<T>(key, value)`、`remove(key)`、`clear()`、`toStorageLike()`
+- `get` / `set` 均支持泛型，`set` 写入时自动 `JSON.stringify`，`get` 读取时自动 `JSON.parse`
+- **允许**直接 import `storage` 的位置：`src/utils/` 业务封装文件、`src/stores/persisted-state.ts`
+- **禁止**在业务代码、composables、`src/stores/modules/` 中直接 import `storage`
+
+#### 业务封装
+
+每种缓存场景单独文件，导出 key 常量与读写方法（箭头函数，无 `Stored` 修饰词）：
+
+| 文件 | 方法 | key |
+| ---- | ---- | --- |
+| `utils/auth.ts` | `getToken` / `setToken` / `removeToken` | `ACCESS_TOKEN`、`REFRESH_TOKEN`（常量） |
+| `utils/locale.ts` | `getLocale` / `setLocale` / `removeLocale` | `LOCALE` |
+| `stores/persisted-state.ts` | `getPiniaPersistKey` / `persistedState` | `PINIA_{STORE_ID}`（如 `PINIA_APP`） |
+
+```typescript
+// src/utils/locale.ts
+export const LOCALE_KEY = "LOCALE";
+
+export const getLocale = () => storage.local.get<Locale>(LOCALE_KEY);
+export const setLocale = (locale: Locale) => storage.local.set<Locale>(LOCALE_KEY, locale);
+export const removeLocale = () => storage.local.remove(LOCALE_KEY);
+```
+
+业务代码调用封装方法，**禁止**直接使用 `localStorage`、`sessionStorage`、`useLocalStorage` 或底层 `storage`：
+
+```typescript
+import { getToken, setToken } from "@/utils/auth";
+import { getLocale, setLocale } from "@/utils/locale";
+
+setToken("xxx");
+setLocale("zh-CN");
+```
+
+`useLocale` composable 内部通过 `setLocale as setLocaleCache` 调用 `utils/locale.ts`，避免与 composable 导出方法同名冲突。
+
 ### @vueuse/core
 
-`@vueuse/core` 导出的组合式函数（如 `useLocalStorage`、`useDebounceFn`）已 auto-import，**禁止**手动 import。
+`@vueuse/core` 导出的组合式函数（如 `useDebounceFn`）已 auto-import，**禁止**手动 import。持久化场景请使用 `@/utils/auth`、`@/utils/locale` 等封装，**禁止** `useLocalStorage` 或直接操作浏览器 Storage。
+
+### vue-i18n
+
+- 语言包放 `src/i18n/locales/`，以 `zh-CN.ts` 为类型基准（`src/i18n/types.ts`）
+- `useI18n()` 已 auto-import，**禁止**手动 import
+- 切换语言使用 `useLocale()` composable，内部调用 `src/utils/locale.ts` 持久化并同步 Element Plus locale
+- 路由标题使用 `meta.titleKey`，守卫中通过 `i18n.global.t()` 设置 `document.title`
+- 用户可见文案**禁止硬编码**，统一使用 `t('key')`
+
+```vue
+<script setup lang="ts">
+const { t } = useI18n();
+</script>
+
+<template>
+  <p>{{ t("home.description") }}</p>
+</template>
+```
+
+### Composables（`src/composables/`）
+
+- 文件名：**camelCase**，以 `use` 开头，如 `useLocale.ts`、`useCounter.ts`
+- 导出：统一使用箭头函数 `export const useXxx = () => { ... }`
+- 通过 `unplugin-auto-import` 自动引入，**禁止**手动 import
+
+```typescript
+// ❌ 不要这样做
+import { useLocale } from "@/composables/useLocale";
+
+// ✅ 直接使用（auto-import 已配置）
+const { setLocale } = useLocale();
+```
+
+```typescript
+// src/composables/useCounter.ts
+export const useCounter = () => {
+  const count = ref(0);
+
+  const increment = () => {
+    count.value += 1;
+  };
+
+  return { count, increment };
+};
+```
 
 ## 自动引入
 
@@ -175,7 +263,8 @@ const onSearch = debounce(fetchList, 300);
 // ❌ 不要这样做
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useAppStore } from "@/stores/app";
+import { useI18n } from "vue-i18n";
+import { useAppStore } from "@/stores/modules/app";
 import { useCounter } from "@/composables/useCounter";
 import { useLocalStorage } from "@vueuse/core";
 import dayjs from "dayjs";
@@ -183,10 +272,14 @@ import dayjs from "dayjs";
 // ✅ 直接使用（auto-import 已配置）
 const count = ref(0);
 const router = useRouter();
+const { t } = useI18n();
 const appStore = useAppStore();
 const { increment } = useCounter();
-const theme = useLocalStorage("theme", "light");
 const today = dayjs().format("YYYY-MM-DD");
+
+// ✅ 缓存读写使用封装方法（手动 import）
+import { setLocale } from "@/utils/locale";
+setLocale("zh-CN");
 ```
 
 Element Plus 已通过 `unplugin-vue-components` / `unplugin-auto-import` **按需引入**，`main.ts` 中禁止 `app.use(ElementPlus)` 或全量 `element-plus/dist/index.css`。
@@ -246,9 +339,43 @@ import { TECH_STACK } from "./constants";
 
 ## Pinia Store
 
-- 使用 Setup Store 风格（`defineStore` + 组合式函数）
-- Store 文件命名：`useXxxStore` 对应 `stores/xxx.ts`
+- 使用 Setup Store 风格（`defineStore` + 箭头函数）
+- Store 模块放 `src/stores/modules/`，文件名 **kebab-case**（如 `app.ts`、`user-profile.ts`）
+- 导出命名：`useXxxStore`（camelCase，use 前缀），与文件名语义对应
+- 持久化插件配置：`src/stores/persisted-state.ts`（含 `getPiniaPersistKey`、`persistedState`，非 Store 模块）
 - 跨 Store 引用在 setup 函数内完成，避免循环依赖
+- 持久化使用 [pinia-plugin-persistedstate](https://github.com/prazdevs/pinia-plugin-persistedstate)，在 `main.ts` 注册
+- 需持久化的 Store 在 `defineStore` 第三参数配置 `persist`；临时状态（如 `loading`）用 `pick` / `omit` 排除
+
+```
+src/stores/
+├── persisted-state.ts       # 持久化插件 + getPiniaPersistKey
+└── modules/
+    ├── app.ts               # useAppStore
+    └── user-profile.ts      # useUserProfileStore
+```
+
+```typescript
+// src/stores/modules/app.ts
+export const useAppStore = defineStore(
+  "app",
+  () => {
+    const loading = ref(false);
+    const title = ref("Vue Element Template");
+
+    const setTitle = (value: string) => {
+      title.value = value;
+    };
+
+    return { loading, title, setTitle };
+  },
+  {
+    persist: {
+      pick: ["title"],
+    },
+  },
+);
+```
 
 ## 命名约定
 
@@ -260,8 +387,8 @@ import { TECH_STACK } from "./constants";
 | 页面/布局私有子组件 | PascalCase `.vue`，放 `components/` 子目录 | `views/about/components/TechStackTable.vue` |
 | 布局                | kebab-case 目录 + `index.vue`              | `layouts/default-layout/index.vue`       |
 | 辅助文件            | camelCase 或语义化命名，与组件同级         | `types.ts`、`constants.ts`、`helpers.ts` |
-| Composable          | camelCase，use 前缀                        | `useCounter.ts`                          |
-| Store               | camelCase，use 前缀                        | `useAppStore`                            |
+| Composable          | camelCase 文件名，use 前缀，箭头函数导出   | `composables/useLocale.ts`               |
+| Store 模块          | kebab-case 文件名，use 前缀箭头函数导出   | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 | 常量                | UPPER_SNAKE_CASE                           | `API_BASE_URL`                           |
 | 工具函数            | camelCase                                  | `formatDate`                             |
 

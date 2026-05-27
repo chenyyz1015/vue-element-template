@@ -1,7 +1,9 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import SvgIcon from "~virtual/svg-component";
 import App from "./App.vue";
+import { i18n } from "./i18n";
 import router from "./router";
+import { persistedState } from "./stores/persisted-state";
 
 import "@/styles/index.scss";
 import "virtual:uno.css";
@@ -9,7 +11,11 @@ import "virtual:uno.css";
 const bootstrap = () => {
   const app = createApp(App);
 
-  app.use(createPinia());
+  const pinia = createPinia();
+  pinia.use(persistedState);
+
+  app.use(pinia);
+  app.use(i18n);
   app.use(router);
   app.component(SvgIcon.name ?? "SvgIcon", SvgIcon);
 

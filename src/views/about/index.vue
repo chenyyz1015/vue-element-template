@@ -1,23 +1,27 @@
 <script setup lang="ts">
+import DefaultLayout from "@/layouts/default-layout/index.vue";
 import TechStackTable from "./components/TechStackTable.vue";
 import { TECH_STACK } from "./constants";
+
+const { t } = useI18n();
 </script>
 
 <template>
-  <div class="mx-auto max-w-2xl">
-    <el-card shadow="hover">
-      <template #header>
-        <span class="font-medium">关于项目</span>
-      </template>
+  <DefaultLayout>
+    <div class="mx-auto max-w-2xl">
+      <el-card shadow="hover">
+        <template #header>
+          <span class="font-medium">{{ t("about.title") }}</span>
+        </template>
 
-      <p class="mb-4 text-gray-600">
-        本项目是一个开箱即用的 Vue 3 企业级前端模板，集成了 AI
-        开发工具配置（Claude Code / Cursor）。
-      </p>
+        <p class="mb-4 text-gray-600">
+          {{ t("about.description") }}
+        </p>
 
-      <TechStackTable :data="TECH_STACK" />
-    </el-card>
-  </div>
+        <TechStackTable :data="TECH_STACK" />
+      </el-card>
+    </div>
+  </DefaultLayout>
 </template>
 
 <style lang="scss" scoped></style>

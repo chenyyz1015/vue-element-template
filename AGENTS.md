@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Plus、Axios、UnoCSS、VueUse、dayjs、lodash-es、unplugin-svg-component。
+Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plugin-persistedstate、Element Plus、vue-i18n、Axios、UnoCSS、VueUse、dayjs、lodash-es、unplugin-svg-component。
 
 ## 核心约定
 
@@ -15,14 +15,23 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 - `vue` — ref, computed, watch, onMounted 等
 - `vue-router` — useRouter, useRoute 等
 - `pinia` — defineStore, storeToRefs 等
+- `vue-i18n` — useI18n 等
 - `src/composables/` — 所有组合式函数
-- `src/stores/` — 所有 Pinia Store
+- `src/stores/modules/` — 所有 Pinia Store 模块
 - `@vueuse/core` — 如 useLocalStorage、useDebounceFn
 - `dayjs` — 已配置中文 locale（勿 `import dayjs from 'dayjs'`）
 
 **需手动 import**：
 
 - `lodash-es` — 按函数引入（如 `import { cloneDeep } from 'lodash-es'`），禁止全量 import
+- `@/utils/auth`、`@/utils/locale` 等缓存封装 — 禁止直接 import `@/utils/storage`
+
+### 缓存（Storage）
+
+- 底层 `src/utils/storage.ts`：`storage.local` / `storage.session`，方法 `get<T>` / `set<T>` / `remove` / `clear`
+- 逻辑 key：**UPPER_SNAKE_CASE**；物理 key 前缀 `VUE_ELEMENT_TEMPLATE_`；违规 key 控制台警告
+- 业务读写：`@/utils/auth`（Token）、`@/utils/locale`（语言偏好）
+- Pinia 持久化：`src/stores/persisted-state.ts`（`getPiniaPersistKey` + `persistedState`）
 
 以下组件通过 `unplugin-vue-components` 或插件注册，**禁止手动 import**：
 
@@ -35,6 +44,7 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 - `src/layouts/` 布局组件（在 `App.vue` 或路由中）
 - 页面/布局 `components/` 下的私有子组件（PascalCase）
 - 同级目录的 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件
+- `src/i18n/index.ts`（main.ts 注册 i18n）
 
 ### 组件目录规范
 
@@ -47,6 +57,8 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 | 页面私有子组件 | PascalCase，放 `components/` | `views/about/components/TechStackTable.vue`        |
 | 布局      | kebab-case + `index.vue`   | `layouts/default-layout/index.vue`                 |
 | 布局私有子组件 | PascalCase，放 `components/` | `layouts/default-layout/components/SidebarNav.vue` |
+| Composable  | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                         |
+| Store 模块  | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 
 
 ### 代码规范
@@ -79,14 +91,17 @@ types/                       # 构建生成的类型声明（auto-imports、comp
 src/
 ├── assets/icons/            # SVG 图标
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
-├── composables/             # 组合式函数（auto-import）
+├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
+├── i18n/                    # 国际化（locales、createI18n）
 ├── layouts/                 # 布局（kebab-case + index.vue，手动引入）
 ├── router/
 ├── api/                     # HTTP 请求（request + modules + types）
-├── stores/                  # Pinia Store（auto-import）
+├── stores/                  # Pinia
+│   ├── persisted-state.ts   # 持久化插件 + Pinia key 生成
+│   └── modules/             # Store 模块（auto-import，kebab-case）
 ├── styles/                  # 全局样式（element/var.scss 主题变量）
 ├── types/                   # 全局类型声明（env.d.ts 等）
-├── utils/                   # 通用工具函数
+├── utils/                   # 工具函数（storage 底层 + auth/locale 业务封装）
 └── views/                   # 页面（kebab-case + index.vue）
     └── */components/        # 页面私有子组件（PascalCase，手动引入）
 ```
