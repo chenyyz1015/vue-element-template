@@ -14,13 +14,14 @@ argument-hint: [environment]
 | stage       | `.env.stage`       | `npm run build:stage`              |
 | production  | `.env.production`  | `npm run build`                    |
 
-| 变量                | 说明             | 默认值                 |
-| ------------------- | ---------------- | ---------------------- |
-| `VITE_APP_TITLE`    | 应用标题         | `Vue Element Template` |
-| `VITE_API_BASE_URL` | API 基础地址     | `/api`                 |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               |
+| 变量                  | 说明                         | 默认值                    | 适用范围              |
+| ------------------- | -------------------------- | ---------------------- | ------------------- |
+| `VITE_APP_TITLE`    | 应用标题                       | `Vue Element Template` | 全部 env 文件           |
+| `VITE_API_BASE_URL` | API 基础地址                   | `/api`                 | 全部 env 文件           |
+| `VITE_API_TIMEOUT`  | 请求超时（毫秒）                   | `60_000`               | 全部 env 文件           |
+| `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | 见 `.env.development` | 仅 `.env.development` |
 
-> 各环境 `VITE_API_BASE_URL` 当前均为 `/api`，部署时需配置 Nginx/CDN 将 `/api` 反向代理至后端。
+> 各环境 `VITE_API_BASE_URL` 当前均为 `/api`，部署时需配置 Nginx/CDN 将 `/api` 反向代理至后端。`VITE_API_PROXY_MAP` 仅用于本地开发代理，部署无需配置。
 
 ## 部署前检查
 

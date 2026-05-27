@@ -44,7 +44,7 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 | 非业务公共组件 | `com-`* + `index.vue`      | `components/com-page-header/index.vue`             |
 | 业务公共组件  | `biz-*` + `index.vue`      | `components/biz-user-card/index.vue`               |
 | 页面      | kebab-case + `index.vue`   | `views/user-profile/index.vue`                     |
-| 页面私有子组件 | PascalCase，放 `components/` | `views/home/components/CounterPanel.vue`           |
+| 页面私有子组件 | PascalCase，放 `components/` | `views/about/components/TechStackTable.vue`        |
 | 布局      | kebab-case + `index.vue`   | `layouts/default-layout/index.vue`                 |
 | 布局私有子组件 | PascalCase，放 `components/` | `layouts/default-layout/components/SidebarNav.vue` |
 
@@ -69,8 +69,12 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、Element Pl
 
 ```
 vite/
-├── plugins/                 # Vite 插件（kebab-case 单文件，见 vite/plugins/index.ts）
-└── scripts/                 # 构建脚本（如 generate-element-var.ts）
+├── helpers/                 # Vite 配置辅助函数（如 parseProxy）
+│   ├── parse.ts
+│   └── index.ts
+└── plugins/                 # Vite 插件（kebab-case 单文件，见 vite/plugins/index.ts）
+
+types/                       # 构建生成的类型声明（auto-imports、components、svg-component）
 
 src/
 ├── assets/icons/            # SVG 图标
@@ -80,7 +84,8 @@ src/
 ├── router/
 ├── api/                     # HTTP 请求（request + modules + types）
 ├── stores/                  # Pinia Store（auto-import）
-├── types/
+├── styles/                  # 全局样式（element/var.scss 主题变量）
+├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 通用工具函数
 └── views/                   # 页面（kebab-case + index.vue）
     └── */components/        # 页面私有子组件（PascalCase，手动引入）

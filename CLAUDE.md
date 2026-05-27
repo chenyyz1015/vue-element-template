@@ -25,15 +25,21 @@
 
 ```
 vite/
-├── plugins/                 # Vite 插件配置（每个插件一个 kebab-case 文件）
-│   ├── plugin-vue.ts
-│   ├── unocss.ts
-│   ├── unplugin-auto-import.ts
-│   ├── unplugin-vue-components.ts
-│   ├── unplugin-svg-component.ts
+├── helpers/                 # Vite 配置辅助函数（如 parseProxy）
+│   ├── parse.ts
 │   └── index.ts
-└── scripts/
-    └── generate-element-var.ts  # 根据 theme.ts 生成 Element Plus SCSS 变量
+└── plugins/                 # Vite 插件（kebab-case 单文件）
+    ├── plugin-vue.ts
+    ├── unocss.ts
+    ├── unplugin-auto-import.ts
+    ├── unplugin-vue-components.ts
+    ├── unplugin-svg-component.ts
+    └── index.ts
+
+types/                       # 构建生成的类型声明
+├── auto-imports.d.ts
+├── components.d.ts
+└── svg-component.d.ts
 
 src/
 ├── assets/icons/            # SVG 图标（unplugin-svg-component）
@@ -46,13 +52,21 @@ src/
 ├── router/                  # 路由配置
 ├── api/                     # HTTP 请求（request + modules + types）
 ├── stores/                  # Pinia Store（auto-import）
-├── types/                   # 全局类型声明
+├── styles/                  # 全局样式
+│   ├── index.scss
+│   └── element/
+│       ├── var.scss         # Element Plus 主题变量
+│       └── index.scss       # Element Plus base 样式
+├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 通用工具函数
 └── views/                   # 页面组件（kebab-case 目录 + index.vue）
     ├── home/
-    │   ├── index.vue
-    │   └── components/      # 页面私有子组件（PascalCase，手动引入）
+    │   └── index.vue
     └── about/
+        ├── index.vue
+        ├── constants.ts
+        └── components/      # 页面私有子组件（PascalCase，手动引入）
+            └── TechStackTable.vue
 ```
 
 ### 组件命名规范
@@ -152,11 +166,11 @@ npm run lint:fix     # 自动修复 lint 问题
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
 
-| 变量                  | 说明       | 默认值                    |
-| ------------------- | -------- | ---------------------- |
-| `VITE_APP_TITLE`    | 应用标题     | `Vue Element Template` |
-| `VITE_API_BASE_URL` | API 基础地址 | `/api`                 |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               |
+| 变量                   | 说明                                      | 默认值                                                                 | 适用范围              |
+| -------------------- | --------------------------------------- | ------------------------------------------------------------------- | ------------------- |
+| `VITE_APP_TITLE`     | 应用标题                                    | `Vue Element Template`                                              | 全部 env 文件           |
+| `VITE_API_BASE_URL`  | API 基础地址                                | `/api`                                                              | 全部 env 文件           |
+| `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                | `60_000`                                                            | 全部 env 文件           |
+| `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
 
-
-部署流程见 `.claude/skills/deploy/SKILL.md`。
+`VITE_API_PROXY_MAP` 由 `vite.config.ts` 通过 `vite/helpers/parse.ts` 解析，配置 dev server 多路径代理；stage / production 构建不使用该变量。

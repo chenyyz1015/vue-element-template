@@ -66,19 +66,26 @@ npm run build:stage
 
 ```
 vite/
-├── plugins/                       # Vite 插件配置（每个插件一个 kebab-case 文件）
-│   ├── plugin-vue.ts
-│   ├── unocss.ts
-│   ├── unplugin-auto-import.ts
-│   ├── unplugin-vue-components.ts
-│   ├── unplugin-svg-component.ts
+├── helpers/                       # Vite 配置辅助函数
+│   ├── parse.ts                   # 解析 VITE_API_PROXY_MAP
 │   └── index.ts
-└── scripts/
-    └── generate-element-var.ts    # 根据 theme.ts 生成 Element Plus SCSS 变量
+└── plugins/                       # Vite 插件（kebab-case 单文件）
+    ├── plugin-vue.ts
+    ├── unocss.ts
+    ├── unplugin-auto-import.ts
+    ├── unplugin-vue-components.ts
+    ├── unplugin-svg-component.ts
+    └── index.ts
+
+types/                             # 构建生成的类型声明
+├── auto-imports.d.ts
+├── components.d.ts
+└── svg-component.d.ts
 
 src/
+├── assets/icons/                  # SVG 图标
 ├── components/
-│   ├── com-hello-card/          # 非业务型公共组件（auto-import）
+│   ├── com-hello-card/            # 非业务型公共组件（auto-import）
 │   │   ├── index.vue
 │   │   └── types.ts
 │   └── com-page-header/
@@ -88,22 +95,27 @@ src/
 │   └── default-layout/            # 布局（手动引入）
 │       └── index.vue
 ├── router/
-├── api/                         # HTTP 请求
-│   ├── request/                 # Axios 封装
-│   ├── modules/                 # 业务 API 模块
-│   └── types/                   # 接口类型（模块名.d.ts）
+├── api/                           # HTTP 请求
+│   ├── constants.ts
+│   ├── index.ts
+│   ├── request/                   # Axios 封装
+│   ├── modules/                   # 业务 API 模块
+│   └── types/                     # 接口类型（模块名.d.ts）
 ├── stores/                        # Pinia Store（auto-import）
-├── types/
-├── utils/                         # 通用工具函数
+├── styles/
+│   ├── index.scss                 # 全局样式入口
+│   └── element/
+│       ├── var.scss               # Element Plus 主题变量
+│       └── index.scss             # Element Plus base 样式
+├── types/                         # 全局类型声明（env.d.ts 等）
+├── utils/
 └── views/
     ├── home/
-    │   ├── index.vue
-    │   └── components/            # 页面私有子组件（PascalCase，手动引入）
-    │       └── CounterPanel.vue
+    │   └── index.vue
     └── about/
         ├── index.vue
         ├── constants.ts
-        └── components/
+        └── components/            # 页面私有子组件（PascalCase，手动引入）
             └── TechStackTable.vue
 ```
 
@@ -115,12 +127,12 @@ src/
 | 非业务公共组件    | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
 | 业务公共组件     | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
 | 页面         | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
-| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录      | `CounterPanel.vue`                              |
+| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录      | `TechStackTable.vue`                            |
 
 
 ## 主题定制
 
-默认定制色在 `[src/styles/theme.ts](src/styles/theme.ts)` 中维护（主色 `#2563eb` 等），会同步到 Element Plus 与 UnoCSS（`text-primary` 等工具类）。修改后重新运行 `npm run dev` 或 `npm run build` 即可。
+Element Plus 主题变量在 `src/styles/element/var.scss` 中维护（主色 `#2563eb` 等），通过 `vite.config.ts` 的 `scss.additionalData` 全局注入；`src/styles/element/index.scss` 负责引入 Element Plus base 样式。修改后重新运行 `npm run dev` 或 `npm run build` 即可。
 
 ## 自动引入
 
@@ -142,7 +154,7 @@ src/
 <SvgIcon name="home" class="text-primary text-xl" />
 ```
 
-`name` 为文件名（不含 `.svg`），支持 TypeScript 智能提示（`src/types/svg-component.d.ts`）。
+`name` 为文件名（不含 `.svg`），支持 TypeScript 智能提示（`types/svg-component.d.ts`）。
 
 以下需手动 import：布局组件、页面/布局私有子组件、同级辅助文件（`types.ts`、`constants.ts` 等）、`lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`）。
 
@@ -151,14 +163,14 @@ src/
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
 
-| 变量                  | 说明       | 默认值                    |
-| ------------------- | -------- | ---------------------- |
-| `VITE_APP_TITLE`    | 应用标题     | `Vue Element Template` |
-| `VITE_API_BASE_URL` | API 基础地址 | `/api`                 |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               |
+| 变量                   | 说明                                      | 默认值                                                                 | 适用范围              |
+| -------------------- | --------------------------------------- | ------------------------------------------------------------------- | ------------------- |
+| `VITE_APP_TITLE`     | 应用标题                                    | `Vue Element Template`                                              | 全部 env 文件           |
+| `VITE_API_BASE_URL`  | API 基础地址                                | `/api`                                                              | 全部 env 文件           |
+| `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                | `60_000`                                                            | 全部 env 文件           |
+| `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
 
-
-开发环境 `vite.config.ts` 将 `/api` 代理至 `http://localhost:3000`；stage / production 部署时需自行配置反向代理。部署流程见 `.claude/skills/deploy/SKILL.md`。
+开发环境 `vite.config.ts` 通过 `vite/helpers/parse.ts` 解析 `VITE_API_PROXY_MAP` 配置 dev server 代理（仅 `npm run dev` 生效）；stage / production 部署时需自行配置反向代理。部署流程见 `.claude/skills/deploy/SKILL.md`。
 
 ## License
 

@@ -1,2 +1,2 @@
-// Element Plus 按需引入；主题变量由 vite scss.additionalData 注入（见 theme.ts / var.scss）
-@use "element-plus/theme-chalk/src/base";
+// Element Plus 按需引入；主题变量由 vite scss.additionalData 注入（见 var.scss）
+@use "element-plus/theme-chalk/src/base" as *;

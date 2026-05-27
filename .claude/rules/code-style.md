@@ -101,15 +101,12 @@ src/components/
 ```
 src/views/
 ├── home/
-│   ├── index.vue
-│   ├── components/
-│   │   └── CounterPanel.vue    # PascalCase，手动引入
-│   └── helpers.ts
-└── user-profile/
+│   └── index.vue
+└── about/
     ├── index.vue
-    ├── types.ts
+    ├── constants.ts
     └── components/
-        └── ProfileForm.vue
+        └── TechStackTable.vue  # PascalCase，手动引入
 ```
 
 ### 布局组件（`src/layouts/`）
@@ -134,7 +131,7 @@ src/layouts/
 
 - 图标文件放在 `src/assets/icons/`，文件名（不含 `.svg`）即 `name`
 - `main.ts` 已全局注册 `<SvgIcon />`，模板中**禁止**再 `import SvgIcon`
-- 新增/修改图标后支持 HMR；`SvgName` 类型见 `src/types/svg-component.d.ts`（构建生成）
+- 新增/修改图标后支持 HMR；`SvgName` 类型见 `types/svg-component.d.ts`（构建生成）
 
 ```vue
 <template>
@@ -194,7 +191,7 @@ const today = dayjs().format("YYYY-MM-DD");
 
 Element Plus 已通过 `unplugin-vue-components` / `unplugin-auto-import` **按需引入**，`main.ts` 中禁止 `app.use(ElementPlus)` 或全量 `element-plus/dist/index.css`。
 
-默认定制主题色仅在 `src/styles/theme.ts` 修改（自动同步 Element Plus / UnoCSS）。
+Element Plus 主题变量在 `src/styles/element/var.scss` 维护，由 `vite.config.ts` 的 `scss.additionalData` 全局注入；`src/styles/element/index.scss` 引入 Element Plus base 样式。
 
 反馈类 API（`ElMessage`、`ElMessageBox`、`ElNotification`、`ElLoading`）**禁止手动 import**：
 
@@ -242,7 +239,7 @@ import ComHelloCard from "@/components/com-hello-card/index.vue";
 ```vue
 <!-- 页面私有子组件：手动引入 -->
 <script setup lang="ts">
-import CounterPanel from "./components/CounterPanel.vue";
+import TechStackTable from "./components/TechStackTable.vue";
 import { TECH_STACK } from "./constants";
 </script>
 ```
@@ -260,7 +257,7 @@ import { TECH_STACK } from "./constants";
 | 非业务公共组件      | kebab-case 目录 + `index.vue`，`com-` 前缀 | `components/com-page-header/index.vue`   |
 | 业务公共组件        | kebab-case 目录 + `index.vue`，`biz-` 前缀 | `components/biz-order-card/index.vue`    |
 | 页面                | kebab-case 目录 + `index.vue`              | `views/user-profile/index.vue`           |
-| 页面/布局私有子组件 | PascalCase `.vue`，放 `components/` 子目录 | `views/home/components/CounterPanel.vue` |
+| 页面/布局私有子组件 | PascalCase `.vue`，放 `components/` 子目录 | `views/about/components/TechStackTable.vue` |
 | 布局                | kebab-case 目录 + `index.vue`              | `layouts/default-layout/index.vue`       |
 | 辅助文件            | camelCase 或语义化命名，与组件同级         | `types.ts`、`constants.ts`、`helpers.ts` |
 | Composable          | camelCase，use 前缀                        | `useCounter.ts`                          |

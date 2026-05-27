@@ -14,8 +14,7 @@ node_modules
 dist
 dist-ssr
 *.local
-types
-!src/types
+types/**/*
 .eslintrc-auto-import.json
 
 # Editor

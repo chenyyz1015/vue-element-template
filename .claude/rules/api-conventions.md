@@ -179,24 +179,26 @@ async function fetchUsers() {
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-| 变量                | 说明             | env 默认值             | 代码 fallback              |
-| ------------------- | ---------------- | ---------------------- | -------------------------- |
-| `VITE_APP_TITLE`    | 应用标题         | `Vue Element Template` | —                          |
-| `VITE_API_BASE_URL` | API 基础路径     | `/api`                 | `/api`（`constants.ts`）   |
-| `VITE_API_TIMEOUT`  | 请求超时（毫秒） | `60_000`               | `15_000`（`constants.ts`） |
+| 变量                  | 说明                         | env 默认值                | 代码 fallback              | 适用范围              |
+| ------------------- | -------------------------- | ---------------------- | -------------------------- | ------------------- |
+| `VITE_APP_TITLE`    | 应用标题                       | `Vue Element Template` | —                          | 全部 env 文件           |
+| `VITE_API_BASE_URL` | API 基础路径                   | `/api`                 | `/api`（`constants.ts`）   | 全部 env 文件           |
+| `VITE_API_TIMEOUT`  | 请求超时（毫秒）                   | `60_000`               | `15_000`（`constants.ts`） | 全部 env 文件           |
+| `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | 见 `.env.development` | —                          | 仅 `.env.development` |
 
-开发环境代理（`vite.config.ts`，仅 `npm run dev` 生效）：
+开发环境代理（`vite.config.ts` + `vite/helpers/parse.ts`，仅 `npm run dev` 生效）：
 
 ```typescript
-server: {
-  port: 5173,
-  proxy: {
-    '/api': {
-      target: 'http://localhost:3000',
-      changeOrigin: true,
-    },
-  },
-}
+const env = loadEnv(mode, cwd(), ["VITE_"]);
+const proxy = parseProxy(env.VITE_API_PROXY_MAP);
+
+server: { proxy }
+```
+
+`.env.development` 示例：
+
+```env
+VITE_API_PROXY_MAP=[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]
 ```
 
 stage / production 构建后需在 Nginx 或 CDN 层配置 `/api` 反向代理。
