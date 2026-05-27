@@ -14,10 +14,10 @@ const { t, locale, localeOptions, setLocale } = useLocale();
     <nav class="flex items-center gap-4">
       <el-button
         text
-        :type="$route.path === '/' ? 'primary' : 'default'"
-        @click="router.push('/')"
+        :type="$route.path === '/demo' ? 'primary' : 'default'"
+        @click="router.push('/demo')"
       >
-        {{ t("nav.home") }}
+        {{ t("nav.demo") }}
       </el-button>
       <el-button
         text

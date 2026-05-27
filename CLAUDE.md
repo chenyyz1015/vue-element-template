@@ -52,7 +52,7 @@ src/
 │   └── useLocale.ts         # 语言切换
 ├── i18n/                    # 国际化（locales、createI18n）
 ├── layouts/                 # 布局组件（kebab-case 目录 + index.vue，手动引入）
-│   └── default-layout/
+│   └── devtools-layout/
 ├── router/                  # 路由配置
 ├── api/                     # HTTP 请求（request + modules + types）
 ├── stores/                  # Pinia
@@ -71,13 +71,12 @@ src/
 │   ├── dayjs.ts             # dayjs 预配置
 │   └── storage.ts           # 底层浏览器缓存封装
 └── views/                   # 页面组件（kebab-case 目录 + index.vue）
-    ├── home/
-    │   └── index.vue
+    ├── devtools-landing/    # 首页（/）
+    ├── demo/
     └── about/
-        ├── index.vue
         ├── constants.ts
         └── components/      # 页面私有子组件（PascalCase，手动引入）
-            └── TechStackTable.vue
+            └── TechStackGrid.vue
 ```
 
 ### 组件命名规范

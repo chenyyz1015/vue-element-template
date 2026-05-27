@@ -118,11 +118,10 @@ src/views/
 
 ```
 src/layouts/
-└── default-layout/
+└── devtools-layout/
     ├── index.vue
-    ├── constants.ts
     └── components/
-        └── SidebarNav.vue      # PascalCase，手动引入
+        └── DevToolsNav.vue      # PascalCase，手动引入
 ```
 
 ## 内置工具
@@ -385,7 +384,7 @@ export const useAppStore = defineStore(
 | 业务公共组件        | kebab-case 目录 + `index.vue`，`biz-` 前缀 | `components/biz-order-card/index.vue`    |
 | 页面                | kebab-case 目录 + `index.vue`              | `views/user-profile/index.vue`           |
 | 页面/布局私有子组件 | PascalCase `.vue`，放 `components/` 子目录 | `views/about/components/TechStackTable.vue` |
-| 布局                | kebab-case 目录 + `index.vue`              | `layouts/default-layout/index.vue`       |
+| 布局                | kebab-case 目录 + `index.vue`              | `layouts/devtools-layout/index.vue`       |
 | 辅助文件            | camelCase 或语义化命名，与组件同级         | `types.ts`、`constants.ts`、`helpers.ts` |
 | Composable          | camelCase 文件名，use 前缀，箭头函数导出   | `composables/useLocale.ts`               |
 | Store 模块          | kebab-case 文件名，use 前缀箭头函数导出   | `stores/modules/user-profile.ts` → `useUserProfileStore` |

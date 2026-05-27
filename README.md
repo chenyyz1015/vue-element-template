@@ -99,7 +99,7 @@ src/
 │   ├── types.ts
 │   └── locales/                   # 语言包（zh-CN、en-US）
 ├── layouts/
-│   └── default-layout/            # 布局（手动引入）
+│   └── devtools-layout/           # 深色营销布局（手动引入）
 │       └── index.vue
 ├── router/
 ├── api/                           # HTTP 请求

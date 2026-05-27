@@ -6,14 +6,24 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/views/home/index.vue"),
+    component: () => import("@/views/devtools-landing/index.vue"),
     meta: { titleKey: "route.home", icon: "home", requiresAuth: false },
+  },
+  {
+    path: "/demo",
+    name: "Demo",
+    component: () => import("@/views/demo/index.vue"),
+    meta: { titleKey: "route.demo", icon: "home", requiresAuth: false },
   },
   {
     path: "/about",
     name: "About",
     component: () => import("@/views/about/index.vue"),
     meta: { titleKey: "route.about", icon: "info", requiresAuth: false },
+  },
+  {
+    path: "/devtools",
+    redirect: "/",
   },
 ];
 

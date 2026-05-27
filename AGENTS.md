@@ -55,8 +55,8 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 | 业务公共组件  | `biz-*` + `index.vue`      | `components/biz-user-card/index.vue`               |
 | 页面      | kebab-case + `index.vue`   | `views/user-profile/index.vue`                     |
 | 页面私有子组件 | PascalCase，放 `components/` | `views/about/components/TechStackTable.vue`        |
-| 布局      | kebab-case + `index.vue`   | `layouts/default-layout/index.vue`                 |
-| 布局私有子组件 | PascalCase，放 `components/` | `layouts/default-layout/components/SidebarNav.vue` |
+| 布局      | kebab-case + `index.vue`   | `layouts/devtools-layout/index.vue`                 |
+| 布局私有子组件 | PascalCase，放 `components/` | `layouts/devtools-layout/components/DevToolsNav.vue` |
 | Composable  | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                         |
 | Store 模块  | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 
@@ -118,6 +118,23 @@ src/
 | `.claude/agents/`   | 子 Agent 角色    | Claude Code |
 | `.cursor/rules/`    | Cursor 规则     | Cursor      |
 | `.cursor/skills/`   | Cursor Skills | Cursor      |
+
+
+## UI 设计工作流（pencil-design-workflow）
+
+当需求涉及 **设计、创建页面、创建组件、视觉稿、Pencil 原型** 时，自动应用 `.cursor/skills/pencil-design-workflow/SKILL.md`：
+
+| Phase | 动作 | 工具 |
+| ----- | ---- | ---- |
+| 1 设计规划 | Design System + Brief | `ui-ux-pro-max` |
+| 2 可视实现 | `.pen` 帧与变量 | Pencil MCP (`user-pencil`) |
+| 3 迭代同步 | Vue 代码 ↔ Pencil | `pencil-sync.md` |
+
+**主要路由（统一深色 devtools 风格）：** `/` 首页 · `/demo` 演示 · `/about` 关于 · `/devtools` 重定向至 `/`
+
+复杂或多页面任务先 invoke **design-director** Agent（`.claude/agents/design-director.md`）分派角色。
+
+设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（persist 时生成）。
 
 
 ## 常用命令

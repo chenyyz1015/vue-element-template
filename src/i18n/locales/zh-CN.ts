@@ -5,10 +5,12 @@ export default {
   route: {
     home: "首页",
     about: "关于",
+    demo: "演示",
   },
   nav: {
     home: "首页",
     about: "关于",
+    demo: "演示",
   },
   home: {
     description:
@@ -17,8 +19,213 @@ export default {
     tag: "Vue 3 + Element Plus",
   },
   about: {
-    title: "关于项目",
+    eyebrow: "关于项目",
+    title: "关于 Vue Element Template",
     description:
       "本项目是一个开箱即用的 Vue 3 企业级前端模板，集成了 AI 开发工具配置（Claude Code / Cursor）。",
+    techStack: {
+      eyebrow: "技术栈",
+      title: "完整现代前端工具链",
+      subtitle: "从构建到 UI、状态、国际化，一切就绪，开箱即用。",
+      items: {
+        vite: { name: "Vite", description: "下一代前端构建工具" },
+        vue: { name: "Vue 3", description: "渐进式 JavaScript 框架" },
+        typescript: {
+          name: "TypeScript",
+          description: "类型安全的 JavaScript 超集",
+        },
+        pinia: { name: "Pinia", description: "Vue 官方状态管理库" },
+        piniaPersist: {
+          name: "pinia-plugin-persistedstate",
+          description: "Pinia 状态持久化",
+        },
+        elementPlus: { name: "Element Plus", description: "Vue 3 组件库" },
+        unocss: { name: "UnoCSS", description: "原子化 CSS 引擎" },
+        axios: { name: "Axios", description: "HTTP 请求库" },
+        vueuse: { name: "VueUse", description: "组合式工具集（自动引入）" },
+        vueI18n: {
+          name: "vue-i18n",
+          description: "国际化（Composition API + TypeScript）",
+        },
+        dayjs: { name: "dayjs", description: "日期处理（中文 locale）" },
+        lodashEs: {
+          name: "lodash-es",
+          description: "工具函数（按需手动 import）",
+        },
+        svgComponent: {
+          name: "unplugin-svg-component",
+          description: "SVG 图标组件",
+        },
+      },
+    },
+    aiTools: {
+      eyebrow: "AI 开发",
+      title: "AI 工具链集成",
+      subtitle: "内置 Claude Code / Cursor 配置，让 AI 辅助开发更高效。",
+      items: {
+        claude: {
+          title: "Claude Code",
+          description:
+            "CLAUDE.md、Rules 与 Commands 配置，支持斜杠命令工作流。",
+        },
+        cursor: {
+          title: "Cursor",
+          description: ".cursor/rules 与 Skills 配置，IDE 内 AI 辅助编码。",
+        },
+        agents: {
+          title: "AGENTS.md",
+          description: "通用 Agent 指令，兼容主流 AI 开发工具。",
+        },
+      },
+    },
+    cta: {
+      title: "亲自体验一下？",
+      subtitle: "进入 Demo 页面，查看模板运行效果与快速上手指南。",
+      button: "打开 Demo",
+    },
+  },
+  demo: {
+    eyebrow: "在线演示",
+    title: "模板运行演示",
+    subtitle:
+      "这是 Vue Element Template 的 Demo 环境，展示基础组件、国际化与项目约定。",
+    statusTitle: "应用已就绪",
+    statusMessage: "启动成功！！",
+    quickStart: {
+      eyebrow: "快速上手",
+      title: "三步开始开发",
+    },
+    steps: {
+      clone: {
+        title: "克隆项目",
+        description: "git clone 仓库到本地，进入项目目录。",
+      },
+      install: {
+        title: "安装依赖",
+        description: "运行 npm install 安装所有依赖包。",
+      },
+      dev: {
+        title: "启动开发",
+        description: "运行 npm run dev，浏览器访问 localhost:5173。",
+      },
+    },
+    cta: {
+      title: "想了解完整技术栈？",
+      subtitle: "查看 About 页面，了解所有集成工具与 AI 配置详情。",
+      button: "查看 About",
+    },
+  },
+  devtools: {
+    brand: "Vue DevTools",
+    nav: {
+      features: "功能",
+      compare: "对比",
+      integrations: "集成",
+      docs: "文档",
+      cta: "运行 Demo",
+    },
+    hero: {
+      badge: "v1.0 · 开发者优先",
+      title: "构建 Vue 应用的",
+      titleAccent: "最小工具链",
+      subtitle:
+        "TypeScript 严格模式、自动引入、AI 配置、Lint CI — 零配置启动，专注业务代码。",
+      ctaPrimary: "立即体验",
+      ctaDocs: "阅读文档",
+    },
+    code: {
+      tabs: {
+        cli: "terminal",
+        config: "vite.config.ts",
+        component: "index.vue",
+      },
+      filename: {
+        cli: "terminal — zsh",
+        config: "vite.config.ts",
+        component: "src/views/home/index.vue",
+      },
+      cli: {
+        comment: "30 秒启动",
+      },
+    },
+    features: {
+      eyebrow: "features",
+      title: "开发者体验，开箱即用",
+      subtitle: "从脚手架到规范约定，减少重复基建工作。",
+      items: {
+        typescript: {
+          title: "TypeScript 严格模式",
+          description: "vue-tsc 类型检查、完整类型推导，构建前拦截错误。",
+        },
+        autoImport: {
+          title: "自动引入",
+          description:
+            "Vue / Pinia / VueUse / composables / 公共组件零 import。",
+        },
+        aiReady: {
+          title: "AI 开发就绪",
+          description: "Claude Code / Cursor 配置，AGENTS.md 与 Skills 内置。",
+        },
+        i18n: {
+          title: "国际化",
+          description: "vue-i18n Composition API，中英文语言包与类型安全。",
+        },
+        lint: {
+          title: "Lint & CI",
+          description:
+            "ESLint + Stylelint + Commitlint，Conventional Commits。",
+        },
+        deploy: {
+          title: "一键构建",
+          description: "Vite 7 生产构建，多环境 .env 与 dev proxy 配置。",
+        },
+      },
+    },
+    compare: {
+      eyebrow: "compare",
+      title: "功能对比",
+      subtitle: "与手动搭建和通用脚手架相比，节省数天配置时间。",
+      featureCol: "功能",
+      columns: {
+        template: "本模板",
+        manual: "手动搭建",
+        generic: "通用脚手架",
+      },
+      rows: {
+        typescript: "TypeScript 严格模式",
+        autoImport: "自动引入",
+        piniaPersist: "Pinia 持久化",
+        aiConfig: "AI 工具配置",
+        i18n: "国际化 i18n",
+        lintCi: "Lint + Commitlint",
+        darkReady: "Dark UI 示例",
+      },
+      values: {
+        typescript: { template: "yes", manual: "partial", generic: "partial" },
+        autoImport: { template: "yes", manual: "no", generic: "partial" },
+        piniaPersist: { template: "yes", manual: "no", generic: "no" },
+        aiConfig: { template: "yes", manual: "no", generic: "no" },
+        i18n: { template: "yes", manual: "partial", generic: "no" },
+        lintCi: { template: "yes", manual: "partial", generic: "partial" },
+        darkReady: { template: "yes", manual: "no", generic: "no" },
+      },
+    },
+    integrations: {
+      eyebrow: "integrations",
+      title: "无缝集成",
+      subtitle: "与你熟悉的技术栈和工具链协同工作。",
+    },
+    docsCta: {
+      title: "准备好深入文档？",
+      subtitle:
+        "完整 API 参考、目录约定与 AI 工作流指南，助你在 5 分钟内上手。",
+      docsButton: "打开文档",
+      demoButton: "查看 Demo",
+    },
+    footer: {
+      tagline: "Built for developers who ship.",
+      copyright: "© {year} Vue Element Template. MIT License.",
+      docsLink: "Documentation",
+    },
   },
 };
