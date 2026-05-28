@@ -84,4 +84,4 @@ Call via Pencil MCP `set_variables` with `filePath: "design/pages/<name>.pen"`.
 
 - Array messages: use `tm()`, not `t(..., { returnObjects: true })`
 - Literal `@` in copy: escape as `\\@` in locale files
-- Dynamic keys: keep parity in `zh-CN.ts` and `en-US.ts`
+- Dynamic keys: keep parity in `zh-CN.json` and `en-US.json`

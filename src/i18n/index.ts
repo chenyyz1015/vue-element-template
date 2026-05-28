@@ -2,8 +2,8 @@ import type { Locale, MessageSchema } from "./types";
 import { createI18n } from "vue-i18n";
 import { getLocale } from "@/utils/locale";
 import { DEFAULT_LOCALE, FALLBACK_LOCALE } from "./constants";
-import enUS from "./locales/en-US";
-import zhCN from "./locales/zh-CN";
+import enUS from "./locales/en-US.json";
+import zhCN from "./locales/zh-CN.json";
 
 function getInitialLocale(): Locale {
   const stored = getLocale();

@@ -1,4 +1,4 @@
-import type zhCN from "./locales/zh-CN";
+import type zhCN from "./locales/zh-CN.json";
 
 export type MessageSchema = typeof zhCN;
 

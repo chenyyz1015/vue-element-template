@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
     "antfu.unocss",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "lokalise.i18n-ally"
   ]
 }

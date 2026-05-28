@@ -123,7 +123,7 @@ src/
 
 ### 国际化
 
-- 语言包放 `src/i18n/locales/`，类型基准为 `zh-CN.ts`（见 `src/i18n/types.ts`）
+- 语言包放 `src/i18n/locales/`，类型基准为 `zh-CN.json`（见 `src/i18n/types.ts`）
 - 组件内使用 `useI18n()` 的 `t()`，**禁止**手动 import `useI18n`
 - 路由标题使用 `meta.titleKey`，非硬编码字符串
 - 切换语言使用 `useLocale()`，通过 `src/utils/locale.ts` 持久化并同步 Element Plus locale

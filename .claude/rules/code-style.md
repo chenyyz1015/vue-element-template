@@ -209,7 +209,7 @@ setLocale("zh-CN");
 
 ### vue-i18n
 
-- 语言包放 `src/i18n/locales/`，以 `zh-CN.ts` 为类型基准（`src/i18n/types.ts`）
+- 语言包放 `src/i18n/locales/`，以 `zh-CN.json` 为类型基准（`src/i18n/types.ts`）
 - `useI18n()` 已 auto-import，**禁止**手动 import
 - 切换语言使用 `useLocale()` composable，内部调用 `src/utils/locale.ts` 持久化并同步 Element Plus locale
 - 路由标题使用 `meta.titleKey`，守卫中通过 `i18n.global.t()` 设置 `document.title`
