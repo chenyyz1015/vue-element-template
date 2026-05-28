@@ -63,6 +63,8 @@
 
 ## 8. Sign-off
 
-- [ ] Phase 1 brief approved
+- [ ] Phase 1 brief approved（ui-ux-pro-max）
 - [ ] Phase 2 Pencil screenshot reviewed
-- [ ] Phase 3 code matches Pencil
+- [ ] Phase 3 code matches Pencil + `npm run build`
+- [ ] Phase 4 impeccable audit ≥ 14/20，无 P0/P1
+- [ ] Phase 4 polish 完成，audit 复验通过

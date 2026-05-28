@@ -1,13 +1,14 @@
 ---
 name: pencil-design-workflow
-description: "Orchestrates UI design from spec to Pencil prototype to Vue code. Three phases: (1) ui-ux-pro-max design system & brief, (2) Pencil .pen visual implementation, (3) bidirectional sync & iteration. Auto-use when user mentions 设计、开发、创建页面、组件、design page, create component, mockup, wireframe, prototype, Pencil, 视觉稿, 设计稿, UI layout, or requests new pages/components with visual design."
+description: "Pencil 视觉执行 Skill（Phase 2–3）：.pen 画布落地与 Vue 代码双向同步。完整工作流见 ai-frontend-design-workflow。Auto-use when user mentions Pencil, 视觉稿, 设计稿, mockup, wireframe, prototype, or Phase 2/3 visual/code sync."
 ---
 
 # Pencil Design Workflow
 
-端到端 UI 工作流：**设计规范 → Pencil 可视稿 → 代码实现 → 双向同步迭代**。
+**Phase 2–3 执行 Skill**：Pencil 可视稿 → Vue 代码 → 双向同步。
 
-> 复杂任务或多人分工时，先 invoke **design-director** Agent（`.claude/agents/design-director.md`）进行任务拆解与角色分配。
+> 完整工作流（含 Phase 1 战略 + Phase 4 质量）见 **`.cursor/skills/ai-frontend-design-workflow/SKILL.md`**。
+> 复杂任务先 invoke **design-director** Agent（`.claude/agents/design-director.md`）。
 
 ## Prerequisites
 
@@ -32,18 +33,19 @@ description: "Orchestrates UI design from spec to Pencil prototype to Vue code. 
 ## Workflow Overview
 
 ```
-Phase 1 设计规划 ──► Phase 2 Pencil 落地 ──► Phase 3 代码 + 双向同步
-   ui-ux-pro-max          .pen 文件              Vue 组件 / 页面
-   design-brief.md        变量 & 组件            与 Pencil 对齐迭代
+Phase 1 战略规划 ──► Phase 2 Pencil ──► Phase 3 Vue + Sync ──► Phase 4 impeccable
+ ui-ux-pro-max         .pen 文件          组件 / 页面              audit → polish
+ (见 ai-frontend-     变量 & 组件        与 Pencil 对齐           通过 → 交付
+  design-workflow)
 ```
 
 复制进度清单：
 
 ```
-- [ ] Phase 1: Design System + Brief
+- [ ] Phase 1: Design System + Brief（ui-ux-pro-max）
 - [ ] Phase 2: Pencil frames & variables
-- [ ] Phase 3: Vue implementation
-- [ ] Phase 3b: Sync verification (screenshot vs browser)
+- [ ] Phase 3: Vue implementation + sync verification
+- [ ] Phase 4: impeccable audit → polish → gate
 ```
 
 ---
@@ -164,12 +166,29 @@ design/
 3. `set_variables` 若 token 变更
 4. `get_screenshot` 对比
 
-### 3.4 验收
+### 3.4 验收（Phase 3 Gate）
 
 - [ ] `npm run build` 通过
 - [ ] Pencil screenshot 与浏览器截图区块一致
 - [ ] ui-ux-pro-max Pre-Delivery Checklist（对比度、cursor-pointer、responsive）
 - [ ] 无 i18n 控制台报错
+
+**通过后进入 Phase 4** → 见 [impeccable SKILL](../impeccable/SKILL.md) 执行 `/audit` → `/polish`。
+
+---
+
+## Phase 4 — 质量审计（impeccable）
+
+本 Skill 不执行 Phase 4，交由 **impeccable** 处理：
+
+1. `/audit [target]` — 五维技术审计（a11y、perf、theming、responsive、anti-patterns）
+2. `/critique [target]` — UX 启发式评审（可选，建议在 audit 前）
+3. `/polish [target]` — 对齐 Design System 的最终精修
+4. 复验：`/audit` 总分 ≥ 14/20，无 P0/P1
+
+可选确定性扫描：`npx impeccable detect src/views/<target>/`
+
+不通过 → 回到 Phase 2（视觉）或 Phase 3（代码），修复后重跑 Phase 4。
 
 ---
 
@@ -187,6 +206,8 @@ design/
 
 ## Additional Resources
 
+- 主编排：[ai-frontend-design-workflow/SKILL.md](../ai-frontend-design-workflow/SKILL.md)
+- 质量监工（Phase 4）：[impeccable/SKILL.md](../impeccable/SKILL.md)
 - 简报模板：[design-brief-template.md](design-brief-template.md)
 - 双向同步细则：[pencil-sync.md](pencil-sync.md)
-- UI 规范数据库：`.cursor/skills/ui-ux-pro-max/SKILL.md`
+- UI 规范数据库：[ui-ux-pro-max/SKILL.md](../ui-ux-pro-max/SKILL.md)

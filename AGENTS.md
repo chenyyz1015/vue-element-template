@@ -120,21 +120,33 @@ src/
 | `.cursor/skills/`   | Cursor Skills | Cursor      |
 
 
-## UI 设计工作流（pencil-design-workflow）
+## UI 设计工作流
 
-当需求涉及 **设计、创建页面、创建组件、视觉稿、Pencil 原型** 时，自动应用 `.cursor/skills/pencil-design-workflow/SKILL.md`：
+> **ui-ux-pro-max** 出策略 · **pencil** 出视觉与代码 · **impeccable** 保质量
 
-| Phase | 动作 | 工具 |
-| ----- | ---- | ---- |
-| 1 设计规划 | Design System + Brief | `ui-ux-pro-max` |
-| 2 可视实现 | `.pen` 帧与变量 | Pencil MCP (`user-pencil`) |
-| 3 迭代同步 | Vue 代码 ↔ Pencil | `pencil-sync.md` |
+当需求涉及 **设计、创建页面/组件、视觉稿、Pencil 原型、UI audit/polish** 时，自动应用 `.cursor/skills/ai-frontend-design-workflow/SKILL.md`：
+
+| Phase | 动作 | 工具 / Skill |
+| ----- | ---- | ------------ |
+| 1 战略规划 | Design System + Brief | `ui-ux-pro-max` |
+| 2 视觉落地 | `.pen` 帧与变量 | Pencil MCP + `pencil-design-workflow` |
+| 3 代码实现 | Vue ↔ Pencil 同步 | `pencil-sync.md` + 项目 code-style |
+| 4 质量审计 | audit → polish → gate | 上游 `impeccable` v3.1 + `project-bridge.md` |
+
+Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md`（`IMPECCABLE_CONTEXT_DIR=design-system`）。ui-ux-pro-max 生成 `MASTER.md` 后优先级更高。
+
+**Gate**：Audit Health Score ≥ 14/20，无 P0/P1，`npm run build` 通过。
 
 **主要路由（统一深色 devtools 风格）：** `/` 首页 · `/demo` 演示 · `/about` 关于 · `/devtools` 重定向至 `/`
 
-复杂或多页面任务先 invoke **design-director** Agent（`.claude/agents/design-director.md`）分派角色。
+| Agent | 职责 |
+| ----- | ---- |
+| **design-director** | 多页面/复杂任务：Phase 1–4 规划与分派 |
+| **design-inspector** | Phase 4：audit、critique、polish |
 
-设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（persist 时生成）。
+设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（含 `PRODUCT.md`、`DESIGN.md`；`MASTER.md` 由 ui-ux-pro-max persist 生成）。
+
+命令：`/audit` `/polish` `/critique`（pinned）· `/impeccable <cmd>` · `.claude/commands/`
 
 
 ## 常用命令

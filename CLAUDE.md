@@ -196,6 +196,19 @@ npm run lint:fix     # 自动修复 lint 问题
 
 详细 AI 工作流见 `.claude/commands/`、`.claude/skills/`、`.claude/agents/`。
 
+### AI 前端设计
+
+> **ui-ux-pro-max** 出策略 · **pencil** 出视觉与代码 · **impeccable** 保质量
+
+| Phase | Skill / 工具 |
+| ----- | ------------ |
+| 1 战略规划 | `.cursor/skills/ui-ux-pro-max/` |
+| 2–3 视觉 + 代码 | `.cursor/skills/pencil-design-workflow/` + Pencil MCP |
+| 4 质量 | `.cursor/skills/impeccable/SKILL.md` + `project-bridge.md` · `/impeccable <cmd>` |
+
+主编排：`.cursor/skills/ai-frontend-design-workflow/SKILL.md`  
+Agents：`design-director`（规划分派）· `design-inspector`（Phase 4 监工）
+
 ## 环境变量
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
