@@ -1,4 +1,9 @@
 {
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "css.customData": [".vscode/css-custom-data.json"],
+  "scss.customData": [".vscode/css-custom-data.json"],
+  "unocss.root": "${workspaceFolder}",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

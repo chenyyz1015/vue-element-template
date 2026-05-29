@@ -84,6 +84,7 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 - 配置文件：ESModule 格式
 - Lint：ESLint + Stylelint + Commitlint
 - 路径别名：`@/` → `src/`
+- CSS 类名：BEM + SMACSS `l-*` + scoped `@apply`（见 `.claude/rules/css-naming.md`）
 
 ### 开发原则
 

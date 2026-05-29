@@ -40,7 +40,7 @@ Neutrals are slate-tinted (not pure gray/black). Avoid gray text on green tinted
 
 | Role | Stack | Notes |
 |------|-------|-------|
-| Heading | Space Grotesk (`.devtools-heading`) | Bold hierarchy, scale ≥ 1.25 between steps |
+| Heading | Space Grotesk（BEM 标题元素或遗留 `.devtools-heading`） | Bold hierarchy, scale ≥ 1.25 between steps |
 | Body | DM Sans | 45–75ch line length |
 | Mono / labels | System mono | Uppercase section labels, badges |
 
@@ -67,8 +67,8 @@ Neutrals are slate-tinted (not pure gray/black). Avoid gray text on green tinted
 ## Stack Mapping
 
 - Vue 3 + `<script setup lang="ts">`
-- UnoCSS utilities for layout/color
-- SCSS scoped for component-specific styles
+- UnoCSS：`@apply` 在 scoped SCSS 中收敛；模板用 BEM + `l-*`（见 `.claude/rules/css-naming.md`）
+- SCSS scoped：BEM 块/元素/修饰符 + 页面 `_tokens.scss`
 - Element Plus for interactive primitives
 
 ## Anti-Patterns (Project)

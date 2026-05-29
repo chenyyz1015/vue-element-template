@@ -7,33 +7,29 @@ const { t } = useI18n();
 <template>
   <section
     :id="DEVTOOLS_SECTION_IDS.integrations"
-    class="px-4 py-20 lg:px-6 lg:py-28"
+    class="integrations l-section"
   >
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-14 text-center">
-        <p
-          class="mb-3 text-sm text-[#22C55E] font-semibold tracking-wide font-mono uppercase"
-        >
+    <div class="integrations__inner l-container">
+      <header class="integrations__header l-section-header">
+        <p class="integrations__eyebrow">
           {{ t("devtools.integrations.eyebrow") }}
         </p>
-        <h2
-          class="devtools-heading mb-4 text-3xl text-[#F8FAFC] font-bold lg:text-4xl"
-        >
+        <h2 class="integrations__title">
           {{ t("devtools.integrations.title") }}
         </h2>
-        <p class="mx-auto max-w-2xl text-[#94A3B8] leading-relaxed">
+        <p class="integrations__subtitle">
           {{ t("devtools.integrations.subtitle") }}
         </p>
-      </div>
+      </header>
 
-      <div class="grid grid-cols-2 gap-4 lg:grid-cols-5 sm:grid-cols-3">
+      <div class="integrations__grid l-grid l-grid--integrations">
         <div
           v-for="item in INTEGRATION_ITEMS"
           :key="item.id"
-          class="group flex flex-col cursor-default items-center gap-3 border border-[#334155] rounded-xl bg-[#1E293B] p-5 transition-all duration-200 hover:border-[#334155] hover:bg-[#334155]/30"
+          class="integrations__item"
         >
           <div
-            class="h-12 w-12 flex-center rounded-lg text-lg font-bold transition-transform duration-200 group-hover:scale-105"
+            class="integrations__item-logo"
             :style="{
               backgroundColor: `${item.color}18`,
               color: item.color,
@@ -43,13 +39,68 @@ const { t } = useI18n();
           >
             {{ item.label.charAt(0) }}
           </div>
-          <span class="text-sm text-[#F8FAFC] font-medium">{{
-            item.label
-          }}</span>
+          <span class="integrations__item-label">{{ item.label }}</span>
         </div>
       </div>
     </div>
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../styles/mixins" as *;
+
+.integrations {
+  &__eyebrow {
+    @include dl-eyebrow;
+  }
+
+  &__title {
+    @include dl-heading-lg;
+  }
+
+  &__subtitle {
+    @include dl-subtitle;
+  }
+
+  &__grid {
+    @apply grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5;
+  }
+
+  &__item {
+    @apply flex cursor-default flex-col items-center gap-3 rounded-xl border p-5 transition-all duration-200;
+
+    border-color: $dl-border;
+    background-color: $dl-surface;
+
+    &:hover {
+      background-color: rgb(51 65 85 / 30%);
+    }
+  }
+
+  &__item-logo {
+    @apply h-12 w-12 flex-center rounded-lg text-lg font-bold transition-transform duration-200;
+
+    .integrations__item:hover & {
+      @apply scale-105;
+    }
+  }
+
+  &__item-label {
+    @apply text-sm font-medium;
+
+    color: $dl-text;
+  }
+}
+
+.l-section {
+  @include l-section;
+}
+
+.l-container {
+  @include l-container;
+}
+
+.l-section-header {
+  @include l-section-header;
+}
+</style>

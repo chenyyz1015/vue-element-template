@@ -147,6 +147,15 @@ src/
 | 页面                | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
 | 页面/布局私有子组件 | PascalCase，放 `components/` 子目录   | `TechStackTable.vue`                            |
 
+## CSS 类名
+
+- **BEM**：`block__element`、`block--modifier`（模板语义化类名）
+- **SMACSS**：跨区块结构 `l-container`、`l-section` 等
+- **OOCSS**：色板与字体变量（如 `src/views/<page>/styles/_tokens.scss`）
+- **UnoCSS**：在 `<style lang="scss" scoped>` 内通过 `@apply` 注入，避免模板堆叠长串 utility
+
+完整约定见 [`.claude/rules/css-naming.md`](.claude/rules/css-naming.md)。首页落地页示例：`src/views/devtools-landing/`。
+
 ## 主题定制
 
 Element Plus 主题变量在 `src/styles/element/var.scss` 中维护（主色 `#2563eb` 等），通过 `vite.config.ts` 的 `scss.additionalData` 全局注入；`src/styles/element/index.scss` 负责引入 Element Plus base 样式。修改后重新运行 `npm run dev` 或 `npm run build` 即可。

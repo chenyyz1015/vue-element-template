@@ -174,6 +174,7 @@ src/
 - 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
 - 路径别名：`@/` → `src/`
+- CSS 类名：BEM + SMACSS `l-*` + scoped `@apply`（见 `.claude/rules/css-naming.md`）
 - 详细规范见 `.claude/rules/code-style.md`
 
 ### Git 提交规范

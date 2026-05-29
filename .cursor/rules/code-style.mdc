@@ -23,4 +23,5 @@ alwaysApply: true
 - 路由业务模块：`src/router/modules/`（kebab-case）；RBAC 见 `usePermission()` / `v-permission`
 - 自定义指令：`src/directives/modules/`（kebab-case），`app.use(directivesPlugin)` 统一注册
 - UI 设计工作流见 `.claude/rules/ai-frontend-design.md`（Cursor：`.cursor/rules/ai-frontend-design.mdc` 摘要）
+- CSS 类名：BEM + `l-*` 布局 + scoped `@apply`（见 `.claude/rules/css-naming.md`、`.cursor/rules/css-naming.mdc`）
 - 详细规范见 `.claude/rules/code-style.md`、`.claude/rules/router.md`、`.claude/rules/directives.md`

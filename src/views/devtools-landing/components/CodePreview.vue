@@ -14,41 +14,45 @@ const tabs = computed(() =>
 </script>
 
 <template>
-  <div
-    class="overflow-hidden border border-[#334155] rounded-xl bg-[#1E293B] shadow-2xl"
-  >
-    <div
-      class="flex items-center gap-2 border-b border-[#334155] bg-[#0F172A] px-4 py-3"
-    >
-      <span class="h-3 w-3 rounded-full bg-[#FF5F57]" aria-hidden="true" />
-      <span class="h-3 w-3 rounded-full bg-[#FFBD2E]" aria-hidden="true" />
-      <span class="h-3 w-3 rounded-full bg-[#28CA42]" aria-hidden="true" />
-      <span class="ml-2 text-xs text-[#64748B] font-mono">
+  <div class="code-preview">
+    <div class="code-preview__chrome">
+      <span
+        class="code-preview__dot code-preview__dot--close"
+        aria-hidden="true"
+      />
+      <span
+        class="code-preview__dot code-preview__dot--minimize"
+        aria-hidden="true"
+      />
+      <span
+        class="code-preview__dot code-preview__dot--maximize"
+        aria-hidden="true"
+      />
+      <span class="code-preview__filename">
         {{ t(`devtools.code.filename.${activeTab}`) }}
       </span>
     </div>
 
-    <div class="flex flex-wrap gap-1 border-b border-[#334155] px-2 py-2">
+    <div class="code-preview__tabs" role="tablist">
       <button
         v-for="tab in tabs"
         :key="tab.key"
         type="button"
-        class="cursor-pointer rounded-md border-none px-3 py-1.5 text-xs font-mono transition-colors duration-200"
-        :class="
-          activeTab === tab.key
-            ? 'bg-[#334155] text-[#22C55E]'
-            : 'bg-transparent text-[#94A3B8] hover:bg-[#334155]/50 hover:text-[#F8FAFC]'
-        "
+        role="tab"
+        class="code-preview__tab"
+        :class="{
+          'code-preview__tab--active': activeTab === tab.key,
+        }"
+        :aria-selected="activeTab === tab.key"
         @click="activeTab = tab.key"
       >
         {{ tab.label }}
       </button>
     </div>
 
-    <pre
-      class="overflow-x-auto p-4 text-sm leading-relaxed font-mono"
-      aria-label="Code preview"
-    ><code v-if="activeTab === 'cli'"><span class="syn-comment"># {{ t('devtools.code.cli.comment') }}</span>
+    <pre class="code-preview__body" aria-label="Code preview"><code
+        v-if="activeTab === 'cli'"
+      ><span class="syn-comment"># {{ t('devtools.code.cli.comment') }}</span>
 <span class="syn-builtin">npm</span> <span class="syn-property">create</span> <span class="syn-string">vue-element-template</span> <span class="syn-property">my-app</span>
 <span class="syn-builtin">cd</span> <span class="syn-property">my-app</span>
 <span class="syn-builtin">npm</span> <span class="syn-property">install</span>
@@ -68,4 +72,71 @@ const tabs = computed(() =>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../styles/mixins" as *;
+
+.code-preview {
+  @apply overflow-hidden rounded-xl border shadow-2xl;
+
+  border-color: $dl-border;
+  background-color: $dl-surface;
+
+  &__chrome {
+    @apply flex items-center gap-2 border-b px-4 py-3;
+
+    border-color: $dl-border;
+    background-color: $dl-bg;
+  }
+
+  &__dot {
+    @apply h-3 w-3 rounded-full;
+
+    &--close {
+      background-color: #ff5f57;
+    }
+
+    &--minimize {
+      background-color: #ffbd2e;
+    }
+
+    &--maximize {
+      background-color: #28ca42;
+    }
+  }
+
+  &__filename {
+    @apply ml-2 text-xs font-mono;
+
+    color: $dl-text-dim;
+  }
+
+  &__tabs {
+    @apply flex flex-wrap gap-1 border-b px-2 py-2;
+
+    border-color: $dl-border;
+  }
+
+  &__tab {
+    @apply cursor-pointer rounded-md border-none px-3 py-1.5 text-xs font-mono transition-colors duration-200;
+
+    background-color: transparent;
+    color: $dl-text-muted;
+
+    &:hover {
+      @apply bg-[#334155]/50;
+
+      color: $dl-text;
+    }
+
+    &--active {
+      @apply bg-[#334155];
+
+      color: $dl-accent;
+    }
+  }
+
+  &__body {
+    @apply overflow-x-auto p-4 text-sm leading-relaxed font-mono;
+  }
+}
+</style>

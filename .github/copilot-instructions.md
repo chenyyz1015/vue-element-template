@@ -16,5 +16,5 @@
 - 布局组件、页面/布局私有子组件、同级辅助文件需手动 import
 - HTTP 请求通过 `src/api/request/` 封装，业务接口放 `src/api/modules/`，类型放 `src/api/types/模块名.d.ts`
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
-- 样式优先使用 UnoCSS 原子类
+- 样式：模板用 BEM + `l-*`；UnoCSS 在 scoped SCSS 中通过 `@apply` 注入（见 `.claude/rules/css-naming.md`）
 - 详细规范见 CLAUDE.md 和 `.claude/rules/`

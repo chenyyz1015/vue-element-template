@@ -50,7 +50,7 @@ async function fetchData() {
 - 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
 - Props 使用 `defineProps` + TypeScript 类型
 - Emits 使用 `defineEmits` + 类型声明
-- 布局类样式优先使用 UnoCSS 原子类，组件特有样式写在 `<style lang="scss" scoped>` 中
+- **类名**：模板采用 **BEM**；布局层可用 **SMACSS** `l-*`；外观 token 见 **OOCSS** 约定。原子样式在 `<style lang="scss" scoped>` 内用 `@apply` 注入，禁止在模板堆叠长串 utility。详见 `.claude/rules/css-naming.md`
 
 ### 单文件组件模板
 
@@ -407,6 +407,10 @@ export const useAppStore = defineStore(
 | Store 模块          | kebab-case 文件名，use 前缀箭头函数导出   | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 | 常量                | UPPER_SNAKE_CASE                           | `API_BASE_URL`                           |
 | 工具函数            | camelCase                                  | `formatDate`                             |
+
+## CSS 类名
+
+BEM 为主，SMACSS `l-*` 布局、OOCSS token 分肤，scoped 内 `@apply` 收敛 UnoCSS。完整约定见 `.claude/rules/css-naming.md`。
 
 ## UI 设计
 

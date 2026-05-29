@@ -12,35 +12,29 @@ const goToDemo = () => {
 </script>
 
 <template>
-  <section class="px-4 pb-20 lg:px-6 lg:pb-28">
-    <div
-      class="mx-auto max-w-4xl overflow-hidden border border-[#334155] rounded-2xl from-[#1E293B] to-[#0F172A] bg-gradient-to-br p-8 text-center lg:p-12"
-    >
-      <div
-        class="mx-auto mb-6 h-14 w-14 flex-center border border-[#22C55E]/30 rounded-xl bg-[#22C55E]/10 text-2xl text-[#22C55E]"
-      >
+  <section class="docs-cta l-section">
+    <div class="docs-cta__panel l-container-narrow">
+      <div class="docs-cta__icon-wrap" aria-hidden="true">
         <el-icon :size="28"><Document /></el-icon>
       </div>
-      <h2
-        class="devtools-heading mb-3 text-2xl text-[#F8FAFC] font-bold lg:text-3xl"
-      >
+      <h2 class="docs-cta__title">
         {{ t("devtools.docsCta.title") }}
       </h2>
-      <p class="mx-auto mb-8 max-w-lg text-[#94A3B8] leading-relaxed">
+      <p class="docs-cta__subtitle">
         {{ t("devtools.docsCta.subtitle") }}
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-4">
+      <div class="docs-cta__actions">
         <el-button
           size="large"
-          class="!h-12 !border-none !bg-[#22C55E] !px-8 !text-base !text-[#0F172A] hover:!opacity-90"
+          class="docs-cta__cta docs-cta__cta--primary"
           @click="openDocs"
         >
           {{ t("devtools.docsCta.docsButton") }}
-          <el-icon class="ml-1"><Link /></el-icon>
+          <el-icon class="docs-cta__cta-icon"><Link /></el-icon>
         </el-button>
         <el-button
           size="large"
-          class="!h-12 !border-[#334155] !bg-transparent !px-8 !text-base !text-[#F8FAFC] hover:!border-[#22C55E] hover:!text-[#22C55E]"
+          class="docs-cta__cta docs-cta__cta--ghost"
           @click="goToDemo"
         >
           {{ t("devtools.docsCta.demoButton") }}
@@ -50,4 +44,57 @@ const goToDemo = () => {
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../styles/mixins" as *;
+
+.docs-cta {
+  &__panel {
+    @apply overflow-hidden rounded-2xl border bg-gradient-to-br p-8 text-center lg:p-12;
+
+    border-color: $dl-border;
+    background-image: linear-gradient(to bottom right, $dl-surface, $dl-bg);
+  }
+
+  &__icon-wrap {
+    @apply mx-auto mb-6 h-14 w-14 flex-center rounded-xl border text-2xl;
+
+    border-color: rgb(34 197 94 / 30%);
+    background-color: rgb(34 197 94 / 10%);
+    color: $dl-accent;
+  }
+
+  &__title {
+    @include dl-heading-md;
+  }
+
+  &__subtitle {
+    @apply mx-auto mb-8 max-w-lg leading-relaxed;
+
+    color: $dl-text-muted;
+  }
+
+  &__actions {
+    @apply flex flex-wrap items-center justify-center gap-4;
+  }
+
+  &__cta-icon {
+    @apply ml-1;
+  }
+
+  &__cta--primary {
+    @include dl-btn-primary;
+  }
+
+  &__cta--ghost {
+    @include dl-btn-ghost;
+  }
+}
+
+.l-section {
+  @apply px-4 pb-20 lg:px-6 lg:pb-28;
+}
+
+.l-container-narrow {
+  @include l-container-narrow;
+}
+</style>

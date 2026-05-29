@@ -1,0 +1,18 @@
+---
+description: CSS 类名 BEM + SMACSS/OOCSS + scoped @apply 约定
+alwaysApply: false
+globs:
+  - "**/*.vue"
+  - "**/*.scss"
+---
+
+# CSS 类名命名
+
+- **BEM**：`block__element`、`block--modifier`（kebab-case 语义块）
+- **SMACSS**：跨区块结构用 `l-container`、`l-section`、`l-section-header`
+- **OOCSS**：颜色/字体走 `_tokens.scss` 或 SCSS 变量，结构与皮肤分离
+- **Atomic**：Uno 工具类写在 `<style lang="scss" scoped>` 的 `@apply` 中，模板避免长串 utility
+- **禁止**：模板硬编码色值、无 Block 的孤立 utility 堆叠
+- 页面级共享：`src/views/<page>/styles/_tokens.scss`、`_mixins.scss`
+- IDE：`@apply` 告警见 `.vscode/settings.json`（`unknownAtRules: ignore` + UnoCSS 扩展）
+- 详文：`.claude/rules/css-naming.md`
