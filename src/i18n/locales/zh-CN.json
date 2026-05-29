@@ -5,7 +5,11 @@
   "route": {
     "home": "首页",
     "about": "关于",
-    "demo": "演示"
+    "demo": "演示",
+    "login": "登录",
+    "forbidden": "无权限",
+    "notFound": "页面不存在",
+    "admin": "管理示例"
   },
   "nav": {
     "home": "首页",
@@ -276,5 +280,42 @@
       "copyright": "© {year} Vue Element Template. MIT License.",
       "docsLink": "Documentation"
     }
+  },
+  "login": {
+    "title": "登录",
+    "subtitle": "登录后访问受 RBAC 保护的路由与按钮权限示例。",
+    "username": "用户名",
+    "password": "密码",
+    "submit": "登录",
+    "mockHint": "开发环境 Mock：admin / admin123（含 admin:view）；viewer / viewer123（无管理页权限）。",
+    "validation": {
+      "usernameRequired": "请输入用户名",
+      "passwordRequired": "请输入密码"
+    },
+    "error": {
+      "invalidCredentials": "用户名或密码错误"
+    }
+  },
+  "forbidden": {
+    "title": "无权访问",
+    "description": "当前账号缺少访问此页面所需的角色或权限。",
+    "backHome": "返回首页",
+    "goBack": "返回上一页"
+  },
+  "notFound": {
+    "title": "页面不存在",
+    "description": "请检查地址是否正确，或返回首页继续浏览。",
+    "backHome": "返回首页"
+  },
+  "admin": {
+    "title": "RBAC 管理示例",
+    "subtitle": "欢迎，{name}。此页需 admin:view 权限，下方按钮演示 v-permission 指令。",
+    "permissionDemo": "按钮级权限",
+    "actions": {
+      "edit": "编辑（demo:edit）",
+      "delete": "删除（demo:delete）",
+      "batch": "批量操作（需全部权限）"
+    },
+    "logout": "退出登录"
   }
 }

@@ -9,8 +9,8 @@ argument-hint: [page-or-component-path]
 
 ## 执行步骤
 
-1. 读 `.cursor/skills/impeccable/project-bridge.md`
-2. 读 `.cursor/skills/impeccable/SKILL.md` + `reference/polish.md`
+1. 读 `.claude/skills/impeccable/project-bridge.md`
+2. 读 `.claude/skills/impeccable/SKILL.md` + `reference/polish.md`
 3. 加载上下文（同 audit）
 4. 对齐 `design-system/MASTER.md` 或 `DESIGN.md`
 5. 加载 `reference/anti-patterns-vue.md`

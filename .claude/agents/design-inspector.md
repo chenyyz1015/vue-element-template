@@ -12,12 +12,12 @@ tools: Read, Grep, Glob, Bash, Task
 
 1. [project-bridge.md](../skills/impeccable/project-bridge.md) — 项目桥接与 gate
 2. [SKILL.md](../skills/impeccable/SKILL.md) — 上游 impeccable 主 Skill
-3. `.cursor/skills/ai-frontend-design-workflow/SKILL.md` — 工作流
+3. `.claude/skills/ai-frontend-design-workflow/SKILL.md` — 工作流
 
 ## 上下文加载
 
 ```bash
-IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load-context.mjs
+IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load-context.mjs
 ```
 
 额外读取（按目标）：
@@ -34,7 +34,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 ### Step 1 — 确定性扫描
 
 ```bash
-node .cursor/skills/impeccable/scripts/detect.mjs <target-path>
+node .claude/skills/impeccable/scripts/detect.mjs <target-path>
 ```
 
 ### Step 2 — Audit
@@ -69,6 +69,6 @@ node .cursor/skills/impeccable/scripts/detect.mjs <target-path>
 
 - `MASTER.md` > `DESIGN.md` > **`THEME.md`** > brief
 - functional > cosmetic
-- 遵守 `.cursor/rules/code-style.mdc`
+- 遵守 `.claude/rules/code-style.md`
 
 Phase 4 反复不通过 → escalate 至 `design-director`。

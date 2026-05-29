@@ -55,13 +55,11 @@ npm run build:stage
 
 ### Claude Code 命令
 
-
-| 命令                   | 说明       |
-| -------------------- | -------- |
-| `/project:review`    | 代码审查     |
+| 命令                 | 说明       |
+| -------------------- | ---------- |
+| `/project:review`    | 代码审查   |
 | `/project:fix-issue` | 修复 Issue |
-| `/project:deploy`    | 部署流程     |
-
+| `/project:deploy`    | 部署流程   |
 
 ## 项目结构
 
@@ -101,7 +99,12 @@ src/
 ├── layouts/
 │   └── devtools-layout/           # 深色营销布局（手动引入）
 │       └── index.vue
-├── router/
+├── router/                        # 主路由、守卫、modules/ 业务路由
+│   ├── index.ts
+│   ├── guard.ts
+│   ├── routes.ts
+│   └── modules/                   # 业务路由模块（kebab-case）
+├── directives/                    # 全局指令（v-permission）
 ├── api/                           # HTTP 请求
 │   ├── constants.ts
 │   ├── index.ts
@@ -110,8 +113,7 @@ src/
 │   └── types/                     # 接口类型（模块名.d.ts）
 ├── stores/                        # Pinia
 │   ├── persisted-state.ts         # 持久化插件配置 + Pinia key 生成
-│   └── modules/                   # Store 模块（auto-import，kebab-case）
-│       └── app.ts
+│   └── modules/                   # Store 模块（app、user、permission 等）
 ├── styles/
 │   ├── index.scss                 # 全局样式入口
 │   └── element/
@@ -121,6 +123,7 @@ src/
 ├── utils/
 │   ├── auth.ts                    # Token 读写封装
 │   ├── locale.ts                  # 语言偏好读写封装
+│   ├── permission.ts              # RBAC 匹配工具
 │   ├── dayjs.ts                   # dayjs 预配置
 │   └── storage.ts                 # 底层 localStorage / sessionStorage 封装
 └── views/
@@ -135,14 +138,12 @@ src/
 
 ## 组件命名规范
 
-
-| 类型         | 规范                                  | 示例                                              |
-| ---------- | ----------------------------------- | ----------------------------------------------- |
-| 非业务公共组件    | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
-| 业务公共组件     | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
-| 页面         | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
-| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录      | `TechStackTable.vue`                            |
-
+| 类型                | 规范                                  | 示例                                            |
+| ------------------- | ------------------------------------- | ----------------------------------------------- |
+| 非业务公共组件      | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
+| 业务公共组件        | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
+| 页面                | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
+| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录   | `TechStackTable.vue`                            |
 
 ## 主题定制
 
@@ -171,6 +172,15 @@ const { t } = useI18n();
 
 新增语言：在 `src/i18n/locales/` 添加语言文件，并更新 `src/i18n/constants.ts` 与 `src/i18n/types.ts` 中的 `Locale` 类型。
 
+## 路由与 RBAC
+
+- **目录**：`src/router/` 存放主路由与守卫；业务路由在 `src/router/modules/`（kebab-case）
+- **constantRoutes**：登录/403/404 与公开页面；**asyncRoutes**：登录后按 `roles` / `permissions` 动态注册
+- **Store**：`useUserStore`、`usePermissionStore`
+- **按钮级**：`usePermission()`、`v-permission="'perm:code'"`
+- 开发环境 Mock 账号：`admin/admin123`、`viewer/viewer123`；受保护示例页 `/admin`
+- 详细约定：`.claude/rules/router.md`
+
 ## Pinia 持久化
 
 基于 [pinia-plugin-persistedstate](https://github.com/prazdevs/pinia-plugin-persistedstate)：
@@ -185,26 +195,26 @@ const { t } = useI18n();
 
 底层封装：`src/utils/storage.ts`，导出 `storage.local` / `storage.session`。**禁止**在业务代码、composables、Store 模块中直接 import；仅允许在 `src/utils/` 业务封装文件及 `src/stores/persisted-state.ts` 中使用。
 
-| 约定 | 说明 |
-| ---- | ---- |
+| 约定     | 说明                                                                                      |
+| -------- | ----------------------------------------------------------------------------------------- |
 | 逻辑 key | **UPPER_SNAKE_CASE**（如 `ACCESS_TOKEN`、`LOCALE`、`PINIA_APP`），不符合时 `console.warn` |
-| 物理 key | 前缀 `VUE_ELEMENT_TEMPLATE_` + 逻辑 key（如 `VUE_ELEMENT_TEMPLATE_LOCALE`） |
-| 序列化 | `set<T>` 自动 `JSON.stringify`，`get<T>` 自动 `JSON.parse` |
-| 实例 | `storage.local` → `localStorage`，`storage.session` → `sessionStorage` |
+| 物理 key | 前缀 `VUE_ELEMENT_TEMPLATE_` + 逻辑 key（如 `VUE_ELEMENT_TEMPLATE_LOCALE`）               |
+| 序列化   | `set<T>` 自动 `JSON.stringify`，`get<T>` 自动 `JSON.parse`                                |
+| 实例     | `storage.local` → `localStorage`，`storage.session` → `sessionStorage`                    |
 
-| 方法 | 说明 |
-| ---- | ---- |
-| `get<T>(key, defaultValue?)` | 读取并反序列化为 `T` |
-| `set<T>(key, value)` | 写入 `T` 并 JSON 序列化 |
-| `remove(key)` | 删除指定 key |
-| `clear()` | 清除所有带前缀的 key |
-| `toStorageLike()` | 供 Pinia 持久化插件使用的适配器 |
+| 方法                         | 说明                            |
+| ---------------------------- | ------------------------------- |
+| `get<T>(key, defaultValue?)` | 读取并反序列化为 `T`            |
+| `set<T>(key, value)`         | 写入 `T` 并 JSON 序列化         |
+| `remove(key)`                | 删除指定 key                    |
+| `clear()`                    | 清除所有带前缀的 key            |
+| `toStorageLike()`            | 供 Pinia 持久化插件使用的适配器 |
 
-| 封装文件 | 导出 | 职责 |
-| -------- | ---- | ---- |
-| `utils/auth.ts` | `getToken` / `setToken` / `removeToken` | Token（`ACCESS_TOKEN`） |
-| `utils/locale.ts` | `getLocale` / `setLocale` / `removeLocale` | 语言偏好（`LOCALE`） |
-| `stores/persisted-state.ts` | `getPiniaPersistKey` / `persistedState` | Pinia 持久化插件与 key 生成 |
+| 封装文件                    | 导出                                       | 职责                        |
+| --------------------------- | ------------------------------------------ | --------------------------- |
+| `utils/auth.ts`             | `getToken` / `setToken` / `removeToken`    | Token（`ACCESS_TOKEN`）     |
+| `utils/locale.ts`           | `getLocale` / `setLocale` / `removeLocale` | 语言偏好（`LOCALE`）        |
+| `stores/persisted-state.ts` | `getPiniaPersistKey` / `persistedState`    | Pinia 持久化插件与 key 生成 |
 
 ```typescript
 import { setToken } from "@/utils/auth";
@@ -244,12 +254,11 @@ setLocale("zh-CN");
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-
-| 变量                   | 说明                                      | 默认值                                                                 | 适用范围              |
-| -------------------- | --------------------------------------- | ------------------------------------------------------------------- | ------------------- |
-| `VITE_APP_TITLE`     | 应用标题                                    | `Vue Element Template`                                              | 全部 env 文件           |
-| `VITE_API_BASE_URL`  | API 基础地址                                | `/api`                                                              | 全部 env 文件           |
-| `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                | `60_000`                                                            | 全部 env 文件           |
+| 变量                 | 说明                                                    | 默认值                                                                                    | 适用范围              |
+| -------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
+| `VITE_APP_TITLE`     | 应用标题                                                | `Vue Element Template`                                                                    | 全部 env 文件         |
+| `VITE_API_BASE_URL`  | API 基础地址                                            | `/api`                                                                                    | 全部 env 文件         |
+| `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                        | `60_000`                                                                                  | 全部 env 文件         |
 | `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
 
 开发环境 `vite.config.ts` 通过 `vite/helpers/parse.ts` 解析 `VITE_API_PROXY_MAP` 配置 dev server 代理（仅 `npm run dev` 生效）；stage / production 部署时需自行配置反向代理。部署流程见 `.claude/skills/deploy/SKILL.md`。

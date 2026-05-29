@@ -1,4 +1,5 @@
 export * from "./constants";
+export * from "./modules/auth";
 export * from "./modules/user";
 export {
   del,

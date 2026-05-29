@@ -225,6 +225,23 @@ const { t } = useI18n();
 </template>
 ```
 
+### 路由与 RBAC
+
+- 根目录 `src/router/`：主路由、守卫、常量路由；业务模块放 `router/modules/`（kebab-case）
+- 路由级权限：`meta.requiresAuth`、`meta.roles`、`meta.permissions`（详见 `.claude/rules/router.md`）
+- 按钮级权限：`usePermission()`、`v-permission` 指令
+- 禁止在业务代码中绕过守卫直接 `addRoute`；动态路由由 `usePermissionStore.generateRoutes` 统一生成
+
+```vue
+<script setup lang="ts">
+const { hasPermission } = usePermission();
+</script>
+
+<template>
+  <el-button v-permission="'demo:edit'">编辑</el-button>
+</template>
+```
+
 ### Composables（`src/composables/`）
 
 - 文件名：**camelCase**，以 `use` 开头，如 `useLocale.ts`、`useCounter.ts`

@@ -8,7 +8,7 @@ description: "Pencil 视觉执行 Skill（Phase 2–3）：.pen 画布落地与 
 **Phase 2–3 执行 Skill**：Pencil 可视稿 → Vue 代码 → 双向同步。
 
 > 完整工作流（含 Phase 1 战略 + Phase 4 质量）见 **`.cursor/skills/ai-frontend-design-workflow/SKILL.md`**。
-> 复杂任务先 invoke **design-director** Agent（`.claude/agents/design-director.md`）。
+> 复杂任务先 invoke **design-director** Agent（`.cursor/agents/design-director.md`）。
 
 ## Prerequisites
 

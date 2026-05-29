@@ -154,7 +154,7 @@ node .cursor/skills/impeccable/scripts/detect.mjs src/views/<page>/
 
 ## Escalation — 设计总监
 
-以下情况 **invoke design-director Agent**（`.claude/agents/design-director.md`）：
+以下情况 **invoke design-director Agent**（`.cursor/agents/design-director.md`）：
 
 - 多页面 / 设计系统级任务
 - 需并行：规范 + 视觉 + 代码 + 审计
@@ -184,5 +184,5 @@ design-system/
 | 双向同步 | `.cursor/skills/pencil-design-workflow/pencil-sync.md` |
 | 质量监工 | `.cursor/skills/impeccable/SKILL.md` + `project-bridge.md` |
 | 23 命令快捷 | `/audit` `/polish` `/critique`（pinned）· `/impeccable <cmd>` |
-| 设计总监 | `.claude/agents/design-director.md` |
-| 设计监工 Agent | `.claude/agents/design-inspector.md` |
+| 设计总监 | `.cursor/agents/design-director.md` |
+| 设计监工 Agent | `.cursor/agents/design-inspector.md` |

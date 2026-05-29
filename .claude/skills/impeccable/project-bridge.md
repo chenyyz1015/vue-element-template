@@ -11,7 +11,7 @@ Impeccable 上下文位于 `design-system/`，**不要**在根目录另建 PRODU
 每次 impeccable 命令开始前执行：
 
 ```bash
-IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load-context.mjs
+IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load-context.mjs
 ```
 
 映射关系：
@@ -28,7 +28,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 
 ## Phase 4（质量审计）
 
-完整流程见 `.cursor/skills/ai-frontend-design-workflow/SKILL.md`。
+完整流程见 `.claude/skills/ai-frontend-design-workflow/SKILL.md`。
 
 | Gate | 标准 |
 |------|------|
@@ -52,7 +52,7 @@ UI 相关 audit / polish **必须**加载 `design-system/THEME.md`：
 优先使用项目内脚本（无需 npx）：
 
 ```bash
-node .cursor/skills/impeccable/scripts/detect.mjs src/views/<target>/
+node .claude/skills/impeccable/scripts/detect.mjs src/views/<target>/
 ```
 
 等价：`npx impeccable detect src/views/<target>/`
@@ -65,7 +65,7 @@ node .cursor/skills/impeccable/scripts/detect.mjs src/views/<target>/
 
 已 pin 的命令：`/audit`、`/polish`、`/critique` → 等价 `/impeccable audit` 等。
 
-Claude Code 另有：`.claude/commands/audit.md`、`polish.md`、`critique.md`
+斜杠命令：`.claude/commands/`（Claude Code）· `.cursor/commands/`（Cursor，内容同步）
 
 ## Agent 分工
 
@@ -83,6 +83,6 @@ Phase 1 生成 `design-system/MASTER.md` 后：
 
 ## 禁止
 
-- 覆盖 `.cursor/skills/` 下其他 Skill（ui-ux-pro-max、pencil-design-workflow 等）
+- 覆盖 `.claude/skills/` 下其他 Skill（ui-ux-pro-max、pencil-design-workflow 等）
 - 直接 Read/Grep `.pen` 文件
 - 跳过 Phase 4 gate（除非用户明确豁免）

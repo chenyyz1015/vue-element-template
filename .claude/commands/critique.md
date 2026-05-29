@@ -9,8 +9,8 @@ argument-hint: [page-or-component-path]
 
 ## 执行步骤
 
-1. 读 `.cursor/skills/impeccable/project-bridge.md`
-2. 读 `.cursor/skills/impeccable/SKILL.md` + `reference/critique.md`
+1. 读 `.claude/skills/impeccable/project-bridge.md`
+2. 读 `.claude/skills/impeccable/SKILL.md` + `reference/critique.md`
 3. 加载上下文（同 audit）
 4. 浏览器走完整用户路径
 5. 输出 UX 评分与 P0/P1

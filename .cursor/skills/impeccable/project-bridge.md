@@ -65,7 +65,7 @@ node .cursor/skills/impeccable/scripts/detect.mjs src/views/<target>/
 
 已 pin 的命令：`/audit`、`/polish`、`/critique` → 等价 `/impeccable audit` 等。
 
-Claude Code 另有：`.claude/commands/audit.md`、`polish.md`、`critique.md`
+斜杠命令：`.claude/commands/`（Claude Code）· `.cursor/commands/`（Cursor，内容同步）
 
 ## Agent 分工
 

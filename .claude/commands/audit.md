@@ -9,14 +9,14 @@ argument-hint: [page-or-component-path]
 
 ## 执行步骤
 
-1. 读 `.cursor/skills/impeccable/project-bridge.md`
-2. 读 `.cursor/skills/impeccable/SKILL.md` + `reference/audit.md`
+1. 读 `.claude/skills/impeccable/project-bridge.md`
+2. 读 `.claude/skills/impeccable/SKILL.md` + `reference/audit.md`
 3. 加载上下文：
    ```bash
-   IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load-context.mjs
+   IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load-context.mjs
    ```
 4. 读 `design-system/MASTER.md`（若有）+ 相关 brief
-5. 扫描：`node .cursor/skills/impeccable/scripts/detect.mjs <target>`
+5. 扫描：`node .claude/skills/impeccable/scripts/detect.mjs <target>`
 6. 加载 `reference/anti-patterns-vue.md`
 7. 浏览器实检，按 audit.md 输出报告
 

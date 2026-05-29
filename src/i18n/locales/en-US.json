@@ -5,7 +5,11 @@
   "route": {
     "home": "Home",
     "about": "About",
-    "demo": "Demo"
+    "demo": "Demo",
+    "login": "Login",
+    "forbidden": "Forbidden",
+    "notFound": "Not Found",
+    "admin": "Admin Demo"
   },
   "nav": {
     "home": "Home",
@@ -276,5 +280,42 @@
       "copyright": "© {year} Vue Element Template. MIT License.",
       "docsLink": "Documentation"
     }
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Sign in to access RBAC-protected routes and button permission demos.",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "mockHint": "Dev mock accounts: admin / admin123 (includes admin:view); viewer / viewer123 (no admin page).",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "passwordRequired": "Password is required"
+    },
+    "error": {
+      "invalidCredentials": "Invalid username or password"
+    }
+  },
+  "forbidden": {
+    "title": "Access denied",
+    "description": "Your account does not have the required roles or permissions for this page.",
+    "backHome": "Back to home",
+    "goBack": "Go back"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Check the URL or return to the home page.",
+    "backHome": "Back to home"
+  },
+  "admin": {
+    "title": "RBAC admin demo",
+    "subtitle": "Welcome, {name}. This page requires admin:view. Buttons below demo v-permission.",
+    "permissionDemo": "Button-level permissions",
+    "actions": {
+      "edit": "Edit (demo:edit)",
+      "delete": "Delete (demo:delete)",
+      "batch": "Batch action (requires all)"
+    },
+    "logout": "Sign out"
   }
 }

@@ -20,4 +20,5 @@ alwaysApply: true
 - 浏览器缓存统一使用 `@/utils/auth`、`@/utils/locale`；key 为 UPPER_SNAKE_CASE；Pinia 持久化见 `stores/persisted-state.ts`；禁止直接 import `@/utils/storage` 或使用 localStorage / sessionStorage / useLocalStorage
 - 布局组件、私有子组件、辅助文件允许手动 import
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
-- 详细规范见 `.claude/rules/code-style.md`
+- 路由业务模块：`src/router/modules/`（kebab-case）；RBAC 见 `usePermission()` / `v-permission`
+- 详细规范见 `.cursor/rules/code-style.mdc`、`.cursor/rules/router.mdc`

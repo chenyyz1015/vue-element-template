@@ -86,7 +86,7 @@ Also read `design-system/PROJECT.md`（displayName）and `design-system/THEME.md
 
 **With page-specific override:**
 ```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "dashboard"
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "dashboard"
 ```
 
 This also creates:

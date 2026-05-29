@@ -20,3 +20,18 @@ export const setToken = (token: string) => {
 export const removeToken = () => {
   storage.local.remove(TOKEN_KEY);
 };
+
+/** 获取刷新 Token */
+export const getRefreshToken = (): string | null => {
+  return storage.local.get<string>(REFRESH_TOKEN_KEY);
+};
+
+/** 设置刷新 Token */
+export const setRefreshToken = (token: string) => {
+  storage.local.set<string>(REFRESH_TOKEN_KEY, token);
+};
+
+/** 清除刷新 Token */
+export const removeRefreshToken = () => {
+  storage.local.remove(REFRESH_TOKEN_KEY);
+};

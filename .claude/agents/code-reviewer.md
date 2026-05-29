@@ -11,7 +11,7 @@ tools: Read, Grep, Glob, Bash
 ## 职责
 
 - 审查代码变更的质量、可读性和可维护性
-- 检查是否遵循项目规范（见 `.claude/rules/`）
+- 检查是否遵循项目规范（见 `.claude/rules/`，含 `router.md` RBAC）
 - 识别潜在 Bug、性能问题和安全隐患
 - 提供具体、可操作的改进建议
 

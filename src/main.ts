@@ -1,5 +1,6 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import SvgIcon from "~virtual/svg-component";
+import { vPermission } from "@/directives/permission";
 import { initThemePrimaryColor } from "@/utils/theme-color";
 import { initThemeMode } from "@/utils/theme-mode";
 import App from "./App.vue";
@@ -21,6 +22,7 @@ const bootstrap = () => {
   app.use(pinia);
   app.use(i18n);
   app.use(router);
+  app.directive("permission", vPermission);
   app.component(SvgIcon.name ?? "SvgIcon", SvgIcon);
 
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

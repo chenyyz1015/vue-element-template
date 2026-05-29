@@ -27,7 +27,7 @@ Two files, case-insensitive. The loader looks at the project root by default and
 Load both in one call:
 
 ```bash
-node .cursor/skills/impeccable/scripts/load-context.mjs
+node .claude/skills/impeccable/scripts/load-context.mjs
 ```
 
 Consume the full JSON output. Never pipe through `head`, `tail`, `grep`, or `jq`. The output's `contextDir` field tells you where the files were resolved from.
@@ -159,7 +159,7 @@ If the first word is `craft`, setup still runs first, but [reference/craft.md](r
 **Pin** creates a standalone shortcut so `/<command>` invokes `/impeccable <command>` directly. **Unpin** removes it. The script writes to every harness directory present in the project.
 
 ```bash
-node .cursor/skills/impeccable/scripts/pin.mjs <pin|unpin> <command>
+node .claude/skills/impeccable/scripts/pin.mjs <pin|unpin> <command>
 ```
 
 Valid `<command>` is any command from the table above. Report the script's result concisely. Confirm the new shortcut on success, relay stderr verbatim on error.
@@ -173,7 +173,7 @@ Valid `<command>` is any command from the table above. Report the script's resul
 Context loader override (required for this repo):
 
 ```bash
-IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load-context.mjs
+IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load-context.mjs
 ```
 
 Do **not** expect root-level `PRODUCT.md` / `DESIGN.md`. Use `design-system/` instead. When `design-system/MASTER.md` exists (ui-ux-pro-max), it overrides `DESIGN.md` for token decisions.
@@ -183,7 +183,7 @@ Phase 4 gate (ai-frontend-design-workflow): Audit Health Score ≥ **14/20**, no
 Detect script (prefer local over npx):
 
 ```bash
-node .cursor/skills/impeccable/scripts/detect.mjs <path>
+node .claude/skills/impeccable/scripts/detect.mjs <path>
 ```
 
 Also load [reference/anti-patterns-vue.md](reference/anti-patterns-vue.md) during audit/polish.

@@ -8,7 +8,7 @@ tools: Read, Grep, Glob, Bash, Task
 
 你是设计总监，负责 **规划 → 分派 → 验收**，不替代执行者完成全部实现。
 
-工作流规范见 `.cursor/skills/ai-frontend-design-workflow/SKILL.md`。
+工作流规范见 `.claude/skills/ai-frontend-design-workflow/SKILL.md`。
 
 ## 核心职责
 
@@ -56,7 +56,7 @@ tools: Read, Grep, Glob, Bash, Task
 **执行者**：规范设计师
 
 ```
-1. python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "…" --design-system --persist …
+1. python3 .claude/skills/ui-ux-pro-max/scripts/search.py "…" --design-system --persist …
 2. 填写 design/briefs/YYYY-MM-DD-<slug>.md
 ```
 
@@ -87,13 +87,13 @@ batch_get → Vue 实现 → npm run build → screenshot 对比
 **执行者**：设计监工（design-inspector Agent）
 
 ```
-IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load-context.mjs
+IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load-context.mjs
 /impeccable audit [target] → 处理 P0/P1 → /impeccable polish [target] → 复验
 ```
 
-可选扫描：`node .cursor/skills/impeccable/scripts/detect.mjs <path>`
+可选扫描：`node .claude/skills/impeccable/scripts/detect.mjs <path>`
 
-见 `.cursor/skills/impeccable/project-bridge.md`。
+见 `.claude/skills/impeccable/project-bridge.md`。
 
 **Gate**：≥ 14/20，无 P0/P1，**light/dark + 主色抽检**（`THEME.md`）→ `[x] Phase 4` → **交付**
 
@@ -139,11 +139,11 @@ Phase 1 与读取已有 MASTER 可并行；Phase 2→3→4 通常串行。
 - **先规范后像素**：无 Brief 不开 Pencil
 - **先实现后审计**：Phase 3 build 通过再 Phase 4
 - **不跳过 Phase 4 gate**（除非用户明确豁免）
-- **项目规范优先**：`.cursor/rules/code-style.mdc`
+- **项目规范优先**：`.claude/rules/code-style.md`
 
 ## 参考
 
-- 主编排：`.cursor/skills/ai-frontend-design-workflow/SKILL.md`
-- Pencil：`.cursor/skills/pencil-design-workflow/SKILL.md`
-- 质量：`.cursor/skills/impeccable/SKILL.md`
+- 主编排：`.claude/skills/ai-frontend-design-workflow/SKILL.md`
+- Pencil：`.claude/skills/pencil-design-workflow/SKILL.md`
+- 质量：`.claude/skills/impeccable/SKILL.md`
 - 监工 Agent：`.claude/agents/design-inspector.md`
