@@ -25,11 +25,9 @@ const setDocumentTitle = (titleKey?: string) => {
 const isWhiteListed = (path: string) =>
   ROUTE_WHITE_LIST.some((item) => path === item || path.startsWith(`${item}/`));
 
-/** 注册路由守卫：标题、登录态、动态路由、RBAC */
+/** 注册路由守卫：登录态、动态路由、RBAC；标题在 afterEach 更新 */
 export const setupRouterGuard = (router: Router) => {
   router.beforeEach(async (to, _from, next) => {
-    setDocumentTitle(to.meta.titleKey);
-
     const token = getToken();
     const userStore = useUserStore();
     const permissionStore = usePermissionStore();
@@ -113,5 +111,9 @@ export const setupRouterGuard = (router: Router) => {
     }
 
     next();
+  });
+
+  router.afterEach((to) => {
+    setDocumentTitle(to.meta.titleKey);
   });
 };

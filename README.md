@@ -158,7 +158,7 @@ Element Plus 主题变量在 `src/styles/element/var.scss` 中维护（主色 `#
 - 语言包：`src/i18n/locales/`（默认 `zh-CN`、`en-US`）
 - 实例配置：`src/i18n/index.ts`，在 `main.ts` 中 `app.use(i18n)`
 - 语言切换：`useLocale()` composable（通过 `src/utils/locale.ts` 持久化，同步 Element Plus locale）
-- 路由标题：路由 `meta.titleKey` 对应语言包 key，由 `router` 守卫与 `App.vue` 监听 locale 更新 `document.title`
+- 路由标题：路由 `meta.titleKey` 对应语言包 key，由 `router.afterEach` 与 `App.vue` 监听 locale 更新 `document.title`
 
 模板与脚本中使用 `useI18n()` 的 `t()`（已 auto-import）：
 

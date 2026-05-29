@@ -14,6 +14,7 @@ import "virtual:uno.css";
 const bootstrap = () => {
   initThemeMode();
   initThemePrimaryColor();
+
   const app = createApp(App);
 
   const pinia = createPinia();
