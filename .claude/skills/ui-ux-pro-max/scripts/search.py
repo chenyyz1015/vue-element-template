@@ -85,16 +85,26 @@ if __name__ == "__main__":
         
         # Print persistence confirmation
         if args.persist:
-            project_slug = args.project_name.lower().replace(' ', '-') if args.project_name else "default"
+            from pathlib import Path
+            from design_system import _has_runtime_theme_guide
+
+            base = "design-system"
+            has_theme = _has_runtime_theme_guide(Path.cwd())
             print("\n" + "=" * 60)
-            print(f"✅ Design system persisted to design-system/{project_slug}/")
-            print(f"   📄 design-system/{project_slug}/MASTER.md (Global Source of Truth)")
+            print(f"✅ Design system persisted to {base}/")
+            print(f"   📄 {base}/MASTER.md (Global Source of Truth)")
+            print(f"   📄 {base}/PROJECT.md (displayName for -p; update when renaming project)")
+            if has_theme:
+                print("   📄 design-system/THEME.md (Runtime theme — useThemeColor / useThemeMode)")
             if args.page:
                 page_filename = args.page.lower().replace(' ', '-')
-                print(f"   📄 design-system/{project_slug}/pages/{page_filename}.md (Page Overrides)")
+                print(f"   📄 {base}/pages/{page_filename}.md (Page Overrides)")
             print("")
-            print(f"📖 Usage: When building a page, check design-system/{project_slug}/pages/[page].md first.")
-            print(f"   If exists, its rules override MASTER.md. Otherwise, use MASTER.md.")
+            print("📖 Usage: When building a page, check design-system/pages/[page].md first.")
+            print("   If exists, its rules override MASTER.md. Otherwise, use MASTER.md.")
+            print("   -p: use displayName from design-system/PROJECT.md (or VITE_APP_TITLE).")
+            if has_theme:
+                print("   Pencil keys: color-primary-ep (L2), color-accent-devtools (L1).")
             print("=" * 60)
     # Stack search
     elif args.stack:

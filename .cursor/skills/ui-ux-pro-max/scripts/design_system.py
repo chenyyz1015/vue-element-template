@@ -18,11 +18,98 @@ import json
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
+
 from core import search, DATA_DIR
 
 
 # ============ CONFIGURATION ============
 REASONING_FILE = "ui-reasoning.csv"
+
+def _has_runtime_theme_guide(base_dir: Path) -> bool:
+    """Template repos ship design-system/THEME.md for runtime theme workflow."""
+    return (base_dir / "design-system" / "THEME.md").is_file()
+
+
+def resolve_design_system_dir(base_dir: Path, _project_name: str) -> tuple[Path, Path]:
+    """Return (design_system_dir, pages_dir). Template uses flat design-system/."""
+    design_system_dir = base_dir / "design-system"
+    return design_system_dir, design_system_dir / "pages"
+
+
+def _enrich_design_system_for_runtime_theme(
+    design_system: dict, base_dir: Optional[Path] = None
+) -> dict:
+    """Inject L1/L2 theme tokens for persist output and MASTER.md."""
+    enriched = {**design_system, "colors": {**design_system.get("colors", {})}}
+    colors = enriched["colors"]
+    root = base_dir or Path.cwd()
+    use_template_theme = _has_runtime_theme_guide(root)
+    enriched["_template_theme"] = use_template_theme
+
+    if use_template_theme:
+        colors.setdefault("accent_devtools", "#22C55E")
+        colors.setdefault("accent_devtools_hover", "#4ADE80")
+        colors.setdefault("primary_ep", "#2563eb")
+        colors.setdefault("background_dark", "#0F172A")
+        colors.setdefault("surface", "#1E293B")
+        colors.setdefault("border", "#334155")
+        colors.setdefault("text_muted", "#94A3B8")
+    else:
+        colors.setdefault("accent_devtools", colors.get("cta", "#22C55E"))
+        colors.setdefault("primary_ep", colors.get("primary", "#2563EB"))
+
+    colors.setdefault("background_light", "#F8FAFC")
+    enriched.setdefault("theme_mode_default", "dark" if use_template_theme else "light")
+    enriched.setdefault("theme_acceptance_modes", ["light", "dark"])
+    return enriched
+
+
+def _append_runtime_theme_section(lines: list, design_system: dict) -> None:
+    """Append Runtime Theme tokens block to MASTER.md (Pencil + Vue sync)."""
+    colors = design_system.get("colors", {})
+    use_template_theme = design_system.get("_template_theme", False)
+
+    accent = colors.get("accent_devtools", "#22C55E")
+    primary_ep = colors.get("primary_ep", colors.get("primary", "#2563EB"))
+    bg_dark = colors.get("background_dark", colors.get("background", "#0F172A"))
+    bg_light = colors.get("background_light", "#F8FAFC")
+    mode_default = design_system.get("theme_mode_default", "dark" if use_template_theme else "light")
+    modes = design_system.get("theme_acceptance_modes", ["light", "dark"])
+
+    lines.append("### Runtime Theme Tokens (Pencil & Vue)")
+    lines.append("")
+    if use_template_theme:
+        lines.append(
+            "> **本项目模板（含 THEME.md）：** L1 devtools accent 为静态品牌色；L2 EP 主色可由用户切换。 "
+            "详见 `design-system/THEME.md`、`design-system/PROJECT.md`（项目展示名）。"
+        )
+        lines.append("")
+    lines.append("| Token key | Layer | Hex / value | Maps to |")
+    lines.append("|-----------|-------|-------------|---------|")
+    lines.append(f"| `color-accent-devtools` | L1 brand | `{accent}` | UnoCSS / nav / landing accent |")
+    lines.append(
+        f"| `color-primary-ep` | L2 EP | `{primary_ep}` | `--el-color-primary` / `useThemeColor()` |"
+    )
+    lines.append(f"| `color-bg` | L1 surface | `{bg_dark}` | Devtools page background (dark) |")
+    lines.append(f"| `color-bg-light` | — | `{bg_light}` | Light mode page background ref |")
+    lines.append(f"| `theme-mode-default` | — | `{mode_default}` | Default Pencil / QA screenshot mode |")
+    lines.append(f"| `theme-acceptance` | — | `{', '.join(modes)}` | Required browser QA modes |")
+    lines.append("")
+    lines.append("**Pencil `set_variables` (required for UI work):**")
+    lines.append("")
+    lines.append("```json")
+    lines.append("{")
+    lines.append(f'  "color-accent-devtools": {{ "type": "color", "value": "{accent}" }},')
+    lines.append(f'  "color-primary-ep": {{ "type": "color", "value": "{primary_ep}" }},')
+    lines.append(f'  "color-bg": {{ "type": "color", "value": "{bg_dark}" }},')
+    lines.append(f'  "color-bg-light": {{ "type": "color", "value": "{bg_light}" }}')
+    lines.append("}")
+    lines.append("```")
+    lines.append("")
+    if use_template_theme:
+        lines.append("**Do not** map `color-primary-ep` to devtools green `#22C55E`; keep L1/L2 separate.")
+        lines.append("")
 
 SEARCH_CONFIG = {
     "product": {"max_results": 1},
@@ -503,12 +590,9 @@ def persist_design_system(design_system: dict, page: str = None, output_dir: str
     """
     base_dir = Path(output_dir) if output_dir else Path.cwd()
     
-    # Use project name for project-specific folder
     project_name = design_system.get("project_name", "default")
-    project_slug = project_name.lower().replace(' ', '-')
-    
-    design_system_dir = base_dir / "design-system" / project_slug
-    pages_dir = design_system_dir / "pages"
+    design_system = _enrich_design_system_for_runtime_theme(design_system, base_dir)
+    design_system_dir, pages_dir = resolve_design_system_dir(base_dir, project_name)
     
     created_files = []
     
@@ -519,7 +603,7 @@ def persist_design_system(design_system: dict, page: str = None, output_dir: str
     master_file = design_system_dir / "MASTER.md"
     
     # Generate and write MASTER.md
-    master_content = format_master_md(design_system)
+    master_content = format_master_md(design_system, base_dir)
     with open(master_file, 'w', encoding='utf-8') as f:
         f.write(master_content)
     created_files.append(str(master_file))
@@ -539,8 +623,11 @@ def persist_design_system(design_system: dict, page: str = None, output_dir: str
     }
 
 
-def format_master_md(design_system: dict) -> str:
+def format_master_md(design_system: dict, base_dir: Optional[Path] = None) -> str:
     """Format design system as MASTER.md with hierarchical override logic."""
+    design_system = _enrich_design_system_for_runtime_theme(
+        design_system, base_dir or Path.cwd()
+    )
     project = design_system.get("project_name", "PROJECT")
     pattern = design_system.get("pattern", {})
     style = design_system.get("style", {})
@@ -576,18 +663,32 @@ def format_master_md(design_system: dict) -> str:
     # Color Palette
     lines.append("### Color Palette")
     lines.append("")
-    lines.append("| Role | Hex | CSS Variable |")
-    lines.append("|------|-----|--------------|")
-    lines.append(f"| Primary | `{colors.get('primary', '#2563EB')}` | `--color-primary` |")
+    lines.append("| Role | Hex | CSS Variable / Pencil key |")
+    lines.append("|------|-----|---------------------------|")
+    lines.append(
+        f"| EP Primary (L2) | `{colors.get('primary_ep', colors.get('primary', '#2563EB'))}` | "
+        "`color-primary-ep` → `--el-color-primary` |"
+    )
+    lines.append(
+        f"| Devtools Accent (L1) | `{colors.get('accent_devtools', '#22C55E')}` | "
+        "`color-accent-devtools` |"
+    )
     lines.append(f"| Secondary | `{colors.get('secondary', '#3B82F6')}` | `--color-secondary` |")
-    lines.append(f"| CTA/Accent | `{colors.get('cta', '#F97316')}` | `--color-cta` |")
-    lines.append(f"| Background | `{colors.get('background', '#F8FAFC')}` | `--color-background` |")
-    lines.append(f"| Text | `{colors.get('text', '#1E293B')}` | `--color-text` |")
+    lines.append(f"| CTA (search) | `{colors.get('cta', '#F97316')}` | `--color-cta` |")
+    lines.append(
+        f"| Background (dark) | `{colors.get('background_dark', colors.get('background', '#0F172A'))}` | "
+        "`color-bg` |"
+    )
+    lines.append(f"| Background (light) | `{colors.get('background_light', '#F8FAFC')}` | `color-bg-light` |")
+    lines.append(f"| Text | `{colors.get('text', '#F8FAFC')}` | `--color-text` |")
+    lines.append(f"| Text muted | `{colors.get('text_muted', '#94A3B8')}` | — |")
     lines.append("")
     if colors.get("notes"):
         lines.append(f"**Color Notes:** {colors.get('notes', '')}")
         lines.append("")
-    
+
+    _append_runtime_theme_section(lines, design_system)
+
     # Typography
     lines.append("### Typography")
     lines.append("")
@@ -797,6 +898,10 @@ def format_master_md(design_system: dict) -> str:
     lines.append("- [ ] Responsive: 375px, 768px, 1024px, 1440px")
     lines.append("- [ ] No content hidden behind fixed navbars")
     lines.append("- [ ] No horizontal scroll on mobile")
+    lines.append("- [ ] Pencil variables include `color-primary-ep` and `color-accent-devtools`")
+    lines.append("- [ ] UI verified in **light + dark** with ThemeControls (≥2 EP primary presets)")
+    if design_system.get("_template_theme"):
+        lines.append("- [ ] `design-system/THEME.md` rules followed (no duplicate theme storage)")
     lines.append("")
     
     return "\n".join(lines)
@@ -804,7 +909,9 @@ def format_master_md(design_system: dict) -> str:
 
 def format_page_override_md(design_system: dict, page_name: str, page_query: str = None) -> str:
     """Format a page-specific override file with intelligent AI-generated content."""
+    design_system = _enrich_design_system_for_runtime_theme(design_system, Path.cwd())
     project = design_system.get("project_name", "PROJECT")
+    colors = design_system.get("colors", {})
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     page_title = page_name.replace("-", " ").replace("_", " ").title()
     
@@ -865,12 +972,33 @@ def format_page_override_md(design_system: dict, page_name: str, page_query: str
     # Color Overrides
     lines.append("### Color Overrides")
     lines.append("")
-    colors = page_overrides.get("colors", {})
-    if colors:
-        for key, value in colors.items():
+    page_colors = page_overrides.get("colors", {})
+    if page_colors:
+        for key, value in page_colors.items():
             lines.append(f"- **{key}:** {value}")
     else:
         lines.append("- No overrides — use Master colors")
+    lines.append("")
+
+    # Runtime theme overrides (inherit MASTER tokens unless noted)
+    lines.append("### Runtime Theme Overrides")
+    lines.append("")
+    lines.append("| Pencil key | Override | Notes |")
+    lines.append("|------------|----------|-------|")
+    lines.append(
+        f"| `color-primary-ep` | `{colors.get('primary_ep', colors.get('primary', '#2563EB'))}` | "
+        "L2 — Element Plus primary |"
+    )
+    lines.append(
+        f"| `color-accent-devtools` | `{colors.get('accent_devtools', '#22C55E')}` | "
+        "L1 — static devtools accent |"
+    )
+    lines.append(
+        f"| `theme-mode-default` | `{design_system.get('theme_mode_default', 'dark')}` | "
+        "Screenshot / QA default |"
+    )
+    lines.append("")
+    lines.append("> Compare browser screenshots in **both** `theme-acceptance` modes from MASTER.")
     lines.append("")
     
     # Component Overrides

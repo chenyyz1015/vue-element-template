@@ -20,12 +20,12 @@ alwaysApply: false
 
 ## 工作流
 
-1. **Phase 1**：`ui-ux-pro-max` → `design-system/` + `design/briefs/`
-2. **Phase 2**：Pencil MCP → `design/pages/*.pen`
-3. **Phase 3**：Vue 实现 + `pencil-sync.md` + `npm run build`
-4. **Phase 4**：`/audit` → `/polish` → gate（≥14/20，无 P0/P1）
+1. **Phase 1**：`ui-ux-pro-max` → `design-system/` + `design/briefs/` + **`THEME.md` 对齐（L1/L2、light/dark）**
+2. **Phase 2**：Pencil MCP → `design/pages/*.pen`（`color-primary-ep`、`color-accent-devtools`）
+3. **Phase 3**：Vue + `useThemeColor` / `useThemeMode` + `pencil-sync.md` + `npm run build`
+4. **Phase 4**：`/audit` → `/polish` → gate（含双模式 + 主色抽检）
 
-完整流程：`.cursor/skills/ai-frontend-design-workflow/SKILL.md`
+完整流程：`.cursor/skills/ai-frontend-design-workflow/SKILL.md` · 运行时主题：`design-system/THEME.md`
 
 ## 触发规则
 
@@ -43,9 +43,15 @@ alwaysApply: false
 
 上下文：`IMPECCABLE_CONTEXT_DIR=design-system` · 桥接说明见 `project-bridge.md`
 
+## 项目标识
+
+- `design-system/PROJECT.md` — **displayName**（`ui-ux-pro-max -p`、定制后必更新）
+- 勿在指令中写死固定项目名；回退：`VITE_APP_TITLE` 或 `package.json` → `name`
+
 ## 设计产物
 
-- `design-system/MASTER.md` — 唯一真相源
+- `design-system/MASTER.md` — 战略 Design System
+- `design-system/THEME.md` — 运行时主题（EP 主色 + 明暗 + 各 Phase 同步）
 - `design/briefs/` — 页面简报
 - `design/pages/` — Pencil 稿（仅 MCP 访问）
 

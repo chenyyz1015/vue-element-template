@@ -67,7 +67,7 @@ python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<product> <keywords>" --
 持久化（推荐，跨会话复用）：
 
 ```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "Vue Element Template" --page "<page-name>"
+python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "<page-name>"
 ```
 
 产出路径：`design-system/MASTER.md`、`design-system/pages/<page>.md`。
@@ -88,7 +88,7 @@ python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system
 design/briefs/YYYY-MM-DD-<slug>.md
 ```
 
-**Phase 1 完成标准**：颜色/字体/间距/组件清单/页面区块结构已明确，且与 ui-ux-pro-max 输出一致。
+**Phase 1 完成标准**：颜色/字体/间距/组件清单/页面区块结构已明确，且与 ui-ux-pro-max 输出一致；**L1/L2 与 light/dark** 已写入 Brief（见 `design-system/THEME.md`）。
 
 ---
 
@@ -113,7 +113,7 @@ design/
 
 1. `get_editor_state({ include_schema: true })` — 首次必须带 schema
 2. `get_guidelines()` — 列出可用 guide/style；按任务加载（如 landing-page、design-system）
-3. `set_variables` — 将 Phase 1 色板/字体写入 Pencil 变量（见 [pencil-sync.md](pencil-sync.md)）
+3. `set_variables` — 将 Phase 1 色板/字体写入 Pencil 变量，含 `color-primary-ep` 与 `color-accent-devtools`（见 [pencil-sync.md](pencil-sync.md)、`design-system/THEME.md`）
 4. `batch_design` — 创建 frame、组件、布局
 5. `snapshot_layout` — 检查重叠/裁剪
 6. `get_screenshot` — 视觉验收

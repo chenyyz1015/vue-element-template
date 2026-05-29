@@ -142,7 +142,12 @@
       "compare": "Compare",
       "integrations": "Integrations",
       "docs": "Docs",
-      "cta": "Run Demo"
+      "cta": "Run Demo",
+      "themeColor": "Theme color",
+      "themeColorPresets": "Presets",
+      "themeColorCustom": "Custom",
+      "themeModeLight": "Switch to light mode",
+      "themeModeDark": "Switch to dark mode"
     },
     "hero": {
       "badge": "v1.0 · developer-first",

@@ -1,26 +1,40 @@
-# Vue Element Template — Design System
+# Design System — Visual Context
 
-> Impeccable visual context. When `MASTER.md` exists (ui-ux-pro-max `--persist`), treat it as the source of truth and sync this file via `/impeccable document` or manual update.
+> 项目标识见 [`PROJECT.md`](./PROJECT.md)。二次定制后请同步色板与字体约定。
+
+> Impeccable visual context. When `MASTER.md` exists (ui-ux-pro-max `--persist` 或仓库模板), treat it as the source of truth and sync this file via `/impeccable document` or manual update.  
+> `MASTER.md` 含 `color-primary-ep` / `color-accent-devtools` 等运行时 token；详见 [`THEME.md`](./THEME.md)。
 
 ## Theme
 
-- **Mode**: Dark (devtools)
+- **Mode**: Dark (devtools 默认可视稿)；运行时支持 **light / dark** 切换 → 见 [`THEME.md`](./THEME.md)
 - **Register**: product
 - **Scene**: Developer reviewing template docs and demo pages on a desktop monitor in a dim IDE-adjacent environment
 
-## Color Palette
+### 静态 vs 运行时（UI 工作流必读）
+
+| 层级 | 文档 | 说明 |
+|------|------|------|
+| L1 品牌面 | 本文件色板 | 导航/落地页等 **固定** slate + 绿色 `#22C55E` |
+| L2 EP 主色 | [`THEME.md`](./THEME.md) | `useThemeColor()`，默认 `#2563eb`，用户可换预设/自定义 |
+
+设计新 UI 时：Element Plus 交互用 L2；装饰性 devtools 绿用 L1。Phase 1–4 同步规则见 `THEME.md`。
+
+## Color Palette（L1 — Devtools 品牌面）
 
 | Role | Hex | Usage |
 |------|-----|-------|
 | Background | `#0F172A` | Page bg |
 | Surface | `#1E293B` | Cards, sections |
 | Border | `#334155` | Dividers, card borders |
-| Primary / CTA | `#22C55E` | Links, accents, primary actions |
-| Primary hover | `#4ADE80` | Link/button hover |
+| Accent / CTA | `#22C55E` | Devtools 链接、装饰强调（非 EP `type="primary"`） |
+| Accent hover | `#4ADE80` | Link/button hover |
 | Text | `#F8FAFC` | Headings |
 | Text muted | `#94A3B8` | Body, secondary |
 
 Neutrals are slate-tinted (not pure gray/black). Avoid gray text on green tinted backgrounds; use green shades or opacity.
+
+**L2 默认主色**（Element Plus）：`#2563eb` — 运行时由 `ThemeControls` / `useThemeColor()` 覆盖，见 `THEME.md`。
 
 ## Typography
 

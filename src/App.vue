@@ -3,7 +3,7 @@ const route = useRoute();
 const { elementLocale, locale, t } = useLocale();
 
 watch(locale, () => {
-  const titleKey = route.meta.titleKey as string | undefined;
+  const titleKey = route.meta.titleKey;
   const appTitle = t("app.title");
 
   document.title = titleKey ? `${t(titleKey)} | ${appTitle}` : appTitle;
@@ -11,7 +11,12 @@ watch(locale, () => {
 </script>
 
 <template>
-  <el-config-provider :locale="elementLocale" :message="{ plain: true }">
+  <el-config-provider
+    :locale="elementLocale"
+    :message="{ plain: true }"
+    :dialog="{ alignCenter: true, draggable: true, overflow: false }"
+    :table="{ showOverflowTooltip: true }"
+  >
     <router-view />
   </el-config-provider>
 </template>

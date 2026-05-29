@@ -1,4 +1,6 @@
-# Vue Element Template — Impeccable Project Bridge
+# Impeccable Project Bridge
+
+> 项目展示名见 `design-system/PROJECT.md`（二次定制时更新 displayName）。
 
 本文件是**项目专用桥接层**，上游 Impeccable 更新时保留此文件即可。
 
@@ -22,7 +24,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 | 页面 override | `design-system/pages/<page>.md` |
 | 页面简报 | `design/briefs/*.md` |
 
-**读取顺序**：`MASTER.md` > `pages/*.md` > `DESIGN.md` > brief
+**读取顺序**：`PROJECT.md`（displayName）> `MASTER.md` > `pages/*.md` > `DESIGN.md` > **`THEME.md`** > brief
 
 ## Phase 4（质量审计）
 
@@ -34,6 +36,16 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 | 阻塞项 | 无未修复 **P0 / P1** |
 | 构建 | `npm run build` + `npm run lint` 通过 |
 | 视觉 | Pencil screenshot ↔ 浏览器一致（若有 `.pen`） |
+| 运行时主题 | light + dark 各验收；`ThemeControls` 切换 ≥2 种 EP 主色；见 `THEME.md` |
+
+## 运行时主题（Theming 维度）
+
+UI 相关 audit / polish **必须**加载 `design-system/THEME.md`：
+
+1. `useThemeColor` / `useThemeMode` 为唯一换肤入口，禁止页面自建 storage
+2. Element Plus 交互组件不硬编码 `#409EFF` / `#2563eb`；优先 `var(--el-color-primary)`
+3. Devtools L1 绿 `#22C55E` 与 L2 EP 主色混用 → **P2**（Project Convention）
+4. 对比 Pencil 时注明 **同一** `THEME_MODE` + 主色
 
 ## 确定性扫描
 

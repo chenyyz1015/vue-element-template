@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Locale } from "@/i18n/types";
 import { DEVTOOLS_SECTION_IDS } from "@/views/devtools-landing/constants";
+import ThemeControls from "./ThemeControls.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -114,6 +115,7 @@ watch(
       </nav>
 
       <div class="flex items-center gap-2">
+        <ThemeControls />
         <el-select
           v-model="locale"
           class="devtools-select !w-100px"

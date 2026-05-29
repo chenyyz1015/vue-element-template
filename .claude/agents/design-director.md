@@ -36,6 +36,8 @@ tools: Read, Grep, Glob, Bash, Task
 - 交付物：page | component | section | design-system
 - 是否必须 Pencil 稿（默认：是，除非用户只要代码）
 - 是否复用 `design-system/MASTER.md`
+- 项目展示名：`design-system/PROJECT.md` → displayName（`ui-ux-pro-max -p`）
+- 运行时主题：是否对齐 `design-system/THEME.md`（L1 品牌 vs L2 EP 主色、light/dark 验收）
 - 是否跳过 Phase 4（默认：否）
 
 输出 **Task Brief**（≤15 行）：
@@ -58,7 +60,7 @@ tools: Read, Grep, Glob, Bash, Task
 2. 填写 design/briefs/YYYY-MM-DD-<slug>.md
 ```
 
-**Gate** → `[x] Phase 1`
+**Gate** → `[x] Phase 1`（Brief 含 L1/L2 + 明暗验收，见 `THEME.md`）
 
 ### Step 2 — Phase 2（Pencil）
 
@@ -93,7 +95,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 
 见 `.cursor/skills/impeccable/project-bridge.md`。
 
-**Gate**：≥ 14/20，无 P0/P1 → `[x] Phase 4` → **交付**
+**Gate**：≥ 14/20，无 P0/P1，**light/dark + 主色抽检**（`THEME.md`）→ `[x] Phase 4` → **交付**
 
 不通过 → 路由回 Phase 2 或 3，修复后重跑 Phase 4。
 
@@ -133,7 +135,7 @@ Phase 1 与读取已有 MASTER 可并行；Phase 2→3→4 通常串行。
 
 ## 原则
 
-- **Design System 是唯一真相源**
+- **Design System 是唯一真相源**（`MASTER.md` + `THEME.md` 运行时层）
 - **先规范后像素**：无 Brief 不开 Pencil
 - **先实现后审计**：Phase 3 build 通过再 Phase 4
 - **不跳过 Phase 4 gate**（除非用户明确豁免）

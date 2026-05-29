@@ -142,7 +142,12 @@
       "compare": "对比",
       "integrations": "集成",
       "docs": "文档",
-      "cta": "运行 Demo"
+      "cta": "运行 Demo",
+      "themeColor": "主题色",
+      "themeColorPresets": "预设色板",
+      "themeColorCustom": "自定义",
+      "themeModeLight": "切换为浅色模式",
+      "themeModeDark": "切换为深色模式"
     },
     "hero": {
       "badge": "v1.0 · 开发者优先",

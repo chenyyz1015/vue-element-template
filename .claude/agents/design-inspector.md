@@ -22,7 +22,9 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 
 额外读取（按目标）：
 
+- `design-system/PROJECT.md`（displayName，勿假设固定项目名）
 - `design-system/MASTER.md`（存在则优先于 DESIGN.md）
+- `design-system/THEME.md`（UI 任务必载：EP 主色 + 明暗 + Phase 4 抽检）
 - `design-system/pages/<page>.md`
 - `design/briefs/` 相关 brief
 - [anti-patterns-vue.md](../skills/impeccable/reference/anti-patterns-vue.md)
@@ -52,6 +54,7 @@ node .cursor/skills/impeccable/scripts/detect.mjs <target-path>
 - Audit Health Score ≥ **14/20**
 - 无 P0/P1
 - build + lint 通过
+- **Theming**：`THEME.md` — light/dark 各验；`ThemeControls` 切换 ≥2 种 EP 主色
 
 ## 输出格式
 
@@ -64,7 +67,7 @@ node .cursor/skills/impeccable/scripts/detect.mjs <target-path>
 
 ## 原则
 
-- `MASTER.md` > `DESIGN.md` > brief
+- `MASTER.md` > `DESIGN.md` > **`THEME.md`** > brief
 - functional > cosmetic
 - 遵守 `.cursor/rules/code-style.mdc`
 

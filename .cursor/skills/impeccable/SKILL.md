@@ -166,7 +166,7 @@ Valid `<command>` is any command from the table above. Report the script's resul
 
 ---
 
-## Project Integration — Vue Element Template
+## Project Integration — 本仓库模板
 
 **Before Setup step 1**, read [project-bridge.md](project-bridge.md).
 

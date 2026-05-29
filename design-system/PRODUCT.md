@@ -1,4 +1,6 @@
-# Vue Element Template — Product Context
+# Product Context
+
+> 项目展示名与包名见 [`PROJECT.md`](./PROJECT.md)。二次定制后请同步更新本文件中的用户/品牌描述。
 
 ## Register
 
@@ -25,16 +27,19 @@ product
 ## Strategic Design Principles
 
 1. **Consistency with existing routes** (`/`, `/demo`, `/about`): same layout shell, typography, and color rhythm
-2. **Design System hierarchy**: `design-system/MASTER.md` (ui-ux-pro-max) > `design-system/pages/*.md` > this file
-3. **i18n-first**: no hardcoded UI copy; use `meta.titleKey` for routes
-4. **Accessibility**: WCAG AA minimum; visible focus; `prefers-reduced-motion`
-5. **Phase 4 gate**: impeccable audit ≥ 14/20 before UI delivery
+2. **Design System hierarchy**: `design-system/MASTER.md` (ui-ux-pro-max) > `design-system/pages/*.md` > `DESIGN.md` > **`THEME.md`（运行时）**
+3. **Runtime theme sync**: UI 变更须与 `useThemeColor` / `useThemeMode` 及 `ThemeControls` 一致；见 `THEME.md` 各 Phase 清单
+4. **i18n-first**: no hardcoded UI copy; use `meta.titleKey` for routes
+5. **Accessibility**: WCAG AA minimum in **both** light and dark; visible focus; `prefers-reduced-motion`
+6. **Phase 4 gate**: impeccable audit ≥ 14/20 before UI delivery; Theming 含双模式 + 主色抽检
 
 ## Related Artifacts
 
 | File | Role |
 |------|------|
+| `design-system/PROJECT.md` | displayName / packageName（二次定制时先改） |
 | `design-system/DESIGN.md` | Visual tokens (Impeccable DESIGN context) |
+| `design-system/THEME.md` | Runtime theme: EP 主色阶、明暗模式、Composable、工作流同步 |
 | `design-system/MASTER.md` | ui-ux-pro-max generated system (when present, overrides DESIGN) |
 | `design/briefs/` | Per-page design briefs |
 | `design/pages/*.pen` | Pencil visual specs (MCP only) |

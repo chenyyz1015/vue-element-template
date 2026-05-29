@@ -360,7 +360,7 @@ export const useAppStore = defineStore(
   "app",
   () => {
     const loading = ref(false);
-    const title = ref("Vue Element Template");
+    const title = ref(import.meta.env.VITE_APP_TITLE);
 
     const setTitle = (value: string) => {
       title.value = value;

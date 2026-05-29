@@ -5,6 +5,7 @@ const UPPER_SNAKE_CASE_KEY = /^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$/;
 export interface StorageLike {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
+  removeItem: (key: string) => void;
 }
 
 const warnStorageKey = (key: string) => {
@@ -70,6 +71,9 @@ class Storage {
       getItem: (key: string) => this.driver.getItem(this.resolveKey(key)),
       setItem: (key: string, value: string) => {
         this.driver.setItem(this.resolveKey(key), value);
+      },
+      removeItem: (key: string) => {
+        this.driver.removeItem(this.resolveKey(key));
       },
     };
   }

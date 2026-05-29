@@ -6,6 +6,14 @@
 
 Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plugin-persistedstate、Element Plus、vue-i18n、Axios、UnoCSS、VueUse、dayjs、lodash-es、unplugin-svg-component。
 
+## 项目标识（二次定制）
+
+克隆或改名后，**先更新** `design-system/PROJECT.md`（`displayName`、`packageName`），并同步 `package.json`、`VITE_APP_TITLE`、i18n `app.title`。
+
+- AI / ui-ux-pro-max：`--persist -p "<displayName>"`（与 `PROJECT.md` 一致）
+- 浏览器缓存前缀：见 `PROJECT.md` → `storageKeyPrefix`（默认 `VUE_ELEMENT_TEMPLATE_`，可在 `src/utils/storage.ts` 修改）
+- **勿在 Skill / Agent 文档中写死某一固定项目名**；以 `PROJECT.md` 或环境变量为准
+
 ## 核心约定
 
 ### 自动引入（重要）
@@ -133,7 +141,7 @@ src/
 | 3 代码实现 | Vue ↔ Pencil 同步 | `pencil-sync.md` + 项目 code-style |
 | 4 质量审计 | audit → polish → gate | 上游 `impeccable` v3.1 + `project-bridge.md` |
 
-Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md`（`IMPECCABLE_CONTEXT_DIR=design-system`）。ui-ux-pro-max 生成 `MASTER.md` 后优先级更高。
+Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md` + **`THEME.md`**（`IMPECCABLE_CONTEXT_DIR=design-system`）。ui-ux-pro-max 生成 `MASTER.md` 后优先级更高。UI 变更须与 `useThemeColor` / `useThemeMode` 同步，见 `THEME.md`。
 
 **Gate**：Audit Health Score ≥ 14/20，无 P0/P1，`npm run build` 通过。
 
@@ -144,7 +152,7 @@ Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md`（`IMPECCABLE_CO
 | **design-director** | 多页面/复杂任务：Phase 1–4 规划与分派 |
 | **design-inspector** | Phase 4：audit、critique、polish |
 
-设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（含 `PRODUCT.md`、`DESIGN.md`；`MASTER.md` 由 ui-ux-pro-max persist 生成）。
+设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（含 **`PROJECT.md`**、`PRODUCT.md`、`DESIGN.md`、**`THEME.md`**；`MASTER.md` 由 ui-ux-pro-max persist 生成）。导航 `ThemeControls` 可验证主色/明暗。
 
 命令：`/audit` `/polish` `/critique`（pinned）· `/impeccable <cmd>` · `.claude/commands/`
 

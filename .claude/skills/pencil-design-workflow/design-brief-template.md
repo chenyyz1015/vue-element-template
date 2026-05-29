@@ -16,14 +16,18 @@
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| Primary | `#______` | CTA secondary, links |
-| Secondary | `#______` | Accents |
-| CTA | `#______` | Primary buttons |
-| Background | `#______` | Page bg |
+| Accent (L1 devtools) | `#______` | 导航/落地页装饰绿，默认 `#22C55E` |
+| EP Primary (L2) | `#______` | Element Plus 主色，默认 `#2563eb`，`useThemeColor` |
+| Secondary / Surface | `#______` | 卡片、区块 |
+| Background (dark) | `#______` | 默认 `#0F172A` |
+| Background (light) | `#______` | 浅色模式页背景（若适用） |
 | Text | `#______` | Headings |
 | Text muted | `#______` | Body |
 | Font heading | ______ | H1–H3 |
 | Font body | ______ | Paragraphs |
+
+**Theme acceptance**: light ☐ / dark ☐（默认 dark devtools 壳）  
+**Runtime**: 见 `design-system/THEME.md`
 
 **Style**: [from ui-ux-pro-max, e.g. Minimalism & Swiss]  
 **Anti-patterns to avoid**: …

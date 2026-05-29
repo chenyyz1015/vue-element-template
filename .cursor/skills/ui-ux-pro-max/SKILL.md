@@ -72,18 +72,31 @@ This creates:
 - `design-system/MASTER.md` — Global Source of Truth with all design rules
 - `design-system/pages/` — Folder for page-specific overrides
 
+**本模板仓库**：`--persist` 写入扁平目录 `design-system/`（单仓库单项目）。`-p "<displayName>"` 使用 **`design-system/PROJECT.md`** 中的 **displayName**（或与 `VITE_APP_TITLE` 一致）。`MASTER.md` 包括：
+
+| Pencil key | Layer | Purpose |
+|------------|-------|---------|
+| `color-primary-ep` | L2 | Element Plus `--el-color-primary` / `useThemeColor()` |
+| `color-accent-devtools` | L1 | Static devtools green `#22C55E` |
+| `color-bg` / `color-bg-light` | — | Dark / light page backgrounds |
+| `theme-mode-default` | — | Default QA mode (`dark`) |
+| `theme-acceptance` | — | Required modes (`light`, `dark`) |
+
+Also read `design-system/PROJECT.md`（displayName）and `design-system/THEME.md` for runtime Composable rules (UI workflow Phase 1–4).
+
 **With page-specific override:**
 ```bash
-python3 skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "Project Name" --page "dashboard"
+python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "dashboard"
 ```
 
 This also creates:
-- `design-system/pages/dashboard.md` — Page-specific deviations from Master
+- `design-system/pages/dashboard.md` — Page-specific deviations + Runtime Theme Overrides table
 
 **How hierarchical retrieval works:**
 1. When building a specific page (e.g., "Checkout"), first check `design-system/pages/checkout.md`
 2. If the page file exists, its rules **override** the Master file
 3. If not, use `design-system/MASTER.md` exclusively
+4. For UI tasks, always load `design-system/THEME.md` alongside MASTER
 
 ### Step 3: Supplement with Detailed Searches (as needed)
 

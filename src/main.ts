@@ -1,14 +1,18 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import SvgIcon from "~virtual/svg-component";
+import { initThemePrimaryColor } from "@/utils/theme-color";
+import { initThemeMode } from "@/utils/theme-mode";
 import App from "./App.vue";
 import { i18n } from "./i18n";
+
 import router from "./router";
 import { persistedState } from "./stores/persisted-state";
-
 import "@/styles/index.scss";
 import "virtual:uno.css";
 
 const bootstrap = () => {
+  initThemeMode();
+  initThemePrimaryColor();
   const app = createApp(App);
 
   const pinia = createPinia();

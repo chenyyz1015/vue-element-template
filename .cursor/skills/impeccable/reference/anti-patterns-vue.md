@@ -1,4 +1,4 @@
-# Vue Element Template — 专项反模式
+# 专项反模式（Vue 3 模板）
 
 Impeccable 通用反模式之外，本项目 Phase 4 额外检查：
 
@@ -18,5 +18,8 @@ Impeccable 通用反模式之外，本项目 Phase 4 额外检查：
 | 12 | 公共组件非 com-* / biz-* 前缀 | 遵循命名规范 |
 | 13 | 新页面未使用 devtools-layout | 与 `/`、`/demo`、`/about` 一致 |
 | 14 | UnoCSS 色值与 DESIGN.md / MASTER.md 漂移 | 对齐 token |
+| 15 | 页面自建明暗/主色 storage 或重复换肤逻辑 | 使用 `useThemeMode` / `useThemeColor` |
+| 16 | Element Plus 主色写死 hex | `var(--el-color-primary)` 或 EP 组件默认 |
+| 17 | UI 交付未验 light+dark 或未读 `THEME.md` | Phase 4 双模式 + 主色抽检 |
 
 审计报告中 Vue 专项项 Category 标注为 **Project Convention**。
