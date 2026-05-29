@@ -110,7 +110,9 @@ src/
 ├── i18n/                    # 国际化（locales、createI18n）
 ├── layouts/                 # 布局（kebab-case + index.vue，手动引入）
 ├── router/                  # 主路由、守卫、modules/ 业务路由（kebab-case）
-├── directives/              # 全局指令（v-permission）
+├── directives/              # 自定义指令（modules/ + index.ts → app.use）
+│   ├── index.ts             # directivesPlugin 统一注册
+│   └── modules/             # kebab-case，按业务功能划分（如 permission.ts）
 ├── api/                     # HTTP 请求（request + modules + types）
 ├── stores/                  # Pinia
 │   ├── persisted-state.ts   # 持久化插件 + Pinia key 生成

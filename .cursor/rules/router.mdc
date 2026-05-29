@@ -18,4 +18,4 @@ alwaysApply: false
 - 路由级：`meta.requiresAuth` / `meta.roles` / `meta.permissions`
 - 按钮级：`usePermission()` · `v-permission="'code'"` · `v-permission.all="['a','b']"`
 - 禁止业务代码绕过 `usePermissionStore.generateRoutes` 直接 `addRoute`
-- 详细规范见 `.cursor/rules/router.mdc`
+- 详细规范见 `.claude/rules/router.md`

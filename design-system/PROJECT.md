@@ -25,6 +25,7 @@
 将 `<displayName>` 替换为上表 **displayName**：
 
 ```bash
+# Cursor: .cursor/skills/ · Claude Code: .claude/skills/
 python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<query>" \
   --design-system --persist -p "<displayName>" --page "<page-name>"
 ```

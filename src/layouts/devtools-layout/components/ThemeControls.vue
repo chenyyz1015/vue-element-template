@@ -12,82 +12,67 @@ const onColorChange = (value: string | null) => {
 
 <template>
   <div class="theme-controls flex items-center gap-1">
-    <el-tooltip :content="t('devtools.nav.themeColor')" placement="bottom">
-      <el-popover
-        placement="bottom-end"
-        :width="232"
-        trigger="click"
-        popper-class="devtools-theme-popover"
-      >
-        <template #reference>
-          <button
-            type="button"
-            class="theme-controls__btn"
-            :aria-label="t('devtools.nav.themeColor')"
-          >
-            <el-icon :size="16"><Brush /></el-icon>
-            <span
-              class="theme-controls__swatch"
-              :style="{ backgroundColor: primaryColor }"
-            />
-          </button>
-        </template>
-        <p class="theme-controls__label">
-          {{ t("devtools.nav.themeColorPresets") }}
-        </p>
-        <div class="theme-controls__presets" role="list">
-          <button
-            v-for="preset in presetColors"
-            :key="preset.name"
-            type="button"
-            role="listitem"
-            class="theme-controls__preset"
-            :class="{
-              'theme-controls__preset--active': preset.value === primaryColor,
-            }"
-            :style="{ backgroundColor: preset.value }"
-            :aria-label="preset.name"
-            :title="preset.name"
-            @click="setPrimaryColor(preset.value)"
+    <el-popover placement="bottom-end" :width="232" trigger="click">
+      <template #reference>
+        <button
+          type="button"
+          class="theme-controls__btn"
+          :title="t('devtools.nav.themeColor')"
+          :aria-label="t('devtools.nav.themeColor')"
+        >
+          <el-icon :size="16"><Brush /></el-icon>
+          <span
+            class="theme-controls__swatch"
+            :style="{ backgroundColor: primaryColor }"
           />
-        </div>
-        <div class="theme-controls__picker-row">
-          <span class="theme-controls__label">{{
-            t("devtools.nav.themeColorCustom")
-          }}</span>
-          <el-color-picker
-            :model-value="primaryColor"
-            size="small"
-            @change="onColorChange"
-          />
-        </div>
-      </el-popover>
-    </el-tooltip>
+        </button>
+      </template>
+      <p class="theme-controls__label">
+        {{ t("devtools.nav.themeColorPresets") }}
+      </p>
+      <div class="theme-controls__presets" role="list">
+        <button
+          v-for="preset in presetColors"
+          :key="preset.name"
+          type="button"
+          role="listitem"
+          class="theme-controls__preset"
+          :class="{
+            'theme-controls__preset--active': preset.value === primaryColor,
+          }"
+          :style="{ backgroundColor: preset.value }"
+          :aria-label="preset.name"
+          :title="preset.name"
+          @click="setPrimaryColor(preset.value)"
+        />
+      </div>
+      <div class="theme-controls__picker-row">
+        <span class="theme-controls__label">{{
+          t("devtools.nav.themeColorCustom")
+        }}</span>
+        <el-color-picker
+          :model-value="primaryColor"
+          size="small"
+          @change="onColorChange"
+        />
+      </div>
+    </el-popover>
 
-    <el-tooltip
-      :content="
+    <button
+      type="button"
+      class="theme-controls__btn"
+      :aria-label="
         isDark
-          ? t('devtools.nav.themeModeDark')
-          : t('devtools.nav.themeModeLight')
+          ? t('devtools.nav.themeModeLight')
+          : t('devtools.nav.themeModeDark')
       "
-      placement="bottom"
+      @click="setMode(isDark ? 'light' : 'dark')"
     >
-      <button
-        type="button"
-        class="theme-controls__btn"
-        :aria-label="
-          isDark
-            ? t('devtools.nav.themeModeDark')
-            : t('devtools.nav.themeModeLight')
-        "
-        @click="setMode(isDark ? 'light' : 'dark')"
-      >
-        <el-icon :size="16">
-          <Sunny v-if="isDark" />
-          <Moon v-else />
-        </el-icon>
-      </button>
-    </el-tooltip>
+      <el-icon :size="16">
+        <Sunny v-if="isDark" />
+        <Moon v-else />
+      </el-icon>
+    </button>
   </div>
 </template>
 
@@ -122,7 +107,7 @@ const onColorChange = (value: string | null) => {
 .theme-controls__label {
   margin: 0 0 8px;
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--el-text-color-secondary);
 }
 
 .theme-controls__presets {
@@ -158,24 +143,11 @@ const onColorChange = (value: string | null) => {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  border-top: 1px solid #334155;
+  border-top: 1px solid var(--el-border-color-light);
   padding-top: 12px;
 
   .theme-controls__label {
     margin: 0;
-  }
-}
-</style>
-
-<style lang="scss">
-.devtools-theme-popover.el-popover.el-popper {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  box-shadow: 0 10px 25px rgb(15 23 42 / 50%);
-
-  .el-popper__arrow::before {
-    background-color: #1e293b;
-    border-color: #334155;
   }
 }
 </style>

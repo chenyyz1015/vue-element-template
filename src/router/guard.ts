@@ -1,8 +1,19 @@
 import type { Router } from "vue-router";
 import { i18n } from "@/i18n";
 import { getToken } from "@/utils/auth";
-import { FORBIDDEN_PATH, LOGIN_PATH, ROUTE_WHITE_LIST } from "./constants";
-import { canAccessRoute } from "./helpers";
+import { canAccessByMeta } from "@/utils/permission";
+import {
+  FORBIDDEN_PATH,
+  LOGIN_PATH,
+  NOT_FOUND_PATH,
+  ROUTE_WHITE_LIST,
+} from "./constants";
+import {
+  addFallbackRoute,
+  canAccessRoute,
+  findAsyncRouteByPath,
+  isPublicAppPath,
+} from "./helpers";
 
 const setDocumentTitle = (titleKey?: string) => {
   const appTitle = i18n.global.t("app.title");
@@ -37,6 +48,7 @@ export const setupRouterGuard = (router: Router) => {
             userStore.permissions
           );
           accessRoutes.forEach((route) => router.addRoute(route));
+          addFallbackRoute(router);
           next({ ...to, replace: true });
           return;
         } catch {
@@ -47,6 +59,25 @@ export const setupRouterGuard = (router: Router) => {
           });
           return;
         }
+      }
+
+      if (to.matched.length === 0) {
+        const asyncRoute = findAsyncRouteByPath(to.path);
+
+        if (
+          asyncRoute &&
+          !canAccessByMeta(
+            asyncRoute.meta,
+            userStore.roles,
+            userStore.permissions
+          )
+        ) {
+          next({ path: FORBIDDEN_PATH });
+          return;
+        }
+
+        next({ path: NOT_FOUND_PATH });
+        return;
       }
 
       if (
@@ -61,11 +92,23 @@ export const setupRouterGuard = (router: Router) => {
       return;
     }
 
-    if (to.meta.requiresAuth && !isWhiteListed(to.path)) {
+    if (isWhiteListed(to.path) || isPublicAppPath(to.path)) {
+      next();
+      return;
+    }
+
+    const asyncRoute = findAsyncRouteByPath(to.path);
+
+    if (asyncRoute?.meta?.requiresAuth) {
       next({
         path: LOGIN_PATH,
         query: { redirect: to.fullPath },
       });
+      return;
+    }
+
+    if (to.matched.length === 0) {
+      next({ path: NOT_FOUND_PATH });
       return;
     }
 

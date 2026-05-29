@@ -21,4 +21,6 @@ alwaysApply: true
 - 布局组件、私有子组件、辅助文件允许手动 import
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
 - 路由业务模块：`src/router/modules/`（kebab-case）；RBAC 见 `usePermission()` / `v-permission`
-- 详细规范见 `.cursor/rules/code-style.mdc`、`.cursor/rules/router.mdc`
+- 自定义指令：`src/directives/modules/`（kebab-case），`app.use(directivesPlugin)` 统一注册
+- UI 设计工作流见 `.claude/rules/ai-frontend-design.md`（Cursor：`.cursor/rules/ai-frontend-design.mdc` 摘要）
+- 详细规范见 `.claude/rules/code-style.md`、`.claude/rules/router.md`、`.claude/rules/directives.md`

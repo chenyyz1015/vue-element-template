@@ -63,7 +63,9 @@ src/
 │   └── modules/             # 业务路由模块（kebab-case）
 │       ├── index.ts         # asyncRoutes 聚合
 │       └── *.ts             # 按业务域拆分
-├── directives/              # 全局指令（如 v-permission）
+├── directives/              # 自定义指令（modules/ + index.ts → app.use）
+│   ├── index.ts             # directivesPlugin 统一注册
+│   └── modules/             # kebab-case，按业务功能划分（如 permission.ts）
 ├── api/                     # HTTP 请求（request + modules + types）
 ├── stores/                  # Pinia
 │   ├── persisted-state.ts   # 持久化插件配置 + Pinia key 生成
@@ -161,7 +163,7 @@ src/
 - **constantRoutes**：启动即注册（登录/403/404、公开页面）；**asyncRoutes**：登录后按权限动态 `addRoute`
 - Store：`useUserStore`（登录、roles、permissions）· `usePermissionStore`（动态路由）
 - Composable：`usePermission()` — `hasRole()` / `hasPermission()`
-- 按钮级：`v-permission` 指令（`main.ts` 注册）
+- 按钮级：`v-permission` 指令（`app.use(directivesPlugin)`，见 `src/directives/`、`.claude/rules/directives.md`）
 - 详细约定见 `.claude/rules/router.md`
 
 ### 代码规范

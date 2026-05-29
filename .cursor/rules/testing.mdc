@@ -10,4 +10,4 @@ alwaysApply: false
 - 测试文件放在 `__tests__/` 或与源文件同级的 `*.test.ts`
 - 测试行为而非实现，每个 case 验证一个行为
 - 不编写 trivial 测试
-- 详细规范见 `.cursor/rules/testing.mdc`
+- 详细规范见 `.claude/rules/testing.md`

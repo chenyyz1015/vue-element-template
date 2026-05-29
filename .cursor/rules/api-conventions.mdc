@@ -15,4 +15,4 @@ alwaysApply: false
 - 响应格式：`{ code, data, message }`，code 为 0 或 200 表示成功
 - API 函数命名：动词 + 名词 camelCase（`getUserList`）
 - 异步调用统一 `async/await`，禁止 `.then()` / `.catch()` 链式调用
-- 详细规范见 `.cursor/rules/api-conventions.mdc`
+- 详细规范见 `.claude/rules/api-conventions.md`

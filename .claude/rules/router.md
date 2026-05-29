@@ -20,6 +20,7 @@ src/router/
 - **`modules/`**：按业务域拆分的路由模块，文件名 **kebab-case**
 - **constantRoutes**：应用启动即注册（登录/403/404、公开页面）
 - **asyncRoutes**：登录后按 RBAC 过滤，通过 `router.addRoute` 动态注入
+- **404 通配符**：不在 `constantRoutes` 中注册；登录并成功注入 asyncRoutes 后，由 `addFallbackRoute()` 最后追加，避免抢先匹配 `/admin` 等异步 path
 
 ## RouteMeta 约定
 
@@ -55,14 +56,14 @@ src/router/
 ### Composable
 
 - `usePermission()`：`hasRole()`、`hasPermission()`，读取当前用户 roles / permissions
-- 与 `@vueuse/core` 的 `usePermission`（浏览器通知权限）同名时，auto-import 优先使用本项目 composable
+- VueUse 浏览器通知权限 API 自动导入为 `useBrowserPermission`（见 `vite/plugins/unplugin-auto-import.ts`）
 
 ### 指令
 
 - `v-permission="'demo:edit'"` — 无权限时隐藏元素
 - `v-permission.all="['a','b']"` — 需拥有全部权限
 
-在 `main.ts` 注册：`app.directive('permission', vPermission)`
+在 `main.ts` 通过 `app.use(directivesPlugin)` 注册（见 `src/directives/index.ts`、`.claude/rules/directives.md`）
 
 ### 工具函数
 

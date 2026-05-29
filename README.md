@@ -104,7 +104,9 @@ src/
 │   ├── guard.ts
 │   ├── routes.ts
 │   └── modules/                   # 业务路由模块（kebab-case）
-├── directives/                    # 全局指令（v-permission）
+├── directives/                    # 自定义指令
+│   ├── index.ts                   # directivesPlugin（app.use 注入）
+│   └── modules/                   # kebab-case 业务指令（如 permission.ts）
 ├── api/                           # HTTP 请求
 │   ├── constants.ts
 │   ├── index.ts
@@ -177,7 +179,7 @@ const { t } = useI18n();
 - **目录**：`src/router/` 存放主路由与守卫；业务路由在 `src/router/modules/`（kebab-case）
 - **constantRoutes**：登录/403/404 与公开页面；**asyncRoutes**：登录后按 `roles` / `permissions` 动态注册
 - **Store**：`useUserStore`、`usePermissionStore`
-- **按钮级**：`usePermission()`、`v-permission="'perm:code'"`
+- **按钮级**：`usePermission()`、`v-permission="'perm:code'"`（指令见 `src/directives/modules/`）
 - 开发环境 Mock 账号：`admin/admin123`、`viewer/viewer123`；受保护示例页 `/admin`
 - 详细约定：`.claude/rules/router.md`
 

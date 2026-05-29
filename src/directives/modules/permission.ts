@@ -22,11 +22,11 @@ const toggleElement = (
 };
 
 /** 按钮级权限指令：v-permission="'demo:edit'" 或 v-permission.all="['a','b']" */
-export const vPermission: Directive<HTMLElement, PermissionBindingValue> = {
+export default {
   mounted(el, binding) {
     toggleElement(el, binding);
   },
   updated(el, binding) {
     toggleElement(el, binding);
   },
-};
+} satisfies Directive<HTMLElement, PermissionBindingValue>;

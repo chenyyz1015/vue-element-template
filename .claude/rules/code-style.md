@@ -229,7 +229,7 @@ const { t } = useI18n();
 
 - 根目录 `src/router/`：主路由、守卫、常量路由；业务模块放 `router/modules/`（kebab-case）
 - 路由级权限：`meta.requiresAuth`、`meta.roles`、`meta.permissions`（详见 `.claude/rules/router.md`）
-- 按钮级权限：`usePermission()`、`v-permission` 指令
+- 按钮级权限：`usePermission()`、`v-permission` 指令（`src/directives/modules/`，`app.use(directivesPlugin)`）
 - 禁止在业务代码中绕过守卫直接 `addRoute`；动态路由由 `usePermissionStore.generateRoutes` 统一生成
 
 ```vue
@@ -407,6 +407,10 @@ export const useAppStore = defineStore(
 | Store 模块          | kebab-case 文件名，use 前缀箭头函数导出   | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 | 常量                | UPPER_SNAKE_CASE                           | `API_BASE_URL`                           |
 | 工具函数            | camelCase                                  | `formatDate`                             |
+
+## UI 设计
+
+UI 页面/组件的设计、Pencil 稿、audit/polish 流程见 `.claude/rules/ai-frontend-design.md`。
 
 ## 注释
 
