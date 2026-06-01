@@ -36,30 +36,49 @@ npm run build:stage
 
 ## AI 工具支持
 
-本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具：
+本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。项目级指令：`CLAUDE.md`（Claude Code）· `AGENTS.md`（通用 Agent）· `CLAUDE.local.md`（个人覆盖，git ignored）。
 
 ```
-├── CLAUDE.md                  # Claude Code 项目指令
-├── CLAUDE.local.md            # 个人覆盖（git ignored）
-├── AGENTS.md                  # 通用 AI Agent 指令
-├── .claude/
-│   ├── settings.json          # 团队共享配置
-│   ├── commands/              # 自定义命令 (/project:review 等)
-│   ├── rules/                 # 模块化规则
-│   ├── skills/                # 自动调用工作流
-│   └── agents/                # 子 Agent 角色定义
-└── .cursor/
-    ├── rules/                 # Cursor 规则
-    └── skills/                # Cursor Skills
+├── design-system/                 # UI / AI 设计 SSOT
+│   ├── PROJECT.md                 # 项目标识（VITE_APP_NAME、VITE_GITHUB_URL 等）
+│   ├── PRODUCT.md · DESIGN.md · THEME.md · TOKENS.md
+│   ├── MASTER.md                  # ui-ux-pro-max --persist 生成
+│   ├── tokens/                    # 如 page-semantic.json
+│   └── pages/                     # 按页面设计说明（home.md、demo.md）
+├── .claude/                       # Claude Code（规则与命令权威源）
+│   ├── settings.json
+│   ├── rules/                     # code-style、router、css-naming、ai-frontend-design 等
+│   ├── commands/                  # audit · critique · polish · review · fix-issue · deploy
+│   ├── agents/                    # design-director · design-inspector · code-reviewer · security-auditor
+│   └── skills/
+│       ├── ai-frontend-design-workflow/   # Phase 1–4 主编排
+│       ├── ui-ux-pro-max/                 # 设计系统策略与 persist
+│       ├── pencil-design-workflow/        # Pencil 视觉 + pencil-sync.md
+│       ├── impeccable/                    # 质量审计（含 scripts/、reference/）
+│       ├── audit · critique · polish/     # 快捷 Skill（指向 impeccable）
+│       ├── deploy · security-review/
+│       └── …
+└── .cursor/                       # Cursor（与 .claude 目录对齐）
+    ├── rules/                     # *.mdc 摘要（详文见 .claude/rules/*.md）
+    ├── commands/                  # 与 .claude/commands/ 同名
+    ├── agents/                    # 与 .claude/agents/ 同名
+    └── skills/                    # 与 .claude/skills/ 同名；脚本路径用 .cursor/skills/
 ```
 
-### Claude Code 命令
+**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
 
-| 命令                 | 说明       |
-| -------------------- | ---------- |
-| `/project:review`    | 代码审查   |
-| `/project:fix-issue` | 修复 Issue |
-| `/project:deploy`    | 部署流程   |
+### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
+
+| 命令 | 说明 |
+| ---- | ---- |
+| `audit` | UI 技术质量审计（impeccable） |
+| `critique` | UX 设计评审 |
+| `polish` | 交付前视觉精修 |
+| `review` | 代码审查 |
+| `fix-issue` | 按 Issue 修复 |
+| `deploy` | 构建与部署流程 |
+
+UI 设计任务优先走 `ai-frontend-design-workflow`；复杂多页面任务可 invoke **design-director**，Phase 4 可 invoke **design-inspector**。详见 `AGENTS.md` 与 `.claude/rules/ai-frontend-design.md`。
 
 ## 项目结构
 
@@ -99,7 +118,8 @@ src/
 ├── layouts/
 │   └── default-layout/            # 默认布局（手动引入）
 │       ├── index.vue
-│       └── components/            # DefaultNav、DefaultFooter、ThemeControls
+│       ├── useSiteHeaderNav.ts    # 顶栏导航逻辑
+│       └── components/            # DefaultNav、DefaultNavMobileMenu、DefaultFooter、ThemeControls
 ├── router/                        # 主路由、守卫、modules/ 业务路由
 │   ├── index.ts
 │   ├── guard.ts

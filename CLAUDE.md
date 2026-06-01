@@ -54,7 +54,8 @@ src/
 ├── layouts/                 # 布局组件（kebab-case 目录 + index.vue，手动引入）
 │   └── default-layout/
 │       ├── index.vue
-│       └── components/      # DefaultNav、DefaultFooter、ThemeControls
+│       ├── useSiteHeaderNav.ts
+│       └── components/      # DefaultNav、DefaultNavMobileMenu、DefaultFooter、ThemeControls
 ├── router/                  # 主路由、守卫、constantRoutes
 │   ├── index.ts             # createRouter + setupRouterGuard
 │   ├── routes.ts            # 系统路由 + 公开业务路由
@@ -222,11 +223,21 @@ npm run lint:fix     # 自动修复 lint 问题
 
 | 工具        | 配置文件                                                                                 |
 | ----------- | ---------------------------------------------------------------------------------------- |
-| Claude Code | `CLAUDE.md`、`.claude/`                                                                  |
-| Cursor      | `.cursor/rules/`、`.cursor/skills/`、`.cursor/agents/`、`.cursor/commands/`、`AGENTS.md` |
-| 通用        | `AGENTS.md`                                                                              |
+| Claude Code | `CLAUDE.md`、`.claude/`（`rules/`、`commands/`、`agents/`、`skills/`）                  |
+| Cursor      | `AGENTS.md`、`.cursor/rules/`、`.cursor/skills/`、`.cursor/agents/`、`.cursor/commands/` |
+| 设计 SSOT   | `design-system/`（`PROJECT.md`、`THEME.md`、`TOKENS.md`、`MASTER.md` 等）                |
 
-详细 AI 工作流见 `.claude/commands/`、`.claude/skills/`、`.claude/agents/`。`.cursor/` 目录与之对齐，运行 `node scripts/sync-ai-config.mjs` 同步 agents、commands 与路径前缀。
+```
+design-system/          # 产品与视觉 SSOT（AI UI 工作流上下文）
+.claude/                # Claude Code 权威配置
+├── rules/              # *.md（code-style、router、ai-frontend-design…）
+├── commands/           # audit、critique、polish、review、fix-issue、deploy
+├── agents/             # design-director、design-inspector、code-reviewer、security-auditor
+└── skills/             # ai-frontend-design-workflow、ui-ux-pro-max、pencil-design-workflow、impeccable…
+.cursor/                # 与 .claude 对齐；Skill/脚本内路径使用 .cursor/skills/
+```
+
+详细目录与对齐约定见 `README.md`（AI 工具支持）与 `AGENTS.md`（AI 配置目录）。维护 `agents` / `commands` / `skills` 时需同步两侧，并替换文档与脚本中的路径前缀（`.claude` ↔ `.cursor`）。
 
 ### AI 前端设计
 

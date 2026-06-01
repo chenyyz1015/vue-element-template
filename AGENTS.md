@@ -110,7 +110,7 @@ src/
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
 ├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
 ├── i18n/                    # 国际化（locales、createI18n）
-├── layouts/                 # default-layout/（DefaultNav、ThemeControls 等）
+├── layouts/                 # default-layout/（DefaultNav、DefaultNavMobileMenu、ThemeControls 等）
 ├── router/                  # 主路由、守卫、modules/ 业务路由（kebab-case）
 ├── directives/              # 自定义指令（modules/ + index.ts → app.use）
 │   ├── index.ts             # directivesPlugin 统一注册
@@ -129,26 +129,44 @@ src/
 
 ## AI 配置目录
 
-| 目录                | 用途                                             | 工具        |
-| ------------------- | ------------------------------------------------ | ----------- |
-| `CLAUDE.md`         | 项目级 AI 指令                                   | Claude Code |
-| `.claude/commands/` | 自定义斜杠命令                                   | Claude Code |
-| `.claude/rules/`    | 模块化规则                                       | Claude Code |
-| `.claude/skills/`   | 自动调用工作流                                   | Claude Code |
-| `.claude/agents/`   | 子 Agent 角色                                    | Claude Code |
-| `.cursor/rules/`    | Cursor 规则（`.mdc`，摘要指向 `.claude/rules/`） | Cursor      |
-| `.cursor/skills/`   | Cursor Skills（路径用 `.cursor/skills/`）        | Cursor      |
-| `.cursor/agents/`   | Cursor 子 Agent（由 `.claude/agents/` 同步）     | Cursor      |
-| `.cursor/commands/` | Cursor 斜杠命令（由 `.claude/commands/` 同步）   | Cursor      |
+| 路径 | 用途 | 工具 |
+| ---- | ---- | ---- |
+| `CLAUDE.md` | 项目级 AI 指令 | Claude Code |
+| `AGENTS.md` | 通用 Agent 指令 | Cursor 等 |
+| `CLAUDE.local.md` | 个人覆盖（git ignored） | 本地 |
+| `design-system/` | 设计 SSOT：`PROJECT.md`、`THEME.md`、`TOKENS.md`、`MASTER.md`、`pages/` | UI 工作流 |
+| `.claude/rules/` | 规范详文（`code-style`、`router`、`css-naming`、`ai-frontend-design`…） | Claude Code |
+| `.claude/commands/` | `audit`、`critique`、`polish`、`review`、`fix-issue`、`deploy` | Claude Code |
+| `.claude/agents/` | `design-director`、`design-inspector`、`code-reviewer`、`security-auditor` | Claude Code |
+| `.claude/skills/` | 主编排 `ai-frontend-design-workflow`；`ui-ux-pro-max`、`pencil-design-workflow`、`impeccable` 等 | Claude Code |
+| `.cursor/rules/` | `.mdc` 规则摘要（详文 `.claude/rules/*.md`） | Cursor |
+| `.cursor/commands/` | 与 `.claude/commands/` 同名 | Cursor |
+| `.cursor/agents/` | 与 `.claude/agents/` 同名 | Cursor |
+| `.cursor/skills/` | 与 `.claude/skills/` 同名；**脚本路径用** `.cursor/skills/` | Cursor |
+
+```
+design-system/
+├── PROJECT.md · PRODUCT.md · DESIGN.md · THEME.md · TOKENS.md · MASTER.md
+├── tokens/
+└── pages/
+
+.claude/  ──对齐──▶  .cursor/
+├── rules/*.md          ├── rules/*.mdc
+├── commands/*.md       ├── commands/*.md
+├── agents/*.md         ├── agents/*.md
+└── skills/<name>/      └── skills/<name>/   # 路径前缀按工具区分
+```
 
 ### `.cursor` 与 `.claude` 对齐约定
 
-| 类型              | 权威来源                               | Cursor 侧                                   |
-| ----------------- | -------------------------------------- | ------------------------------------------- |
-| 规则详文          | `.claude/rules/*.md`                   | `.cursor/rules/*.mdc`（frontmatter + 摘要） |
-| Skills            | 两侧各一份，内容一致                   | 脚本路径用 `.cursor/skills/`                |
-| Agents / Commands | `.claude/agents/`、`.claude/commands/` | 同步至 `.cursor/`，路径替换为 `.cursor/`    |
-| 项目级指令        | `CLAUDE.md`                            | `AGENTS.md` + `.cursor/rules/`              |
+| 类型 | 权威来源 | Cursor 侧 |
+| ---- | -------- | --------- |
+| 规则详文 | `.claude/rules/*.md` | `.cursor/rules/*.mdc`（frontmatter + 摘要） |
+| Skills | 两侧各一份，内容一致 | 脚本与命令内路径写 `.cursor/skills/` |
+| Agents / Commands | `.claude/agents/`、`.claude/commands/` | `.cursor/` 下同名文件，改路径前缀 |
+| 项目级指令 | `CLAUDE.md` | `AGENTS.md` + `.cursor/rules/` |
+
+修改 `agents` / `commands` / `skills` 时须**手动同步**两侧，并检查文档与脚本中的 `.claude` / `.cursor` 前缀。
 
 ## UI 设计工作流
 
