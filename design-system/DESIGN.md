@@ -21,6 +21,10 @@
 
 设计新 UI 时：装饰/品牌用 L1 `--dl-accent`；需跟用户主题色的内容用 `--dl-primary` 或 EP 变量。Phase 1–4 同步见 `THEME.md`。
 
+## 静态资源
+
+页面/组件媒体与 Pencil `export_nodes` 产出统一放在 **`src/assets/`**（`icons/`、`images/`、`fonts/`、`videos/`、`audio/`），按类型与页面子目录组织。详见 `.claude/rules/ai-frontend-design.md`。
+
 ## Color Palette（L1 — 摘要）
 
 完整 light/dark 表见 **`TOKENS.md`**。Light 默认摘要：

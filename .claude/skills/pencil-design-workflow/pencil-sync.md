@@ -50,6 +50,9 @@ Call via Pencil MCP `set_variables` with `filePath: "design/pages/<name>.pen"`.
 | Auto-layout vertical | `flex flex-col gap-*` |
 | Auto-layout horizontal | `flex items-center gap-*` |
 | Card frame | `var(--dl-border)` + `var(--dl-surface)` + `@include dl-surface-card` |
+| Image / raster fill | `src/assets/images/<page>/<name>.webp`（`@/assets/...`） |
+| Icon glyph（系统图标） | `src/assets/icons/*.svg` → `<SvgIcon name="…" />` |
+| Custom font | `src/assets/fonts/<family>.woff2` + `@font-face` |
 
 ## Sync Workflows
 
@@ -91,7 +94,7 @@ Call via Pencil MCP `set_variables` with `filePath: "design/pages/<name>.pen"`.
 | `batch_get` | Read structure before code or sync |
 | `snapshot_layout(problemsOnly: true)` | Layout QA |
 | `get_screenshot` | Visual QA |
-| `export_nodes` | Asset export if needed |
+| `export_nodes` | 导出位图/资源 → `src/assets/images/<page>/`（kebab-case 文件名） |
 
 ## i18n Reminders (Vue phase)
 

@@ -44,7 +44,8 @@ types/                       # 构建生成的类型声明
 └── svg-component.d.ts
 
 src/
-├── assets/icons/            # SVG 图标（unplugin-svg-component）
+├── assets/                  # 静态资源：icons/ images/ fonts/ videos/ audio/
+│   └── icons/               # SVG（unplugin-svg-component → SvgIcon）
 ├── components/              # 公共组件（kebab-case 目录 + index.vue，auto-import）
 │   ├── com-hello-card/      # 非业务型（com- 前缀）
 │   └── com-page-header/

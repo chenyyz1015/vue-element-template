@@ -147,6 +147,7 @@ design/
 2. 遵循项目约定：`<script setup lang="ts">`、kebab-case 目录、`default-layout` 等现有模式
 3. i18n 文案写入 `src/i18n/locales/`（数组用 `tm()`，`@` 用 `\\@`）
 4. 用 UnoCSS 工具类映射 Pencil 色值与间距
+5. **静态资源**：Pencil `export_nodes` 等产出按类型写入 `src/assets/`（见 `.claude/rules/ai-frontend-design.md`）；Vue 中用 `@/assets/images/<page>/…` 引用
 
 ### 3.2 Pencil → Code 映射
 

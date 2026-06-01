@@ -102,8 +102,9 @@ python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "<product> <keywords>" --
 **关键动作**：
 1. `batch_get` 读取 Pencil 结构
 2. 实现 Vue（`<script setup lang="ts">`、kebab-case、i18n、UnoCSS）
-3. `npm run build` + lint
-4. 浏览器截图 ↔ Pencil screenshot 对比
+3. 页面媒体落盘 `src/assets/`（`images/`、`fonts/` 等，Pencil 导出走 `export_nodes` → `src/assets/images/<page>/`）
+4. `npm run build` + lint
+5. 浏览器截图 ↔ Pencil screenshot 对比
 
 **Gate**：构建通过 + 视觉对齐；`ThemeControls` 可切换主色/模式且 EP 组件跟随 → 进入 Phase 4。
 

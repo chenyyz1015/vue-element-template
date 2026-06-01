@@ -106,7 +106,7 @@ vite/
 types/                       # 构建生成的类型声明（auto-imports、components、svg-component）
 
 src/
-├── assets/icons/            # SVG 图标
+├── assets/                  # 静态资源（icons/ images/ fonts/ videos/ audio/）
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
 ├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
 ├── i18n/                    # 国际化（locales、createI18n）

@@ -134,6 +134,22 @@ src/layouts/
         └── DefaultNavMobileMenu.vue
 ```
 
+## 静态资源（`src/assets`）
+
+页面、布局、组件使用的静态媒体文件**统一**放在 `src/assets/`，按媒体类型分子目录（详见 `.claude/rules/ai-frontend-design.md`）：
+
+| 目录 | 用途 |
+| ---- | ---- |
+| `icons/` | SVG 图标（`<SvgIcon />`，见下节） |
+| `images/` | 位图、装饰性 SVG、插图 |
+| `fonts/` | 自托管字体 |
+| `videos/` | 视频 |
+| `audio/` | 音频 |
+
+- 可在各类型下按页面/功能建 kebab-case 子目录（如 `images/landing/hero.webp`）
+- 引用使用 `@/assets/...` 或 `import x from '@/assets/...'`（由 Vite 打包）
+- **禁止**在 `src/views/**`、`src/components/**` 内新建 `assets/`、`images/`、`static/` 等资源目录
+
 ## 内置工具
 
 ### SVG 图标（unplugin-svg-component）

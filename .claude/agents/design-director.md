@@ -77,7 +77,7 @@ get_editor_state → set_variables → batch_design → get_screenshot
 **执行者**：前端工程师
 
 ```
-batch_get → Vue 实现 → npm run build → screenshot 对比
+batch_get → export_nodes 资源落 src/assets/ → Vue 实现（@/assets/...）→ npm run build → screenshot 对比
 ```
 
 **Gate** → `[x] Phase 3`

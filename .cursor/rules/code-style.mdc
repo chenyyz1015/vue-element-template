@@ -14,6 +14,7 @@ alwaysApply: true
 - Composables：`src/composables/useXxx.ts`（camelCase，箭头函数导出），禁止手动 import
 - 辅助文件（types、constants、helpers）与组件同级目录放置
 - vue / vue-router / pinia / vue-i18n / @vueuse/core / dayjs 及 composables、stores 禁止手动 import
+- 静态资源统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）；禁止在 views/components 下散落资源目录
 - SvgIcon 已在 main.ts 注册，图标放 src/assets/icons，模板中禁止 import SvgIcon
 - `src/components/` 公共组件禁止手动 import（自动注册为 PascalCase 组件名）
 - Element Plus 反馈 API（ElMessage、ElMessageBox、ElNotification、ElLoading）禁止手动 import

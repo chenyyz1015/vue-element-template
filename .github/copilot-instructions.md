@@ -9,7 +9,8 @@
 - Composables 放 `src/composables/useXxx.ts`（camelCase，箭头函数导出），禁止手动 import
 - vue / vue-router / pinia / vue-i18n / @vueuse/core / dayjs 及 composables、stores 禁止手动 import
 - 用户可见文案使用 `useI18n()` 的 `t()`，路由标题使用 `meta.titleKey`
-- SvgIcon 全局注册，SVG 放 src/assets/icons，模板用 `<SvgIcon name="文件名" />` 勿 import
+- 静态资源统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）；禁止在 views/components 下自建资源目录；Pencil 导出落 `src/assets/images/<page>/`
+- SvgIcon 全局注册，SVG 仅放 `src/assets/icons/`，模板用 `<SvgIcon name="文件名" />` 勿 import
 - `src/components/` 公共组件禁止手动 import
 - lodash-es 按需手动 import（如 `import { cloneDeep } from 'lodash-es'`），禁止全量 import
 - 浏览器缓存通过 `@/utils/auth`、`@/utils/locale` 读写；key 为 UPPER_SNAKE_CASE（违规控制台警告）；禁止直接 import `@/utils/storage` 或使用 localStorage / sessionStorage / useLocalStorage

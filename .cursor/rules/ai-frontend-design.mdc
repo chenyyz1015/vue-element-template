@@ -18,5 +18,6 @@ alwaysApply: false
 - **质量**：`.cursor/skills/impeccable/SKILL.md` · `project-bridge.md`
 - **Agents**：`.cursor/agents/design-director.md` · `design-inspector.md`
 - **Commands**：`.cursor/commands/audit.md` · `polish.md` · `critique.md`
-- **禁止**：无 Brief 大规模写 UI · 跳过 Phase 4 · 直接 Read/Grep `.pen`
+- **静态资源**：页面/组件媒体统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）；Pencil `export_nodes` 产出按类型落盘，Vue 用 `@/assets/...`
+- **禁止**：无 Brief 大规模写 UI · 跳过 Phase 4 · 直接 Read/Grep `.pen` · 在 `views/`/`components/` 下自建资源目录
 - 详细规范见 `.claude/rules/ai-frontend-design.md`
