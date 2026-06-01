@@ -8,11 +8,11 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 ## 项目标识（二次定制）
 
-克隆或改名后，**先更新** `design-system/PROJECT.md`（`displayName`、`packageName`），并同步 `package.json`、`VITE_APP_TITLE`、i18n `app.title`。
+克隆或改名后，**先更新** `.env.*` 中的 **`VITE_APP_NAME`**、`VITE_APP_TITLE`、`VITE_GITHUB_URL`，并同步 `package.json` `name`、i18n `app.title`（标识说明见 `design-system/PROJECT.md`）。
 
-- AI / ui-ux-pro-max：`--persist -p "<displayName>"`（与 `PROJECT.md` 一致）
+- AI / ui-ux-pro-max：`--persist -p "<VITE_APP_NAME>"`（读取 `.env.*` → `VITE_APP_NAME`）
 - 浏览器缓存前缀：见 `PROJECT.md` → `storageKeyPrefix`（默认 `VUE_ELEMENT_TEMPLATE_`，可在 `src/utils/storage.ts` 修改）
-- **勿在 Skill / Agent 文档中写死某一固定项目名**；以 `PROJECT.md` 或环境变量为准
+- **勿在 Skill / Agent 文档中写死某一固定项目名**；以 **`VITE_APP_NAME`** 或 `package.json` → `name` 为准
 
 ## 核心约定
 
@@ -62,8 +62,8 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 | 业务公共组件   | `biz-*` + `index.vue`                   | `components/biz-user-card/index.vue`                     |
 | 页面           | kebab-case + `index.vue`                | `views/user-profile/index.vue`                           |
 | 页面私有子组件 | PascalCase，放 `components/`            | `views/about/components/TechStackTable.vue`              |
-| 布局           | kebab-case + `index.vue`                | `layouts/devtools-layout/index.vue`                      |
-| 布局私有子组件 | PascalCase，放 `components/`            | `layouts/devtools-layout/components/DevToolsNav.vue`     |
+| 布局           | kebab-case + `index.vue`                | `layouts/default-layout/index.vue`                       |
+| 布局私有子组件 | PascalCase，放 `components/`            | `layouts/default-layout/components/DefaultNav.vue`       |
 | Composable     | camelCase 文件名，use 前缀，箭头函数    | `composables/useLocale.ts`                               |
 | Store 模块     | kebab-case 文件名，use 前缀箭头函数     | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 | 路由模块       | kebab-case 文件名，放 `router/modules/` | `router/modules/admin.ts`                                |
@@ -80,6 +80,7 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 - Vue 组件：`<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
+- 单文件组件宜 **≤300 行**；超出则拆子组件或同级逻辑/样式文件（见 `.claude/rules/code-style.md`）
 - 异步逻辑：统一 `async/await`，禁止 `.then()` / `.catch()` 链式调用
 - 配置文件：ESModule 格式
 - Lint：ESLint + Stylelint + Commitlint
@@ -109,7 +110,7 @@ src/
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
 ├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
 ├── i18n/                    # 国际化（locales、createI18n）
-├── layouts/                 # 布局（kebab-case + index.vue，手动引入）
+├── layouts/                 # default-layout/（DefaultNav、ThemeControls 等）
 ├── router/                  # 主路由、守卫、modules/ 业务路由（kebab-case）
 ├── directives/              # 自定义指令（modules/ + index.ts → app.use）
 │   ├── index.ts             # directivesPlugin 统一注册
@@ -118,10 +119,11 @@ src/
 ├── stores/                  # Pinia
 │   ├── persisted-state.ts   # 持久化插件 + Pinia key 生成
 │   └── modules/             # Store 模块（app、user、permission 等）
-├── styles/                  # 全局样式（element/var.scss 主题变量）
+├── styles/                  # index.scss、theme/semantic-vars、element/var.scss
 ├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 工具函数（storage 底层 + auth/locale/permission 封装）
-└── views/                   # 页面（kebab-case + index.vue）
+└── views/                   # landing/（/）、demo/、about/、login/ 等
+    ├── landing/             # 首页；i18n `landing.*`
     └── */components/        # 页面私有子组件（PascalCase，手动引入）
 ```
 
@@ -165,7 +167,7 @@ Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md` + **`THEME.md`**
 
 **Gate**：Audit Health Score ≥ 14/20，无 P0/P1，`npm run build` 通过。
 
-**主要路由（统一深色 devtools 风格）：** `/` 首页 · `/demo` 演示 · `/about` 关于 · `/devtools` 重定向至 `/`
+**主要路由：** `/` 首页（`landing`）· `/demo` 演示 · `/about` 关于 · `/devtools` 重定向至 `/`
 
 | Agent                | 职责                                  |
 | -------------------- | ------------------------------------- |

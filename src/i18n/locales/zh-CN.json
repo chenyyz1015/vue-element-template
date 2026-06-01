@@ -14,12 +14,17 @@
   "nav": {
     "home": "首页",
     "about": "关于",
-    "demo": "演示"
-  },
-  "home": {
-    "description": "基于 Vite + Vue 3 + TypeScript + Pinia + Element Plus + UnoCSS 的项目模板。",
-    "startupSuccess": "启动成功！！",
-    "tag": "Vue 3 + Element Plus"
+    "demo": "演示",
+    "main": "主导航",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "github": "GitHub",
+    "language": "语言",
+    "themeColor": "主题色",
+    "themeColorPresets": "预设色板",
+    "themeColorCustom": "自定义",
+    "themeModeLight": "切换为浅色模式",
+    "themeModeDark": "切换为深色模式"
   },
   "about": {
     "eyebrow": "关于项目",
@@ -115,6 +120,33 @@
     "subtitle": "这是 Vue Element Template 的 Demo 环境，展示基础组件、国际化与项目约定。",
     "statusTitle": "应用已就绪",
     "statusMessage": "启动成功！！",
+    "themeDemo": {
+      "eyebrow": "THEME",
+      "title": "明暗模式",
+      "subtitle": "使用导航栏或下方按钮切换 light / dark，Element Plus 组件同步响应。",
+      "current": "当前模式：{mode}",
+      "hint": "也可点击导航栏右侧月亮/太阳图标"
+    },
+    "colorDemo": {
+      "eyebrow": "PRIMARY COLOR",
+      "title": "Element Plus 主色",
+      "subtitle": "选择预设色或自定义，主按钮与链接实时跟随。",
+      "current": "当前主色"
+    },
+    "i18nDemo": {
+      "eyebrow": "I18N",
+      "title": "国际化",
+      "subtitle": "切换语言后，界面文案与路由标题同步更新。",
+      "sampleTitle": "示例文案",
+      "sampleButton": "提交",
+      "sampleTag": "默认标签"
+    },
+    "componentsDemo": {
+      "eyebrow": "COMPONENTS",
+      "title": "Element Plus 组件",
+      "subtitle": "模板已集成 Element Plus，主色随主题色变化。",
+      "inputPlaceholder": "输入示例"
+    },
     "quickStart": {
       "eyebrow": "快速上手",
       "title": "三步开始开发"
@@ -139,19 +171,14 @@
       "button": "查看 About"
     }
   },
-  "devtools": {
-    "brand": "Vue DevTools",
+  "landing": {
+    "brand": "Vue Element Template",
     "nav": {
       "features": "功能",
       "compare": "对比",
       "integrations": "集成",
       "docs": "文档",
-      "cta": "运行 Demo",
-      "themeColor": "主题色",
-      "themeColorPresets": "预设色板",
-      "themeColorCustom": "自定义",
-      "themeModeLight": "切换为浅色模式",
-      "themeModeDark": "切换为深色模式"
+      "cta": "运行 Demo"
     },
     "hero": {
       "badge": "v1.0 · 开发者优先",
@@ -170,10 +197,11 @@
       "filename": {
         "cli": "terminal — zsh",
         "config": "vite.config.ts",
-        "component": "src/views/home/index.vue"
+        "component": "src/views/landing/index.vue"
       },
       "cli": {
-        "comment": "30 秒启动"
+        "comment": "30 秒启动",
+        "startupSuccess": "启动成功！！"
       }
     },
     "features": {
@@ -282,6 +310,7 @@
     }
   },
   "login": {
+    "eyebrow": "AUTH",
     "title": "登录",
     "subtitle": "登录后访问受 RBAC 保护的路由与按钮权限示例。",
     "username": "用户名",
@@ -308,6 +337,7 @@
     "backHome": "返回首页"
   },
   "admin": {
+    "eyebrow": "RBAC",
     "title": "RBAC 管理示例",
     "subtitle": "欢迎，{name}。此页需 admin:view 权限，下方按钮演示 v-permission 指令。",
     "permissionDemo": "按钮级权限",

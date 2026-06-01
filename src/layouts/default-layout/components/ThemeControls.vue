@@ -17,8 +17,8 @@ const onColorChange = (value: string | null) => {
         <button
           type="button"
           class="theme-controls__btn"
-          :title="t('devtools.nav.themeColor')"
-          :aria-label="t('devtools.nav.themeColor')"
+          :title="t('nav.themeColor')"
+          :aria-label="t('nav.themeColor')"
         >
           <el-icon :size="16"><Brush /></el-icon>
           <span
@@ -28,7 +28,7 @@ const onColorChange = (value: string | null) => {
         </button>
       </template>
       <p class="theme-controls__label">
-        {{ t("devtools.nav.themeColorPresets") }}
+        {{ t("nav.themeColorPresets") }}
       </p>
       <div class="theme-controls__presets" role="list">
         <button
@@ -48,7 +48,7 @@ const onColorChange = (value: string | null) => {
       </div>
       <div class="theme-controls__picker-row">
         <span class="theme-controls__label">{{
-          t("devtools.nav.themeColorCustom")
+          t("nav.themeColorCustom")
         }}</span>
         <el-color-picker
           :model-value="primaryColor"
@@ -61,11 +61,7 @@ const onColorChange = (value: string | null) => {
     <button
       type="button"
       class="theme-controls__btn"
-      :aria-label="
-        isDark
-          ? t('devtools.nav.themeModeLight')
-          : t('devtools.nav.themeModeDark')
-      "
+      :aria-label="isDark ? t('nav.themeModeLight') : t('nav.themeModeDark')"
       @click="setMode(isDark ? 'light' : 'dark')"
     >
       <el-icon :size="16">
@@ -77,30 +73,31 @@ const onColorChange = (value: string | null) => {
 </template>
 
 <style lang="scss" scoped>
+@use "@/views/landing/styles/mixins" as *;
+
 .theme-controls__btn {
+  @include dl-interactive-btn;
+
   display: inline-flex;
-  cursor: pointer;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  padding: 6px 8px;
-  color: #94a3b8;
-  transition:
-    color 0.2s,
-    background-color 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 9999px;
+  padding: 8px;
+  color: var(--dl-text-muted);
 
   &:hover {
-    background-color: rgb(51 65 85 / 50%);
-    color: #f8fafc;
+    background-color: var(--dl-hover);
+    color: var(--dl-text);
   }
 }
 
 .theme-controls__swatch {
   width: 14px;
   height: 14px;
-  border: 1px solid rgb(248 250 252 / 30%);
+  border: 1px solid var(--dl-border);
   border-radius: 4px;
 }
 
@@ -118,6 +115,8 @@ const onColorChange = (value: string | null) => {
 }
 
 .theme-controls__preset {
+  @include dl-focus-ring;
+
   width: 28px;
   height: 28px;
   cursor: pointer;
@@ -133,8 +132,8 @@ const onColorChange = (value: string | null) => {
   }
 
   &--active {
-    border-color: #f8fafc;
-    box-shadow: 0 0 0 1px #334155;
+    border-color: var(--dl-text);
+    box-shadow: 0 0 0 1px var(--dl-border);
   }
 }
 

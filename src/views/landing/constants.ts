@@ -1,11 +1,11 @@
-export const DEVTOOLS_SECTION_IDS = {
+export const LANDING_SECTION_IDS = {
   features: "features",
   compare: "compare",
   integrations: "integrations",
   docs: "docs",
 } as const;
 
-export const DEVTOOLS_FEATURE_KEYS = [
+export const LANDING_FEATURE_KEYS = [
   "typescript",
   "autoImport",
   "aiReady",
@@ -14,9 +14,9 @@ export const DEVTOOLS_FEATURE_KEYS = [
   "deploy",
 ] as const;
 
-export type DevToolsFeatureKey = (typeof DEVTOOLS_FEATURE_KEYS)[number];
+export type LandingFeatureKey = (typeof LANDING_FEATURE_KEYS)[number];
 
-export const DEVTOOLS_FEATURE_ICON_MAP: Record<DevToolsFeatureKey, string> = {
+export const LANDING_FEATURE_ICON_MAP: Record<LandingFeatureKey, string> = {
   typescript: "TS",
   autoImport: "{}",
   aiReady: "AI",

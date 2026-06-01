@@ -12,7 +12,7 @@ alwaysApply: false
 
 - **Phase 1–4**：ui-ux-pro-max → pencil → Vue（`useThemeColor` / `useThemeMode`）→ impeccable audit/polish
 - **Gate**：Audit ≥ 14/20，无 P0/P1，`npm run build` 通过
-- **主题**：`design-system/THEME.md` · **项目名**：`design-system/PROJECT.md`（`-p` 用 displayName）
+- **主题**：`THEME.md` + **`TOKENS.md`**（双模式语义色）· **项目名**：`VITE_APP_NAME`（见 `PROJECT.md`）
 - **主编排**：`.cursor/skills/ai-frontend-design-workflow/SKILL.md`
 - **Pencil**：`.cursor/skills/pencil-design-workflow/SKILL.md` · `pencil-sync.md`
 - **质量**：`.cursor/skills/impeccable/SKILL.md` · `project-bridge.md`

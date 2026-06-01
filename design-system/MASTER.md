@@ -6,8 +6,8 @@
 
 ---
 
-**Project:** 见 `design-system/PROJECT.md` → **displayName**（`ui-ux-pro-max -p` 与之保持一致）
-**Generated:** 2026-05-29 10:16:04
+**Project:** vue-element-template
+**Generated:** 2026-06-01 09:22:30
 **Category:** Developer Tool / IDE
 
 ---
@@ -16,55 +16,58 @@
 
 ### Color Palette
 
+> **SSOT：** [`TOKENS.md`](./TOKENS.md) · `tokens/page-semantic.json`。下表为摘要。
+
 | Role | Hex | CSS Variable / Pencil key |
 |------|-----|---------------------------|
-| EP Primary (L2) | `#2563eb` | `color-primary-ep` → `--el-color-primary` |
-| Devtools Accent (L1) | `#22C55E` | `color-accent-devtools` |
-| Secondary | `#334155` | `--color-secondary` |
-| CTA (search) | `#22C55E` | `--color-cta` |
-| Background (dark) | `#0F172A` | `color-bg` |
-| Background (light) | `#F8FAFC` | `color-bg-light` |
-| Text | `#F8FAFC` | `--color-text` |
-| Text muted | `#94A3B8` | — |
+| EP Primary (L2) | `#2563eb` | `color-primary-ep` → `--el-color-primary` / `--dl-primary` |
+| Brand Accent (L1) | `#FF8400` | `color-accent-brand` → `--dl-accent` |
+| Page bg | `#FFFFFF` / `#141414` | `color-bg-light` / `color-bg-dark` → `--dl-bg` |
+| Text | `#141414` / `#FAFAFA` | `color-text-light` / `color-text-dark` → `--dl-text` |
 
-**Color Notes:** Code dark + run green
+**Color Notes:** 页面语义色须 light+dark 成对；详见 `TOKENS.md`。
 
 ### Runtime Theme Tokens (Pencil & Vue)
 
-> **本项目模板（含 THEME.md）：** L1 devtools accent 为静态品牌色；L2 EP 主色可由用户切换。见 `THEME.md`、`PROJECT.md`。
+> **本项目模板：** 语义色板 SSOT 见 `design-system/TOKENS.md` 与 `tokens/page-semantic.json`。 L1 **light+dark 成对**；L2 由 `useThemeColor()` 切换；`--dl-primary` 桥接内容主色。详见 `THEME.md`。
 
-| Token key | Layer | Hex / value | Maps to |
-|-----------|-------|-------------|---------|
-| `color-accent-devtools` | L1 brand | `#22C55E` | UnoCSS / nav / landing accent |
-| `color-primary-ep` | L2 EP | `#2563eb` | `--el-color-primary` / `useThemeColor()` |
-| `color-bg` | L1 surface | `#0F172A` | Devtools page background (dark) |
-| `color-bg-light` | — | `#F8FAFC` | Light mode page background ref |
-| `theme-mode-default` | — | `dark` | Default Pencil / QA screenshot mode |
-| `theme-acceptance` | — | `light, dark` | Required browser QA modes |
+| Token key | Layer | Light | Dark | Maps to |
+|-----------|-------|-------|------|---------|
+| `color-bg-*` | L1 | `#FFFFFF` | `#141414` | `--dl-bg` |
+| `color-surface-*` | L1 | `#FAFAFA` | `#1A1A1A` | `--dl-surface` |
+| `color-text-*` | L1 | `#141414` | `#FAFAFA` | `--dl-text` |
+| `color-accent-brand` | L1 | `#FF8400` | `#FF8400` | `--dl-accent` |
+| `color-primary-ep` | L2 | `#2563eb` | `#2563eb` | `--el-color-primary` / `--dl-primary` |
+| `theme-mode-default` | — | `light` | — | 默认验收模式 |
+| `theme-acceptance` | — | `light, dark` | — | 必测模式 |
 
-**Pencil `set_variables` (required for UI work):**
+**Pencil `set_variables`（须含 light/dark 成对 key，节选）：**
 
 ```json
 {
-  "color-accent-devtools": { "type": "color", "value": "#22C55E" },
+  "color-accent-brand": { "type": "color", "value": "#FF8400" },
   "color-primary-ep": { "type": "color", "value": "#2563eb" },
-  "color-bg": { "type": "color", "value": "#0F172A" },
-  "color-bg-light": { "type": "color", "value": "#F8FAFC" }
+  "color-bg-light": { "type": "color", "value": "#FFFFFF" },
+  "color-bg-dark": { "type": "color", "value": "#141414" },
+  "color-text-light": { "type": "color", "value": "#141414" },
+  "color-text-dark": { "type": "color", "value": "#FAFAFA" },
+  "font-heading": { "type": "string", "value": "DM Sans" },
+  "font-body": { "type": "string", "value": "Rubik" }
 }
 ```
 
-**Do not** map `color-primary-ep` to devtools green `#22C55E`; keep L1/L2 separate.
+**Do not** 将 `color-primary-ep` 与 `color-accent-brand` 混为同一 token。
 
 ### Typography
 
-- **Heading Font:** Fira Code
-- **Body Font:** Fira Sans
-- **Mood:** dashboard, data, analytics, code, technical, precise
-- **Google Fonts:** [Fira Code + Fira Sans](https://fonts.google.com/share?selection.family=Fira+Code:wght@400;500;600;700|Fira+Sans:wght@300;400;500;600;700)
+- **Heading Font:** JetBrains Mono
+- **Body Font:** IBM Plex Sans
+- **Mood:** code, developer, technical, precise, functional, hacker
+- **Google Fonts:** [JetBrains Mono + IBM Plex Sans](https://fonts.google.com/share?selection.family=IBM+Plex+Sans:wght@300;400;500;600;700|JetBrains+Mono:wght@400;500;600;700)
 
 **CSS Import:**
 ```css
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 ```
 
 ### Spacing Variables
@@ -192,10 +195,11 @@
 
 ### Page Pattern
 
-**Pattern Name:** Feature-Rich Showcase
+**Pattern Name:** Enterprise Gateway
 
-- **CTA Placement:** Above fold
-- **Section Order:** Hero > Features > CTA
+- **Conversion Strategy:**  logo carousel,  tab switching for industries, Path selection (I am a...). Mega menu navigation. Trust signals prominent.
+- **CTA Placement:** Contact Sales (Primary) + Login (Secondary)
+- **Section Order:** 1. Hero (Video/Mission), 2. Solutions by Industry, 3. Solutions by Role, 4. Client Logos, 5. Contact Sales
 
 ---
 

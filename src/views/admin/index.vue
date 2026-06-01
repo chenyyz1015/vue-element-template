@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DevToolsLayout from "@/layouts/devtools-layout/index.vue";
+import DefaultLayout from "@/layouts/default-layout/index.vue";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -12,28 +12,23 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <DevToolsLayout>
-    <section class="mx-auto max-w-3xl px-4 py-16">
-      <div
-        class="border border-[#334155] rounded-2xl bg-[#1E293B]/90 p-8 shadow-lg backdrop-blur-md"
-      >
-        <h1 class="devtools-heading mb-2 text-2xl text-[#F8FAFC] font-bold">
-          {{ t("admin.title") }}
-        </h1>
-        <p class="mb-6 text-sm text-[#94A3B8]">
+  <DefaultLayout>
+    <section class="admin l-section">
+      <div class="admin__panel">
+        <p class="admin__eyebrow">{{ t("admin.eyebrow") }}</p>
+        <h1 class="admin__title">{{ t("admin.title") }}</h1>
+        <p class="admin__subtitle">
           {{ t("admin.subtitle", { name: userStore.name }) }}
         </p>
 
-        <div class="mb-8 flex flex-wrap gap-2">
+        <div class="admin__roles">
           <el-tag v-for="role in userStore.roles" :key="role" type="success">
             {{ role }}
           </el-tag>
         </div>
 
-        <h2 class="mb-3 text-sm text-[#F8FAFC] font-semibold">
-          {{ t("admin.permissionDemo") }}
-        </h2>
-        <div class="flex flex-wrap gap-3">
+        <h2 class="admin__section-title">{{ t("admin.permissionDemo") }}</h2>
+        <div class="admin__actions">
           <el-button v-permission="'demo:edit'" type="primary">
             {{ t("admin.actions.edit") }}
           </el-button>
@@ -45,12 +40,67 @@ const handleLogout = async () => {
           </el-button>
         </div>
 
-        <div class="mt-8">
-          <el-button @click="handleLogout">
+        <div class="admin__footer">
+          <el-button class="admin__logout" @click="handleLogout">
             {{ t("admin.logout") }}
           </el-button>
         </div>
       </div>
     </section>
-  </DevToolsLayout>
+  </DefaultLayout>
 </template>
+
+<style lang="scss" scoped>
+@use "../landing/styles/mixins" as *;
+
+.admin {
+  @apply flex justify-center pb-20 pt-8;
+
+  &__panel {
+    @include dl-panel;
+    @apply w-full max-w-3xl;
+  }
+
+  &__eyebrow {
+    @include dl-eyebrow;
+  }
+
+  &__title {
+    @include dl-heading-md;
+  }
+
+  &__subtitle {
+    @include dl-body-sm;
+    @apply mb-6;
+  }
+
+  &__roles {
+    @apply mb-8 flex flex-wrap gap-2;
+  }
+
+  &__section-title {
+    @apply mb-3 text-sm font-semibold;
+
+    font-family: "DM Sans", sans-serif;
+    color: var(--dl-text);
+  }
+
+  &__actions {
+    @apply flex flex-wrap gap-3;
+  }
+
+  &__footer {
+    @apply mt-8 border-t pt-8;
+
+    border-color: var(--dl-border);
+  }
+
+  &__logout {
+    border-radius: 9999px !important;
+  }
+}
+
+.l-section {
+  @apply px-4 lg:px-6;
+}
+</style>

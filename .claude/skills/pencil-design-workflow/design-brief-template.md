@@ -43,7 +43,7 @@
 
 | Component | Type | Reusable in Pencil | Vue target path |
 |-----------|------|--------------------|-----------------|
-| Nav bar | global | yes | `layouts/devtools-layout/` |
+| Nav bar | global | yes | `layouts/default-layout/` |
 | … | … | … | … |
 
 ## 5. Responsive Breakpoints

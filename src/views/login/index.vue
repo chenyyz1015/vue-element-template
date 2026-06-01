@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from "element-plus";
-import DevToolsLayout from "@/layouts/devtools-layout/index.vue";
+import DefaultLayout from "@/layouts/default-layout/index.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -55,20 +55,16 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <DevToolsLayout>
-    <section class="mx-auto max-w-md px-4 py-16">
-      <div
-        class="border border-[#334155] rounded-2xl bg-[#1E293B]/90 p-8 shadow-lg backdrop-blur-md"
-      >
-        <h1 class="devtools-heading mb-2 text-2xl text-[#F8FAFC] font-bold">
-          {{ t("login.title") }}
-        </h1>
-        <p class="mb-8 text-sm text-[#94A3B8]">
-          {{ t("login.subtitle") }}
-        </p>
+  <DefaultLayout>
+    <section class="login l-section">
+      <div class="login__panel">
+        <p class="login__eyebrow">{{ t("login.eyebrow") }}</p>
+        <h1 class="login__title">{{ t("login.title") }}</h1>
+        <p class="login__subtitle">{{ t("login.subtitle") }}</p>
 
         <el-form
           ref="formRef"
+          class="login__form"
           :model="form"
           :rules="rules"
           label-position="top"
@@ -87,7 +83,7 @@ const handleSubmit = async () => {
           </el-form-item>
           <el-button
             type="primary"
-            class="w-full !border-none !bg-[#22C55E] !text-[#0F172A]"
+            class="login__submit"
             native-type="submit"
             :loading="loading"
           >
@@ -95,13 +91,58 @@ const handleSubmit = async () => {
           </el-button>
         </el-form>
 
-        <p
-          v-if="showMockHint"
-          class="mt-6 text-xs text-[#64748B] leading-relaxed"
-        >
+        <p v-if="showMockHint" class="login__hint">
           {{ t("login.mockHint") }}
         </p>
       </div>
     </section>
-  </DevToolsLayout>
+  </DefaultLayout>
 </template>
+
+<style lang="scss" scoped>
+@use "../landing/styles/mixins" as *;
+
+.login {
+  @apply flex justify-center pb-20 pt-8;
+
+  &__panel {
+    @include dl-panel;
+    @apply w-full max-w-md;
+  }
+
+  &__eyebrow {
+    @include dl-eyebrow;
+  }
+
+  &__title {
+    @include dl-heading-md;
+  }
+
+  &__subtitle {
+    @include dl-body-sm;
+    @apply mb-8;
+  }
+
+  &__form {
+    @apply w-full;
+  }
+
+  &__submit {
+    @apply w-full;
+
+    height: 2.75rem !important;
+    border-radius: 9999px !important;
+  }
+
+  &__hint {
+    @apply mt-6 text-xs leading-relaxed;
+
+    font-family: var(--dl-font-body);
+    color: var(--dl-text-dim);
+  }
+}
+
+.l-section {
+  @apply px-4 lg:px-6;
+}
+</style>

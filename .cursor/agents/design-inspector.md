@@ -22,7 +22,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .cursor/skills/impeccable/scripts/load
 
 额外读取（按目标）：
 
-- `design-system/PROJECT.md`（displayName，勿假设固定项目名）
+- `.env.*` → **`VITE_APP_NAME`**（见 `design-system/PROJECT.md`，勿假设固定项目名）
 - `design-system/MASTER.md`（存在则优先于 DESIGN.md）
 - `design-system/THEME.md`（UI 任务必载：EP 主色 + 明暗 + Phase 4 抽检）
 - `design-system/pages/<page>.md`

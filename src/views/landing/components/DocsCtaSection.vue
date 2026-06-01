@@ -3,7 +3,7 @@ const router = useRouter();
 const { t } = useI18n();
 
 const openDocs = () => {
-  window.open("https://github.com", "_blank", "noopener,noreferrer");
+  window.open(import.meta.env.VITE_GITHUB_URL, "_blank", "noopener,noreferrer");
 };
 
 const goToDemo = () => {
@@ -18,10 +18,10 @@ const goToDemo = () => {
         <el-icon :size="28"><Document /></el-icon>
       </div>
       <h2 class="docs-cta__title">
-        {{ t("devtools.docsCta.title") }}
+        {{ t("landing.docsCta.title") }}
       </h2>
       <p class="docs-cta__subtitle">
-        {{ t("devtools.docsCta.subtitle") }}
+        {{ t("landing.docsCta.subtitle") }}
       </p>
       <div class="docs-cta__actions">
         <el-button
@@ -29,7 +29,7 @@ const goToDemo = () => {
           class="docs-cta__cta docs-cta__cta--primary"
           @click="openDocs"
         >
-          {{ t("devtools.docsCta.docsButton") }}
+          {{ t("landing.docsCta.docsButton") }}
           <el-icon class="docs-cta__cta-icon"><Link /></el-icon>
         </el-button>
         <el-button
@@ -37,7 +37,7 @@ const goToDemo = () => {
           class="docs-cta__cta docs-cta__cta--ghost"
           @click="goToDemo"
         >
-          {{ t("devtools.docsCta.demoButton") }}
+          {{ t("landing.docsCta.demoButton") }}
         </el-button>
       </div>
     </div>
@@ -49,28 +49,30 @@ const goToDemo = () => {
 
 .docs-cta {
   &__panel {
-    @apply overflow-hidden rounded-2xl border bg-gradient-to-br p-8 text-center lg:p-12;
+    @apply overflow-hidden rounded-2xl border p-8 text-center lg:p-12;
 
-    border-color: $dl-border;
-    background-image: linear-gradient(to bottom right, $dl-surface, $dl-bg);
+    border-color: color-mix(in srgb, var(--dl-accent) 30%, transparent);
+    background-color: var(--dl-accent);
   }
 
   &__icon-wrap {
     @apply mx-auto mb-6 h-14 w-14 flex-center rounded-xl border text-2xl;
 
-    border-color: rgb(34 197 94 / 30%);
-    background-color: rgb(34 197 94 / 10%);
-    color: $dl-accent;
+    border-color: rgb(255 255 255 / 30%);
+    background-color: rgb(255 255 255 / 15%);
+    color: #fff;
   }
 
   &__title {
     @include dl-heading-md;
+
+    color: #fff;
   }
 
   &__subtitle {
     @apply mx-auto mb-8 max-w-lg leading-relaxed;
 
-    color: $dl-text-muted;
+    color: rgb(255 255 255 / 85%);
   }
 
   &__actions {
@@ -82,11 +84,25 @@ const goToDemo = () => {
   }
 
   &__cta--primary {
-    @include dl-btn-primary;
+    height: 2.5rem !important;
+    padding-inline: 1.75rem !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    background-color: var(--dl-cta) !important;
+    color: var(--dl-bg) !important;
   }
 
   &__cta--ghost {
-    @include dl-btn-ghost;
+    height: 2.5rem !important;
+    padding-inline: 1.75rem !important;
+    border-radius: 9999px !important;
+    border: 1px solid rgb(255 255 255 / 40%) !important;
+    background-color: transparent !important;
+    color: #fff !important;
+
+    &:hover {
+      background-color: rgb(255 255 255 / 10%) !important;
+    }
   }
 }
 

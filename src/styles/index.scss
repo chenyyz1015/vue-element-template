@@ -1,1 +1,8 @@
+@use "./theme/semantic-vars";
 @use "./element/index.scss" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

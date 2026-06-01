@@ -14,12 +14,17 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "demo": "Demo"
-  },
-  "home": {
-    "description": "A project template built with Vite, Vue 3, TypeScript, Pinia, Element Plus, and UnoCSS.",
-    "startupSuccess": "Application started successfully!",
-    "tag": "Vue 3 + Element Plus"
+    "demo": "Demo",
+    "main": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "github": "GitHub",
+    "language": "Language",
+    "themeColor": "Theme color",
+    "themeColorPresets": "Presets",
+    "themeColorCustom": "Custom",
+    "themeModeLight": "Switch to light mode",
+    "themeModeDark": "Switch to dark mode"
   },
   "about": {
     "eyebrow": "About Project",
@@ -115,6 +120,33 @@
     "subtitle": "This is the Vue Element Template demo environment showcasing components, i18n, and conventions.",
     "statusTitle": "Application Ready",
     "statusMessage": "Application started successfully!",
+    "themeDemo": {
+      "eyebrow": "THEME",
+      "title": "Light / Dark Mode",
+      "subtitle": "Toggle light or dark via the nav bar or the button below. Element Plus follows automatically.",
+      "current": "Current mode: {mode}",
+      "hint": "You can also use the moon/sun icon in the header"
+    },
+    "colorDemo": {
+      "eyebrow": "PRIMARY COLOR",
+      "title": "Element Plus Primary",
+      "subtitle": "Pick a preset or custom color; buttons and links update in real time.",
+      "current": "Current primary"
+    },
+    "i18nDemo": {
+      "eyebrow": "I18N",
+      "title": "Internationalization",
+      "subtitle": "Switch locale to update UI copy and route titles.",
+      "sampleTitle": "Sample copy",
+      "sampleButton": "Submit",
+      "sampleTag": "Default tag"
+    },
+    "componentsDemo": {
+      "eyebrow": "COMPONENTS",
+      "title": "Element Plus Components",
+      "subtitle": "Element Plus is integrated; primary color follows your theme selection.",
+      "inputPlaceholder": "Type here"
+    },
     "quickStart": {
       "eyebrow": "Quick Start",
       "title": "Get Started in 3 Steps"
@@ -139,19 +171,14 @@
       "button": "View About"
     }
   },
-  "devtools": {
-    "brand": "Vue DevTools",
+  "landing": {
+    "brand": "Vue Element Template",
     "nav": {
       "features": "Features",
       "compare": "Compare",
       "integrations": "Integrations",
       "docs": "Docs",
-      "cta": "Run Demo",
-      "themeColor": "Theme color",
-      "themeColorPresets": "Presets",
-      "themeColorCustom": "Custom",
-      "themeModeLight": "Switch to light mode",
-      "themeModeDark": "Switch to dark mode"
+      "cta": "Run Demo"
     },
     "hero": {
       "badge": "v1.0 · developer-first",
@@ -170,10 +197,11 @@
       "filename": {
         "cli": "terminal — zsh",
         "config": "vite.config.ts",
-        "component": "src/views/home/index.vue"
+        "component": "src/views/landing/index.vue"
       },
       "cli": {
-        "comment": "start in 30 seconds"
+        "comment": "start in 30 seconds",
+        "startupSuccess": "Application started successfully!"
       }
     },
     "features": {
@@ -282,6 +310,7 @@
     }
   },
   "login": {
+    "eyebrow": "AUTH",
     "title": "Sign in",
     "subtitle": "Sign in to access RBAC-protected routes and button permission demos.",
     "username": "Username",
@@ -308,6 +337,7 @@
     "backHome": "Back to home"
   },
   "admin": {
+    "eyebrow": "RBAC",
     "title": "RBAC admin demo",
     "subtitle": "Welcome, {name}. This page requires admin:view. Buttons below demo v-permission.",
     "permissionDemo": "Button-level permissions",

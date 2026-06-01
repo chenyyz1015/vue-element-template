@@ -1,6 +1,6 @@
 # Demo Page Overrides
 
-> **PROJECT:** 见 `design-system/PROJECT.md` → displayName
+> **PROJECT:** `.env.*` → `VITE_APP_NAME`（见 `design-system/PROJECT.md`）
 > **Generated:** 2026-05-29 10:16:04
 > **Page Type:** Dashboard / Data View
 

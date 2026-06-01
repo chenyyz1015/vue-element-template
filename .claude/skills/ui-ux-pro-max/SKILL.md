@@ -72,7 +72,7 @@ This creates:
 - `design-system/MASTER.md` — Global Source of Truth with all design rules
 - `design-system/pages/` — Folder for page-specific overrides
 
-**本模板仓库**：`--persist` 写入扁平目录 `design-system/`（单仓库单项目）。`-p "<displayName>"` 使用 **`design-system/PROJECT.md`** 中的 **displayName**（或与 `VITE_APP_TITLE` 一致）。`MASTER.md` 包括：
+**本模板仓库**：`--persist` 写入扁平目录 `design-system/`（单仓库单项目）。`-p "<appName>"` 使用 **`.env.*` → `VITE_APP_NAME`**（说明见 `design-system/PROJECT.md`）。`MASTER.md` 包括：
 
 | Pencil key | Layer | Purpose |
 |------------|-------|---------|
@@ -82,11 +82,11 @@ This creates:
 | `theme-mode-default` | — | Default QA mode (`dark`) |
 | `theme-acceptance` | — | Required modes (`light`, `dark`) |
 
-Also read `design-system/PROJECT.md`（displayName）and `design-system/THEME.md` for runtime Composable rules (UI workflow Phase 1–4).
+Also read `design-system/PROJECT.md`（`VITE_APP_NAME`）and `design-system/THEME.md` for runtime Composable rules (UI workflow Phase 1–4).
 
 **With page-specific override:**
 ```bash
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "dashboard"
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<appName>" --page "dashboard"
 ```
 
 This also creates:

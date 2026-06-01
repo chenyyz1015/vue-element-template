@@ -2,38 +2,39 @@
 
 ## Token Mapping
 
-Design System / Pencil variable → Vue implementation。运行时主题规则见 **`design-system/THEME.md`**。
+SSOT：**`design-system/TOKENS.md`** · `design-system/tokens/page-semantic.json` · `src/styles/theme/page-semantic.scss`  
+运行时规则：**`design-system/THEME.md`**
 
-| Pencil variable (example) | Vue / CSS | 层级 |
-|---------------------------|-----------|------|
-| `color-accent-devtools` | `#22C55E`、`text-[#22C55E]` | L1 品牌（静态） |
-| `color-primary-ep` | `var(--el-color-primary)` / `useThemeColor()` | L2 EP 主色（可切换） |
-| `color-bg` | `#0F172A`（dark 壳） | L1 |
-| `color-bg-light` | 浅色模式页背景参考 | 随 `html.dark` |
-| `color-secondary` | `#1E293B` 卡片面 | L1 |
-| `font-heading` | `.devtools-heading` + Space Grotesk | — |
-| `font-body` | `font-[DM_Sans,sans-serif]` | — |
-| `spacing-unit` | UnoCSS gap/padding scale (×1, ×2, ×3) | — |
-| `radius-lg` | `rounded-2xl` | — |
+| Pencil variable (example) | Vue / CSS | 层级 | 随主题色 | 随明暗 |
+|---------------------------|-----------|------|----------|--------|
+| `color-bg-light` / `color-bg-dark` | `--dl-bg` | L1 语义 | 否 | **是** |
+| `color-text-light` / `color-text-dark` | `--dl-text`、`--dl-text-muted` | L1 | 否 | **是** |
+| `color-border-light` / `color-border-dark` | `--dl-border` | L1 | 否 | **是** |
+| `color-accent-brand` | `--dl-accent` | L1 品牌 | 否 | 否（色值同） |
+| `color-primary-ep` | `--el-color-primary` / `useThemeColor()` | L2 | **是** | **是**（色阶） |
+| — | `--dl-primary` | L2→页面桥 | **是** | 随 L2 |
+| `font-heading` / `font-body` | `--dl-font-heading`、`--dl-font-body` | 字体 | 否 | 否（字色随 L1） |
 
-> 勿将 `color-primary-ep` 与 devtools 绿色 `#22C55E` 混为同一 token；前者对应 Element Plus，后者为营销/导航 accent。
+> 页面设计**必须**为每种语义背景/正文提供 light 与 dark 两列，再写入 JSON + SCSS。勿将 `color-primary-ep` 与 `color-accent-brand` 混用。
 
-### set_variables example
-
-From ui-ux-pro-max + `THEME.md`:
+### set_variables example（成对 light/dark）
 
 ```json
 {
-  "color-accent-devtools": { "type": "color", "value": "#22C55E" },
+  "color-accent-brand": { "type": "color", "value": "#FF8400" },
   "color-primary-ep": { "type": "color", "value": "#2563eb" },
-  "color-secondary": { "type": "color", "value": "#1E293B" },
-  "color-bg": { "type": "color", "value": "#0F172A" },
-  "color-bg-light": { "type": "color", "value": "#F8FAFC" },
-  "color-text": { "type": "color", "value": "#F8FAFC" },
-  "color-text-muted": { "type": "color", "value": "#94A3B8" },
-  "font-heading": { "type": "string", "value": "Space Grotesk" },
-  "font-body": { "type": "string", "value": "DM Sans" },
-  "spacing-md": { "type": "number", "value": 16 }
+  "color-bg-light": { "type": "color", "value": "#FFFFFF" },
+  "color-bg-dark": { "type": "color", "value": "#141414" },
+  "color-surface-light": { "type": "color", "value": "#FAFAFA" },
+  "color-surface-dark": { "type": "color", "value": "#1A1A1A" },
+  "color-text-light": { "type": "color", "value": "#141414" },
+  "color-text-dark": { "type": "color", "value": "#FAFAFA" },
+  "color-text-muted-light": { "type": "color", "value": "#666666" },
+  "color-text-muted-dark": { "type": "color", "value": "#A3A3A3" },
+  "color-border-light": { "type": "color", "value": "#E5E5E5" },
+  "color-border-dark": { "type": "color", "value": "#2A2A2A" },
+  "font-heading": { "type": "string", "value": "DM Sans" },
+  "font-body": { "type": "string", "value": "Rubik" }
 }
 ```
 
@@ -43,40 +44,41 @@ Call via Pencil MCP `set_variables` with `filePath: "design/pages/<name>.pen"`.
 
 | Pencil | Vue |
 |--------|-----|
-| Page frame (1440×…) | Page `index.vue` inside `devtools-layout` |
+| Page frame (1440×…) | Page `index.vue` inside `default-layout` |
 | Section frame | `<section id="…">` |
 | Reusable component | `com-*` / page `components/*.vue` |
 | Auto-layout vertical | `flex flex-col gap-*` |
 | Auto-layout horizontal | `flex items-center gap-*` |
-| Card frame | `border border-[#334155] rounded-xl bg-[#1E293B] p-6` |
+| Card frame | `var(--dl-border)` + `var(--dl-surface)` + `@include dl-surface-card` |
 
 ## Sync Workflows
 
 ### Design-first（默认）
 
-1. Phase 1 brief + variables defined
-2. Pencil `batch_design` builds frames
-3. `batch_get` export structure → implement Vue
-4. Browser screenshot ↔ `get_screenshot` diff
+1. Phase 1：定稿 **light + dark** 色板 → `page-semantic.json` + SCSS
+2. Pencil `set_variables`（成对 key）→ `batch_design`
+3. `batch_get` → Vue（`var(--dl-*)` / mixins）
+4. 浏览器 light/dark + 多主色截图 ↔ Pencil
 
 ### Code-first（用户已改代码）
 
 1. Read changed Vue files
-2. `batch_get` affected Pencil frames
-3. `batch_design` update properties to match
-4. Update `design-system/pages/*.md` if tokens changed
+2. 若改 hex：回写 `page-semantic.json` + `page-semantic.scss`
+3. `batch_get` / `batch_design` 更新 `.pen`
+4. 更新 `design-system/pages/<page>.md`
 
 ### Token change（全局换肤）
 
-1. Update `design-system/MASTER.md` + **`design-system/THEME.md`**（若涉及 L2 默认主色）
-2. `set_variables` on all `.pen` files（`color-primary-ep`、`color-accent-devtools`）
-3. 若改 EP 默认：同步 `src/styles/element/var.scss` 与 `DEFAULT_PRIMARY_COLOR`
-4. 用 `ThemeControls` 在 light/dark + 多主色下 Re-screenshot verify
+1. `TOKENS.md` + `page-semantic.json` + `page-semantic.scss`
+2. `MASTER.md` / `pages/*.md` / 全部 `.pen` `set_variables`
+3. L2 默认： `var.scss` + `DEFAULT_PRIMARY_COLOR`
+4. `ThemeControls`：light/dark × ≥2 主色验收
 
-### Runtime theme change（用户切换，非设计稿）
+### Runtime theme change（用户切换）
 
-- 不修改 Pencil 的 L1 devtools 绿；仅 L2 随 `useThemeColor` 变化
-- 明暗切换：`useThemeMode` → `html.dark`；Pencil 对比时注明当前模式
+- **L1**：`useThemeMode` → `html.dark` → `--dl-*` 切换
+- **L2**：`useThemeColor` → `--el-color-primary` + `--dl-primary`
+- Pencil 对比时注明 **mode + primary**
 
 ## Pencil MCP Quick Reference
 

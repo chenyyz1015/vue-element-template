@@ -36,7 +36,7 @@ tools: Read, Grep, Glob, Bash, Task
 - 交付物：page | component | section | design-system
 - 是否必须 Pencil 稿（默认：是，除非用户只要代码）
 - 是否复用 `design-system/MASTER.md`
-- 项目展示名：`design-system/PROJECT.md` → displayName（`ui-ux-pro-max -p`）
+- 项目名：`.env.*` → **`VITE_APP_NAME`**（`ui-ux-pro-max -p`，说明见 `design-system/PROJECT.md`）
 - 运行时主题：是否对齐 `design-system/THEME.md`（L1 品牌 vs L2 EP 主色、light/dark 验收）
 - 是否跳过 Phase 4（默认：否）
 

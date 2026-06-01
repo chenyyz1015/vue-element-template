@@ -48,19 +48,25 @@ def _enrich_design_system_for_runtime_theme(
     enriched["_template_theme"] = use_template_theme
 
     if use_template_theme:
-        colors.setdefault("accent_devtools", "#22C55E")
-        colors.setdefault("accent_devtools_hover", "#4ADE80")
+        colors.setdefault("accent_brand", "#FF8400")
+        colors.setdefault("accent_devtools", colors.get("accent_brand", "#FF8400"))
         colors.setdefault("primary_ep", "#2563eb")
-        colors.setdefault("background_dark", "#0F172A")
-        colors.setdefault("surface", "#1E293B")
-        colors.setdefault("border", "#334155")
-        colors.setdefault("text_muted", "#94A3B8")
+        colors.setdefault("background_light", "#FFFFFF")
+        colors.setdefault("background_dark", "#141414")
+        colors.setdefault("surface_light", "#FAFAFA")
+        colors.setdefault("surface_dark", "#1A1A1A")
+        colors.setdefault("border_light", "#E5E5E5")
+        colors.setdefault("border_dark", "#2A2A2A")
+        colors.setdefault("text_light", "#141414")
+        colors.setdefault("text_dark", "#FAFAFA")
+        colors.setdefault("text_muted_light", "#666666")
+        colors.setdefault("text_muted_dark", "#A3A3A3")
     else:
         colors.setdefault("accent_devtools", colors.get("cta", "#22C55E"))
         colors.setdefault("primary_ep", colors.get("primary", "#2563EB"))
 
     colors.setdefault("background_light", "#F8FAFC")
-    enriched.setdefault("theme_mode_default", "dark" if use_template_theme else "light")
+    enriched.setdefault("theme_mode_default", "light" if use_template_theme else "light")
     enriched.setdefault("theme_acceptance_modes", ["light", "dark"])
     return enriched
 
@@ -70,45 +76,58 @@ def _append_runtime_theme_section(lines: list, design_system: dict) -> None:
     colors = design_system.get("colors", {})
     use_template_theme = design_system.get("_template_theme", False)
 
-    accent = colors.get("accent_devtools", "#22C55E")
+    accent = colors.get("accent_brand", colors.get("accent_devtools", "#FF8400"))
     primary_ep = colors.get("primary_ep", colors.get("primary", "#2563EB"))
-    bg_dark = colors.get("background_dark", colors.get("background", "#0F172A"))
-    bg_light = colors.get("background_light", "#F8FAFC")
-    mode_default = design_system.get("theme_mode_default", "dark" if use_template_theme else "light")
+    bg_light = colors.get("background_light", "#FFFFFF")
+    bg_dark = colors.get("background_dark", "#141414")
+    text_light = colors.get("text_light", "#141414")
+    text_dark = colors.get("text_dark", "#FAFAFA")
+    mode_default = design_system.get("theme_mode_default", "light")
     modes = design_system.get("theme_acceptance_modes", ["light", "dark"])
 
     lines.append("### Runtime Theme Tokens (Pencil & Vue)")
     lines.append("")
     if use_template_theme:
         lines.append(
-            "> **本项目模板（含 THEME.md）：** L1 devtools accent 为静态品牌色；L2 EP 主色可由用户切换。 "
-            "详见 `design-system/THEME.md`、`design-system/PROJECT.md`（项目展示名）。"
+            "> **本项目模板：** 语义色板 SSOT 见 `design-system/TOKENS.md` 与 `tokens/page-semantic.json`。 "
+            "L1 页面语义 **light+dark 成对**；L2 EP 主色由 `useThemeColor()` 切换；`--dl-primary` 桥接内容主色。 "
+            "详见 `THEME.md`。"
         )
         lines.append("")
-    lines.append("| Token key | Layer | Hex / value | Maps to |")
-    lines.append("|-----------|-------|-------------|---------|")
-    lines.append(f"| `color-accent-devtools` | L1 brand | `{accent}` | UnoCSS / nav / landing accent |")
+    lines.append("| Token key | Layer | Light | Dark | Maps to |")
+    lines.append("|-----------|-------|-------|------|---------|")
+    lines.append(f"| `color-bg-*` | L1 | `{bg_light}` | `{bg_dark}` | `--dl-bg` |")
     lines.append(
-        f"| `color-primary-ep` | L2 EP | `{primary_ep}` | `--el-color-primary` / `useThemeColor()` |"
+        f"| `color-surface-*` | L1 | `{colors.get('surface_light', '#FAFAFA')}` | "
+        f"`{colors.get('surface_dark', '#1A1A1A')}` | `--dl-surface` |"
     )
-    lines.append(f"| `color-bg` | L1 surface | `{bg_dark}` | Devtools page background (dark) |")
-    lines.append(f"| `color-bg-light` | — | `{bg_light}` | Light mode page background ref |")
-    lines.append(f"| `theme-mode-default` | — | `{mode_default}` | Default Pencil / QA screenshot mode |")
-    lines.append(f"| `theme-acceptance` | — | `{', '.join(modes)}` | Required browser QA modes |")
+    lines.append(
+        f"| `color-text-*` | L1 | `{text_light}` | `{text_dark}` | `--dl-text` |"
+    )
+    lines.append(f"| `color-accent-brand` | L1 | `{accent}` | `{accent}` | `--dl-accent` |")
+    lines.append(
+        f"| `color-primary-ep` | L2 | `{primary_ep}` | `{primary_ep}` | `--el-color-primary` / `--dl-primary` |"
+    )
+    lines.append(f"| `theme-mode-default` | — | `{mode_default}` | — | 默认验收模式 |")
+    lines.append(f"| `theme-acceptance` | — | `{', '.join(modes)}` | — | 必测模式 |")
     lines.append("")
-    lines.append("**Pencil `set_variables` (required for UI work):**")
+    lines.append("**Pencil `set_variables`（须含 light/dark 成对 key，节选）：**")
     lines.append("")
     lines.append("```json")
     lines.append("{")
-    lines.append(f'  "color-accent-devtools": {{ "type": "color", "value": "{accent}" }},')
+    lines.append(f'  "color-accent-brand": {{ "type": "color", "value": "{accent}" }},')
     lines.append(f'  "color-primary-ep": {{ "type": "color", "value": "{primary_ep}" }},')
-    lines.append(f'  "color-bg": {{ "type": "color", "value": "{bg_dark}" }},')
-    lines.append(f'  "color-bg-light": {{ "type": "color", "value": "{bg_light}" }}')
+    lines.append(f'  "color-bg-light": {{ "type": "color", "value": "{bg_light}" }},')
+    lines.append(f'  "color-bg-dark": {{ "type": "color", "value": "{bg_dark}" }},')
+    lines.append(f'  "color-text-light": {{ "type": "color", "value": "{text_light}" }},')
+    lines.append(f'  "color-text-dark": {{ "type": "color", "value": "{text_dark}" }},')
+    lines.append('  "font-heading": { "type": "string", "value": "DM Sans" },')
+    lines.append('  "font-body": { "type": "string", "value": "Rubik" }')
     lines.append("}")
     lines.append("```")
     lines.append("")
     if use_template_theme:
-        lines.append("**Do not** map `color-primary-ep` to devtools green `#22C55E`; keep L1/L2 separate.")
+        lines.append("**Do not** 将 `color-primary-ep` 与 `color-accent-brand` 混为同一 token。")
         lines.append("")
 
 SEARCH_CONFIG = {
@@ -670,18 +689,20 @@ def format_master_md(design_system: dict, base_dir: Optional[Path] = None) -> st
         "`color-primary-ep` → `--el-color-primary` |"
     )
     lines.append(
-        f"| Devtools Accent (L1) | `{colors.get('accent_devtools', '#22C55E')}` | "
-        "`color-accent-devtools` |"
+        f"| Brand Accent (L1) | `{colors.get('accent_brand', colors.get('accent_devtools', '#FF8400'))}` | "
+        "`color-accent-brand` |"
     )
-    lines.append(f"| Secondary | `{colors.get('secondary', '#3B82F6')}` | `--color-secondary` |")
-    lines.append(f"| CTA (search) | `{colors.get('cta', '#F97316')}` | `--color-cta` |")
     lines.append(
-        f"| Background (dark) | `{colors.get('background_dark', colors.get('background', '#0F172A'))}` | "
-        "`color-bg` |"
+        f"| Page bg (light/dark) | `{colors.get('background_light', '#FFFFFF')}` / "
+        f"`{colors.get('background_dark', '#141414')}` | `color-bg-light` / `color-bg-dark` → `--dl-bg` |"
     )
-    lines.append(f"| Background (light) | `{colors.get('background_light', '#F8FAFC')}` | `color-bg-light` |")
-    lines.append(f"| Text | `{colors.get('text', '#F8FAFC')}` | `--color-text` |")
-    lines.append(f"| Text muted | `{colors.get('text_muted', '#94A3B8')}` | — |")
+    lines.append(
+        f"| Text (light/dark) | `{colors.get('text_light', '#141414')}` / "
+        f"`{colors.get('text_dark', '#FAFAFA')}` | `color-text-*` → `--dl-text` |"
+    )
+    lines.append(
+        f"| Content primary bridge | `var(--el-color-primary)` | `--dl-primary`（随 `useThemeColor`） |"
+    )
     lines.append("")
     if colors.get("notes"):
         lines.append(f"**Color Notes:** {colors.get('notes', '')}")

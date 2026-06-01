@@ -47,9 +47,10 @@ node .claude/skills/impeccable/scripts/detect.mjs <target-path>
 
 ## 项目标识
 
-- `design-system/PROJECT.md` — **displayName**（`ui-ux-pro-max -p`、定制后必更新）
+- **项目名**：`.env.*` → **`VITE_APP_NAME`**（说明见 `design-system/PROJECT.md`）
+- **语义色板**：`design-system/TOKENS.md` + `tokens/page-semantic.json`（**light + dark 成对**，与 `page-semantic.scss` 同步）
 - `design-system/PRODUCT.md` / `DESIGN.md` — Impeccable 上下文
-- 勿在指令中写死固定项目名；回退：`VITE_APP_TITLE` 或 `package.json` → `name`
+- 勿在指令中写死固定项目名；回退：`package.json` → `name`
 
 ## 设计产物
 

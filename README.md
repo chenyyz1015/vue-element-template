@@ -97,8 +97,9 @@ src/
 │   ├── types.ts
 │   └── locales/                   # 语言包（zh-CN、en-US）
 ├── layouts/
-│   └── devtools-layout/           # 深色营销布局（手动引入）
-│       └── index.vue
+│   └── default-layout/            # 默认布局（手动引入）
+│       ├── index.vue
+│       └── components/            # DefaultNav、DefaultFooter、ThemeControls
 ├── router/                        # 主路由、守卫、modules/ 业务路由
 │   ├── index.ts
 │   ├── guard.ts
@@ -117,7 +118,10 @@ src/
 │   ├── persisted-state.ts         # 持久化插件配置 + Pinia key 生成
 │   └── modules/                   # Store 模块（app、user、permission 等）
 ├── styles/
-│   ├── index.scss                 # 全局样式入口
+│   ├── index.scss                 # 全局样式入口（semantic-vars + Element Plus）
+│   ├── theme/
+│   │   ├── page-semantic.scss     # 页面语义色 SCSS（light/dark）
+│   │   └── semantic-vars.scss     # 全局 --dl-* CSS 变量
 │   └── element/
 │       ├── var.scss               # Element Plus 主题变量
 │       └── index.scss             # Element Plus base 样式
@@ -129,13 +133,17 @@ src/
 │   ├── dayjs.ts                   # dayjs 预配置
 │   └── storage.ts                 # 底层 localStorage / sessionStorage 封装
 └── views/
-    ├── home/
-    │   └── index.vue
-    └── about/
-        ├── index.vue
-        ├── constants.ts
-        └── components/            # 页面私有子组件（PascalCase，手动引入）
-            └── TechStackTable.vue
+    ├── landing/                   # 首页（/），文案键 landing.*
+    │   ├── index.vue
+    │   ├── constants.ts
+    │   ├── components/          # HeroSection、FeaturesSection 等
+    │   └── styles/              # 页面 mixins / tokens
+    ├── demo/
+    ├── about/
+    ├── login/
+    ├── admin/
+    └── …                        # forbidden、not-found 等
+        └── components/          # 页面私有子组件（PascalCase，手动引入）
 ```
 
 ## 组件命名规范
@@ -154,7 +162,7 @@ src/
 - **OOCSS**：色板与字体变量（如 `src/views/<page>/styles/_tokens.scss`）
 - **UnoCSS**：在 `<style lang="scss" scoped>` 内通过 `@apply` 注入，避免模板堆叠长串 utility
 
-完整约定见 [`.claude/rules/css-naming.md`](.claude/rules/css-naming.md)。首页落地页示例：`src/views/devtools-landing/`。
+完整约定见 [`.claude/rules/css-naming.md`](.claude/rules/css-naming.md)。首页落地页示例：`src/views/landing/`。
 
 ## 主题定制
 
@@ -164,7 +172,7 @@ Element Plus 主题变量在 `src/styles/element/var.scss` 中维护（主色 `#
 
 基于 [vue-i18n](https://vue-i18n.intlify.dev/)（Composition API，`legacy: false`）：
 
-- 语言包：`src/i18n/locales/`（默认 `zh-CN`、`en-US`）
+- 语言包：`src/i18n/locales/`（默认 `zh-CN`、`en-US`）；首页文案命名空间 **`landing.*`**，布局主题控件 **`nav.theme*`**（见 `nav.themeColor` 等）
 - 实例配置：`src/i18n/index.ts`，在 `main.ts` 中 `app.use(i18n)`
 - 语言切换：`useLocale()` composable（通过 `src/utils/locale.ts` 持久化，同步 Element Plus locale）
 - 路由标题：路由 `meta.titleKey` 对应语言包 key，由 `router.afterEach` 与 `App.vue` 监听 locale 更新 `document.title`
@@ -267,7 +275,9 @@ setLocale("zh-CN");
 
 | 变量                 | 说明                                                    | 默认值                                                                                    | 适用范围              |
 | -------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| `VITE_APP_TITLE`     | 应用标题                                                | `Vue Element Template`                                                                    | 全部 env 文件         |
+| `VITE_APP_NAME`      | 项目名（宜与 `package.json` name 一致）                 | `vue-element-template`                                                                    | 全部 env 文件         |
+| `VITE_APP_TITLE`     | 应用展示标题                                            | `Vue Element Template`                                                                    | 全部 env 文件         |
+| `VITE_GITHUB_URL`    | GitHub 仓库地址                                         | 见 `.env.*`                                                                               | 全部 env 文件         |
 | `VITE_API_BASE_URL`  | API 基础地址                                            | `/api`                                                                                    | 全部 env 文件         |
 | `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                        | `60_000`                                                                                  | 全部 env 文件         |
 | `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |

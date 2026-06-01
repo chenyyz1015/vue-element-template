@@ -66,7 +66,7 @@
 - **动态修饰符**：`:class` 绑定 BEM 修饰符名（字符串或数组），禁止在模板拼接 utility 字符串。
 - **第三方组件**：`el-button` 等将 BEM 类直接挂在组件根上；需要穿透时用 `:deep()`，选择器仍以 BEM 为根。
 - **`!important`**：勿在 `_mixins.scss` 等独立 SCSS 中用 `@apply !utility`（Sass 会误解析 `!`）；覆盖 Element Plus 时在 mixin 内写普通 CSS 声明。
-- **语法高亮**等跨子树样式：保留在布局 `devtools-layout` 的 `:deep(.syn-*)` 中。
+- **语法高亮**等跨子树样式：保留在布局 `default-layout` 的 `:deep(.syn-*)` 中。
 
 ## 与现有约定关系
 
@@ -74,7 +74,7 @@
 | ---- | ---- |
 | 全局 Element 主题 | `src/styles/element/` |
 | Devtools 品牌色板 | `design-system/DESIGN.md` + 页面 `_tokens.scss` |
-| 标题字体 Space Grotesk | 页面内 `@apply` + `font-family`，或布局 `:deep(.devtools-heading)`（遗留页面） |
+| 标题字体 DM Sans | 页面内 `@include dl-heading-*`，或布局 `:deep(.landing-heading)` |
 | `flex-center` 等 | Uno `shortcuts`，模板中可单独使用 |
 
 ## 目录建议

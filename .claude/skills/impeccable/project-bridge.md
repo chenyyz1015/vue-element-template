@@ -1,6 +1,6 @@
 # Impeccable Project Bridge
 
-> 项目展示名见 `design-system/PROJECT.md`（二次定制时更新 displayName）。
+> 项目名见 `design-system/PROJECT.md`（取值 **`.env.*` → `VITE_APP_NAME`**）。
 
 本文件是**项目专用桥接层**，上游 Impeccable 更新时保留此文件即可。
 
@@ -24,7 +24,7 @@ IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load
 | 页面 override | `design-system/pages/<page>.md` |
 | 页面简报 | `design/briefs/*.md` |
 
-**读取顺序**：`PROJECT.md`（displayName）> `MASTER.md` > `pages/*.md` > `DESIGN.md` > **`THEME.md`** > brief
+**读取顺序**：`.env.*` / `PROJECT.md`（**`VITE_APP_NAME`**）> `MASTER.md` > `pages/*.md` > `DESIGN.md` > **`THEME.md`** > brief
 
 ## Phase 4（质量审计）
 
@@ -40,12 +40,13 @@ IMPECCABLE_CONTEXT_DIR=design-system node .claude/skills/impeccable/scripts/load
 
 ## 运行时主题（Theming 维度）
 
-UI 相关 audit / polish **必须**加载 `design-system/THEME.md`：
+UI 相关 audit / polish **必须**加载 `design-system/THEME.md` 与 **`design-system/TOKENS.md`**：
 
 1. `useThemeColor` / `useThemeMode` 为唯一换肤入口，禁止页面自建 storage
-2. Element Plus 交互组件不硬编码 `#409EFF` / `#2563eb`；优先 `var(--el-color-primary)`
-3. Devtools L1 绿 `#22C55E` 与 L2 EP 主色混用 → **P2**（Project Convention）
-4. 对比 Pencil 时注明 **同一** `THEME_MODE` + 主色
+2. 页面语义色：`var(--dl-*)`，定义于 `tokens/page-semantic.json` + `page-semantic.scss`，**light/dark 成对**
+3. Element Plus：`var(--el-color-primary)`；自定义跟色：`var(--dl-primary)`
+4. Pencil 仅给单色背景/正文、无 dark 列 → **P2**；L1 accent 与 L2 主色混用 → **P2**
+5. 对比 Pencil 时注明 **同一** `THEME_MODE` + 主色
 
 ## 确定性扫描
 

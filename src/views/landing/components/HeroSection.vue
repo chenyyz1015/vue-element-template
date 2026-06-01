@@ -9,32 +9,29 @@ const goToDemo = () => {
 };
 
 const openDocs = () => {
-  window.open("https://github.com", "_blank", "noopener,noreferrer");
+  window.open(import.meta.env.VITE_GITHUB_URL, "_blank", "noopener,noreferrer");
 };
 </script>
 
 <template>
   <section id="hero" class="hero l-section">
-    <div class="hero__glow hero__glow--center" aria-hidden="true" />
-    <div class="hero__glow hero__glow--right" aria-hidden="true" />
-
     <div class="hero__inner l-container">
       <div class="hero__grid l-grid l-grid--hero">
         <div class="hero__content">
           <div class="hero__badge">
             <span class="hero__badge-dot" />
-            {{ t("devtools.hero.badge") }}
+            {{ t("landing.hero.badge") }}
           </div>
 
           <h1 class="hero__title">
-            {{ t("devtools.hero.title") }}
+            {{ t("landing.hero.title") }}
             <span class="hero__title-accent">{{
-              t("devtools.hero.titleAccent")
+              t("landing.hero.titleAccent")
             }}</span>
           </h1>
 
           <p class="hero__subtitle">
-            {{ t("devtools.hero.subtitle") }}
+            {{ t("landing.hero.subtitle") }}
           </p>
 
           <div class="hero__actions">
@@ -43,7 +40,7 @@ const openDocs = () => {
               class="hero__cta hero__cta--primary"
               @click="goToDemo"
             >
-              {{ t("devtools.hero.ctaPrimary") }}
+              {{ t("landing.hero.ctaPrimary") }}
               <el-icon class="hero__cta-icon"><ArrowRight /></el-icon>
             </el-button>
             <el-button
@@ -51,7 +48,7 @@ const openDocs = () => {
               class="hero__cta hero__cta--ghost"
               @click="openDocs"
             >
-              {{ t("devtools.hero.ctaDocs") }}
+              {{ t("landing.hero.ctaDocs") }}
               <el-icon class="hero__cta-icon"><Document /></el-icon>
             </el-button>
           </div>
@@ -69,18 +66,6 @@ const openDocs = () => {
 .hero {
   @apply relative overflow-hidden pb-16 lg:pb-24;
 
-  &__glow {
-    @apply pointer-events-none absolute rounded-full bg-gradient-to-br blur-3xl;
-
-    &--center {
-      @apply left-1/2 top-0 h-96 w-96 -translate-x-1/2 from-[#22C55E]/10 to-transparent;
-    }
-
-    &--right {
-      @apply right-0 top-1/4 h-64 w-64 bg-gradient-to-bl from-[#82AAFF]/10 to-transparent;
-    }
-  }
-
   &__inner {
     @apply relative;
   }
@@ -90,34 +75,35 @@ const openDocs = () => {
   }
 
   &__badge {
-    @apply mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-mono;
+    @apply mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm;
 
-    border-color: $dl-border;
-    background-color: $dl-surface;
-    color: $dl-accent;
+    font-family: $dl-body-font;
+    border-color: var(--dl-accent-border, #{$dl-accent-border});
+    background-color: var(--dl-accent-soft, #{$dl-accent-soft});
+    color: var(--dl-accent-hover, #{$dl-accent-hover});
   }
 
   &__badge-dot {
-    @apply h-2 w-2 animate-pulse rounded-full;
+    @apply h-1.5 w-1.5 rounded-full;
 
-    background-color: $dl-accent;
+    background-color: var(--dl-accent, #{$dl-accent});
   }
 
   &__title {
     @apply mb-4 text-4xl font-bold leading-tight lg:text-5xl;
 
     font-family: $dl-heading-font;
-    color: $dl-text;
+    color: var(--dl-text, #{$dl-text});
   }
 
   &__title-accent {
-    color: $dl-accent;
+    color: var(--dl-text, #{$dl-text});
   }
 
   &__subtitle {
     @apply mb-8 max-w-lg leading-relaxed lg:text-lg;
 
-    color: $dl-text-muted;
+    color: var(--dl-text-muted, #{$dl-text-muted});
   }
 
   &__actions {

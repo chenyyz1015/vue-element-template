@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import type { DevToolsFeatureKey } from "../constants";
+import type { LandingFeatureKey } from "../constants";
 import {
-  DEVTOOLS_FEATURE_ICON_MAP,
-  DEVTOOLS_FEATURE_KEYS,
-  DEVTOOLS_SECTION_IDS,
+  LANDING_FEATURE_ICON_MAP,
+  LANDING_FEATURE_KEYS,
+  LANDING_SECTION_IDS,
 } from "../constants";
 
 const { t } = useI18n();
 
 const features = computed(() =>
-  DEVTOOLS_FEATURE_KEYS.map((key) => ({
+  LANDING_FEATURE_KEYS.map((key) => ({
     key,
-    icon: DEVTOOLS_FEATURE_ICON_MAP[key as DevToolsFeatureKey],
-    title: t(`devtools.features.items.${key}.title`),
-    description: t(`devtools.features.items.${key}.description`),
+    icon: LANDING_FEATURE_ICON_MAP[key as LandingFeatureKey],
+    title: t(`landing.features.items.${key}.title`),
+    description: t(`landing.features.items.${key}.description`),
   }))
 );
 </script>
 
 <template>
-  <section :id="DEVTOOLS_SECTION_IDS.features" class="features l-section">
+  <section :id="LANDING_SECTION_IDS.features" class="features l-section">
     <div class="features__inner l-container">
       <header class="features__header l-section-header">
         <p class="features__eyebrow">
-          {{ t("devtools.features.eyebrow") }}
+          {{ t("landing.features.eyebrow") }}
         </p>
         <h2 class="features__title">
-          {{ t("devtools.features.title") }}
+          {{ t("landing.features.title") }}
         </h2>
         <p class="features__subtitle">
-          {{ t("devtools.features.subtitle") }}
+          {{ t("landing.features.subtitle") }}
         </p>
       </header>
 
@@ -76,18 +76,24 @@ const features = computed(() =>
 
   &__card {
     @include dl-surface-card;
-    @apply group p-6 hover:border-[#22C55E]/50 hover:shadow-[0_0_24px_rgba(34,197,94,0.08)];
+    @apply group p-6 transition-shadow duration-200;
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--dl-accent) 40%, var(--dl-border));
+      box-shadow: 0 4px 24px
+        color-mix(in srgb, var(--dl-accent) 8%, transparent);
+    }
   }
 
   &__card-icon {
     @apply mb-4 h-10 w-10 flex-center rounded-lg border text-sm font-mono transition-colors duration-200;
 
-    border-color: $dl-border;
-    background-color: $dl-bg;
-    color: $dl-accent;
+    border-color: var(--dl-border);
+    background-color: var(--dl-surface);
+    color: var(--dl-accent);
 
     .features__card:hover & {
-      border-color: rgb(34 197 94 / 50%);
+      border-color: color-mix(in srgb, var(--dl-accent) 40%, var(--dl-border));
     }
   }
 
@@ -98,7 +104,7 @@ const features = computed(() =>
   &__card-desc {
     @apply text-sm leading-relaxed;
 
-    color: $dl-text-muted;
+    color: var(--dl-text-muted);
   }
 }
 

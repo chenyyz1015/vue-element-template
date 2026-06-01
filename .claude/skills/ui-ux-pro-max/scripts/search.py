@@ -3,8 +3,8 @@
 """
 UI/UX Pro Max Search - BM25 search engine for UI/UX style guides
 Usage: python search.py "<query>" [--domain <domain>] [--stack <stack>] [--max-results 3]
-       python search.py "<query>" --design-system [-p "Project Name"]
-       python search.py "<query>" --design-system --persist [-p "Project Name"] [--page "dashboard"]
+       python search.py "<query>" --design-system [-p "<VITE_APP_NAME>"]
+       python search.py "<query>" --design-system --persist [-p "<VITE_APP_NAME>"] [--page "dashboard"]
 
 Domains: style, prompt, color, chart, landing, product, ux, typography
 Stacks: html-tailwind, react, nextjs
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     # Design system generation
     parser.add_argument("--design-system", "-ds", action="store_true", help="Generate complete design system recommendation")
-    parser.add_argument("--project-name", "-p", type=str, default=None, help="Project name for design system output")
+    parser.add_argument("--project-name", "-p", type=str, default=None, help="Project name (use .env VITE_APP_NAME) for design system output")
     parser.add_argument("--format", "-f", choices=["ascii", "markdown"], default="ascii", help="Output format for design system")
     # Persistence (Master + Overrides pattern)
     parser.add_argument("--persist", action="store_true", help="Save design system to design-system/MASTER.md (creates hierarchical structure)")
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             print("\n" + "=" * 60)
             print(f"✅ Design system persisted to {base}/")
             print(f"   📄 {base}/MASTER.md (Global Source of Truth)")
-            print(f"   📄 {base}/PROJECT.md (displayName for -p; update when renaming project)")
+            print(f"   📄 {base}/PROJECT.md (VITE_APP_NAME for -p; update .env.* when renaming project)")
             if has_theme:
                 print("   📄 design-system/THEME.md (Runtime theme — useThemeColor / useThemeMode)")
             if args.page:
@@ -102,7 +102,7 @@ if __name__ == "__main__":
             print("")
             print("📖 Usage: When building a page, check design-system/pages/[page].md first.")
             print("   If exists, its rules override MASTER.md. Otherwise, use MASTER.md.")
-            print("   -p: use displayName from design-system/PROJECT.md (or VITE_APP_TITLE).")
+            print("   -p: use VITE_APP_NAME from .env.* (see design-system/PROJECT.md).")
             if has_theme:
                 print("   Pencil keys: color-primary-ep (L2), color-accent-devtools (L1).")
             print("=" * 60)

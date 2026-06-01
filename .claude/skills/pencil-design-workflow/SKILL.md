@@ -67,7 +67,7 @@ python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product> <keywords>" --
 持久化（推荐，跨会话复用）：
 
 ```bash
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<displayName>" --page "<page-name>"
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system --persist -p "<appName>" --page "<page-name>"
 ```
 
 产出路径：`design-system/MASTER.md`、`design-system/pages/<page>.md`。
@@ -144,7 +144,7 @@ design/
 ### 3.1 实现顺序
 
 1. 读 `design-system/pages/<page>.md`（若有）+ brief + Pencil `batch_get` 结构
-2. 遵循项目约定：`<script setup lang="ts">`、kebab-case 目录、`devtools-layout` 等现有模式
+2. 遵循项目约定：`<script setup lang="ts">`、kebab-case 目录、`default-layout` 等现有模式
 3. i18n 文案写入 `src/i18n/locales/`（数组用 `tm()`，`@` 用 `\\@`）
 4. 用 UnoCSS 工具类映射 Pencil 色值与间距
 
@@ -155,7 +155,7 @@ design/
 - Pencil 变量 → CSS / UnoCSS arbitrary values / SCSS 变量
 - Frame → `<section>` 或 layout 插槽
 - Reusable component → `src/components/com-*` 或页面 `components/*.vue`
-- Text styles → `devtools-heading` + 字号 utility
+- Text styles → `landing-heading` + 字号 utility（或 `@include dl-heading-*`）
 
 ### 3.3 Code → Pencil（反向同步）
 

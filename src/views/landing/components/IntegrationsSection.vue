@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { DEVTOOLS_SECTION_IDS, INTEGRATION_ITEMS } from "../constants";
+import { INTEGRATION_ITEMS, LANDING_SECTION_IDS } from "../constants";
 
 const { t } = useI18n();
 </script>
 
 <template>
   <section
-    :id="DEVTOOLS_SECTION_IDS.integrations"
+    :id="LANDING_SECTION_IDS.integrations"
     class="integrations l-section"
   >
     <div class="integrations__inner l-container">
       <header class="integrations__header l-section-header">
         <p class="integrations__eyebrow">
-          {{ t("devtools.integrations.eyebrow") }}
+          {{ t("landing.integrations.eyebrow") }}
         </p>
         <h2 class="integrations__title">
-          {{ t("devtools.integrations.title") }}
+          {{ t("landing.integrations.title") }}
         </h2>
         <p class="integrations__subtitle">
-          {{ t("devtools.integrations.subtitle") }}
+          {{ t("landing.integrations.subtitle") }}
         </p>
       </header>
 
@@ -50,6 +50,8 @@ const { t } = useI18n();
 @use "../styles/mixins" as *;
 
 .integrations {
+  @include dl-section-surface;
+
   &__eyebrow {
     @include dl-eyebrow;
   }
@@ -69,11 +71,11 @@ const { t } = useI18n();
   &__item {
     @apply flex cursor-default flex-col items-center gap-3 rounded-xl border p-5 transition-all duration-200;
 
-    border-color: $dl-border;
-    background-color: $dl-surface;
+    border-color: var(--dl-border, #{$dl-border});
+    background-color: var(--dl-bg, #{$dl-bg});
 
     &:hover {
-      background-color: rgb(51 65 85 / 30%);
+      background-color: var(--dl-hover, rgb(0 0 0 / 3%));
     }
   }
 
@@ -88,7 +90,7 @@ const { t } = useI18n();
   &__item-label {
     @apply text-sm font-medium;
 
-    color: $dl-text;
+    color: var(--dl-text, #{$dl-text});
   }
 }
 

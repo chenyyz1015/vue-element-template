@@ -13,6 +13,7 @@ node_modules
 # Build
 dist
 dist-ssr
+design
 *.local
 types/**/*
 .eslintrc-auto-import.json

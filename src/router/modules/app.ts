@@ -5,7 +5,7 @@ export const publicAppRoutes: AppRouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/views/devtools-landing/index.vue"),
+    component: () => import("@/views/landing/index.vue"),
     meta: { titleKey: "route.home", icon: "home", requiresAuth: false },
   },
   {

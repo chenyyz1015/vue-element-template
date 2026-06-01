@@ -3,7 +3,7 @@ import type { ComparisonColumn } from "../constants";
 import {
   COMPARISON_COLUMNS,
   COMPARISON_ROW_KEYS,
-  DEVTOOLS_SECTION_IDS,
+  LANDING_SECTION_IDS,
 } from "../constants";
 
 const { t } = useI18n();
@@ -11,7 +11,7 @@ const { t } = useI18n();
 const columns = computed(() =>
   COMPARISON_COLUMNS.map((key) => ({
     key,
-    label: t(`devtools.compare.columns.${key}`),
+    label: t(`landing.compare.columns.${key}`),
     highlighted: key === "template",
   }))
 );
@@ -19,10 +19,10 @@ const columns = computed(() =>
 const rows = computed(() =>
   COMPARISON_ROW_KEYS.map((key) => ({
     key,
-    label: t(`devtools.compare.rows.${key}`),
+    label: t(`landing.compare.rows.${key}`),
     values: COMPARISON_COLUMNS.reduce(
       (acc, col) => {
-        acc[col] = t(`devtools.compare.values.${key}.${col}`);
+        acc[col] = t(`landing.compare.values.${key}.${col}`);
         return acc;
       },
       {} as Record<ComparisonColumn, string>
@@ -51,17 +51,17 @@ const cellModifier = (value: string, highlighted: boolean) => {
 </script>
 
 <template>
-  <section :id="DEVTOOLS_SECTION_IDS.compare" class="compare l-section">
+  <section :id="LANDING_SECTION_IDS.compare" class="compare l-section">
     <div class="compare__inner l-container">
       <header class="compare__header l-section-header">
         <p class="compare__eyebrow">
-          {{ t("devtools.compare.eyebrow") }}
+          {{ t("landing.compare.eyebrow") }}
         </p>
         <h2 class="compare__title">
-          {{ t("devtools.compare.title") }}
+          {{ t("landing.compare.title") }}
         </h2>
         <p class="compare__subtitle">
-          {{ t("devtools.compare.subtitle") }}
+          {{ t("landing.compare.subtitle") }}
         </p>
       </header>
 
@@ -70,7 +70,7 @@ const cellModifier = (value: string, highlighted: boolean) => {
           <thead>
             <tr class="compare-table__head-row">
               <th class="compare-table__head-feature" scope="col">
-                {{ t("devtools.compare.featureCol") }}
+                {{ t("landing.compare.featureCol") }}
               </th>
               <th
                 v-for="col in columns"
@@ -150,8 +150,8 @@ const cellModifier = (value: string, highlighted: boolean) => {
 .compare-table {
   @apply overflow-x-auto rounded-xl border;
 
-  border-color: $dl-border;
-  background-color: $dl-surface;
+  border-color: var(--dl-border, #{$dl-border});
+  background-color: var(--dl-surface, #{$dl-surface});
 
   &__table {
     @apply min-w-160 w-full border-collapse text-left text-sm;
@@ -160,74 +160,77 @@ const cellModifier = (value: string, highlighted: boolean) => {
   &__head-row {
     @apply border-b;
 
-    border-color: $dl-border;
+    border-color: var(--dl-border, #{$dl-border});
   }
 
   &__head-feature {
     @apply px-4 py-4 font-medium;
 
-    color: $dl-text-muted;
+    color: var(--dl-text-muted, #{$dl-text-muted});
   }
 
   &__head-col {
     @apply px-4 py-4 font-semibold;
 
-    color: $dl-text;
+    color: var(--dl-text, #{$dl-text});
 
     &--highlighted {
-      @apply bg-[#22C55E]/10;
-
-      color: $dl-accent;
+      background-color: color-mix(in srgb, var(--dl-accent) 12%, transparent);
+      color: var(--dl-accent);
     }
   }
 
   &__row {
-    @apply border-b transition-colors duration-200 last:border-b-0 hover:bg-[#0F172A]/50;
+    @apply border-b transition-colors duration-200 last:border-b-0;
 
-    border-color: $dl-border;
+    border-color: var(--dl-border, #{$dl-border});
+
+    &:hover {
+      background-color: var(--dl-hover, rgb(0 0 0 / 3%));
+    }
 
     &--even {
-      background-color: $dl-surface;
+      background-color: var(--dl-bg, #{$dl-bg});
     }
 
     &--odd {
-      background-color: rgb(30 41 59 / 80%);
+      background-color: var(--dl-surface, #{$dl-surface});
     }
   }
 
   &__feature {
     @apply px-4 py-3.5 font-medium;
 
-    color: $dl-text;
+    color: var(--dl-text, #{$dl-text});
   }
 
   &__cell {
     @apply px-4 py-3.5 text-center font-mono;
 
     &--col-highlighted {
-      @apply bg-[#22C55E]/5;
+      background-color: color-mix(in srgb, var(--dl-accent) 8%, transparent);
     }
 
     &--yes {
-      color: $dl-accent-hover;
+      color: var(--dl-accent, #{$dl-accent});
     }
 
     &--yes-highlight {
       @apply font-semibold;
 
-      color: $dl-accent;
+      color: var(--dl-accent, #{$dl-accent});
     }
 
     &--partial {
-      color: #ffcb6b;
+      color: var(--dl-accent-hover);
     }
 
     &--no {
-      color: $dl-text-dim;
+      color: var(--dl-text-dim, #{$dl-text-dim});
     }
 
     &--text {
-      color: $dl-text-muted;
+      color: var(--dl-text-muted, #{$dl-text-muted});
     }
   }
 }

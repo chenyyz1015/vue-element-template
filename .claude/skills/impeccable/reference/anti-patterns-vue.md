@@ -16,7 +16,7 @@ Impeccable 通用反模式之外，本项目 Phase 4 额外检查：
 | 10 | 组件顺序非 script → template → style | 遵循 code-style |
 | 11 | 页面/布局目录非 kebab-case + index.vue | 遵循目录规范 |
 | 12 | 公共组件非 com-* / biz-* 前缀 | 遵循命名规范 |
-| 13 | 新页面未使用 devtools-layout | 与 `/`、`/demo`、`/about` 一致 |
+| 13 | 新页面未使用 default-layout | 与 `/`、`/demo`、`/about` 一致 |
 | 14 | UnoCSS 色值与 DESIGN.md / MASTER.md 漂移 | 对齐 token |
 | 15 | 页面自建明暗/主色 storage 或重复换肤逻辑 | 使用 `useThemeMode` / `useThemeColor` |
 | 16 | Element Plus 主色写死 hex | `var(--el-color-primary)` 或 EP 组件默认 |

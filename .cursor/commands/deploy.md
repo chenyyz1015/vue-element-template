@@ -16,7 +16,8 @@ argument-hint: [environment]
 
 | 变量                  | 说明                         | 默认值                    | 适用范围              |
 | ------------------- | -------------------------- | ---------------------- | ------------------- |
-| `VITE_APP_TITLE`    | 应用标题（与 `PROJECT.md` displayName 对齐） | 见 `.env.*` | 全部 env 文件           |
+| `VITE_APP_NAME`     | 项目名（`ui-ux-pro-max -p`）                 | 见 `.env.*` | 全部 env 文件           |
+| `VITE_APP_TITLE`    | 应用展示标题（与 i18n `app.title` 对齐）     | 见 `.env.*` | 全部 env 文件           |
 | `VITE_API_BASE_URL` | API 基础地址                   | `/api`                 | 全部 env 文件           |
 | `VITE_API_TIMEOUT`  | 请求超时（毫秒）                   | `60_000`               | 全部 env 文件           |
 | `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | 见 `.env.development` | 仅 `.env.development` |

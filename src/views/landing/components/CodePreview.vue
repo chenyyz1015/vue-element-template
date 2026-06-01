@@ -8,7 +8,7 @@ const activeTab = ref<CodeTabKey>("cli");
 const tabs = computed(() =>
   CODE_TAB_KEYS.map((key) => ({
     key,
-    label: t(`devtools.code.tabs.${key}`),
+    label: t(`landing.code.tabs.${key}`),
   }))
 );
 </script>
@@ -29,7 +29,7 @@ const tabs = computed(() =>
         aria-hidden="true"
       />
       <span class="code-preview__filename">
-        {{ t(`devtools.code.filename.${activeTab}`) }}
+        {{ t(`landing.code.filename.${activeTab}`) }}
       </span>
     </div>
 
@@ -52,7 +52,7 @@ const tabs = computed(() =>
 
     <pre class="code-preview__body" aria-label="Code preview"><code
         v-if="activeTab === 'cli'"
-      ><span class="syn-comment"># {{ t('devtools.code.cli.comment') }}</span>
+      ><span class="syn-comment"># {{ t('landing.code.cli.comment') }}</span>
 <span class="syn-builtin">npm</span> <span class="syn-property">create</span> <span class="syn-string">vue-element-template</span> <span class="syn-property">my-app</span>
 <span class="syn-builtin">cd</span> <span class="syn-property">my-app</span>
 <span class="syn-builtin">npm</span> <span class="syn-property">install</span>
@@ -67,7 +67,7 @@ const tabs = computed(() =>
 <span class="syn-keyword">const</span> <span class="syn-punctuation">&#123;</span> <span class="syn-property">t</span> <span class="syn-punctuation">&#125;</span> <span class="syn-operator">=</span> <span class="syn-function">useI18n</span><span class="syn-punctuation">(</span><span class="syn-punctuation">)</span>
 
 <span class="syn-keyword">onMounted</span><span class="syn-punctuation">(</span><span class="syn-punctuation">(</span><span class="syn-punctuation">)</span> <span class="syn-operator">=&gt;</span> <span class="syn-punctuation">&#123;</span>
-  <span class="syn-property">ElMessage</span><span class="syn-punctuation">.</span><span class="syn-function">success</span><span class="syn-punctuation">(</span><span class="syn-function">t</span><span class="syn-punctuation">(</span><span class="syn-string">'home.startupSuccess'</span><span class="syn-punctuation">)</span><span class="syn-punctuation">)</span>
+  <span class="syn-property">ElMessage</span><span class="syn-punctuation">.</span><span class="syn-function">success</span><span class="syn-punctuation">(</span><span class="syn-function">t</span><span class="syn-punctuation">(</span><span class="syn-string">'landing.code.cli.startupSuccess'</span><span class="syn-punctuation">)</span><span class="syn-punctuation">)</span>
 <span class="syn-punctuation">&#125;</span><span class="syn-punctuation">)</span></code></pre>
   </div>
 </template>
@@ -78,14 +78,14 @@ const tabs = computed(() =>
 .code-preview {
   @apply overflow-hidden rounded-xl border shadow-2xl;
 
-  border-color: $dl-border;
-  background-color: $dl-surface;
+  border-color: var(--dl-border, #{$dl-border});
+  background-color: var(--dl-surface, #{$dl-surface});
 
   &__chrome {
     @apply flex items-center gap-2 border-b px-4 py-3;
 
-    border-color: $dl-border;
-    background-color: $dl-bg;
+    border-color: var(--dl-border, #{$dl-border});
+    background-color: var(--dl-bg, #{$dl-bg});
   }
 
   &__dot {
@@ -107,31 +107,29 @@ const tabs = computed(() =>
   &__filename {
     @apply ml-2 text-xs font-mono;
 
-    color: $dl-text-dim;
+    color: var(--dl-text-dim, #{$dl-text-dim});
   }
 
   &__tabs {
     @apply flex flex-wrap gap-1 border-b px-2 py-2;
 
-    border-color: $dl-border;
+    border-color: var(--dl-border, #{$dl-border});
   }
 
   &__tab {
     @apply cursor-pointer rounded-md border-none px-3 py-1.5 text-xs font-mono transition-colors duration-200;
 
     background-color: transparent;
-    color: $dl-text-muted;
+    color: var(--dl-text-muted, #{$dl-text-muted});
 
     &:hover {
-      @apply bg-[#334155]/50;
-
-      color: $dl-text;
+      background-color: var(--dl-hover, rgb(0 0 0 / 5%));
+      color: var(--dl-text, #{$dl-text});
     }
 
     &--active {
-      @apply bg-[#334155];
-
-      color: $dl-accent;
+      background-color: var(--dl-surface, #{$dl-surface});
+      color: var(--dl-text, #{$dl-text});
     }
   }
 

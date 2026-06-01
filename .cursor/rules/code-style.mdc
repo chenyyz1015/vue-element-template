@@ -7,6 +7,7 @@ alwaysApply: true
 
 - 使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：script → template → style
+- 单文件组件宜 **≤300 行**（含 style）；超出则拆子组件、`useXxx.ts` / `helpers.ts` 或 `styles/` partial（见 `.claude/rules/code-style.md`）
 - 公共/页面/布局组件：kebab-case 目录 + `index.vue`
 - 非业务公共组件：`com-` 前缀；业务公共组件：`biz-` 前缀
 - 页面/布局私有子组件：PascalCase，放同级 `components/` 目录，手动 import

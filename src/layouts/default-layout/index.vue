@@ -1,24 +1,31 @@
 <script setup lang="ts">
-import DevToolsFooter from "./components/DevToolsFooter.vue";
-import DevToolsNav from "./components/DevToolsNav.vue";
+import DefaultFooter from "./components/DefaultFooter.vue";
+import DefaultNav from "./components/DefaultNav.vue";
 </script>
 
 <template>
-  <div
-    class="devtools-layout min-h-screen bg-[#0F172A] text-[#F8FAFC] font-[DM_Sans,sans-serif]"
-  >
-    <DevToolsNav />
-    <main class="pt-24">
+  <div class="default-layout">
+    <DefaultNav />
+    <main class="default-layout__main">
       <slot />
     </main>
-    <DevToolsFooter />
+    <DefaultFooter />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.devtools-layout {
-  :deep(.devtools-heading) {
-    font-family: "Space Grotesk", sans-serif;
+.default-layout {
+  min-height: 100vh;
+  font-family: var(--dl-font-body);
+  background-color: var(--dl-bg);
+  color: var(--dl-text);
+
+  &__main {
+    @apply pt-20;
+  }
+
+  :deep(.landing-heading) {
+    font-family: var(--dl-font-heading);
   }
 
   :deep(.syn-keyword) {

@@ -50,6 +50,11 @@ async function fetchData() {
 - 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
 - Props 使用 `defineProps` + TypeScript 类型
 - Emits 使用 `defineEmits` + 类型声明
+- **体量**：单文件组件（含 `<script>`、`<template>`、`<style>`）**宜控制在约 300 行以内**，优先保证可读性；超出时按职责拆分，而非堆叠注释或折叠大块代码
+- **拆分顺序**（可组合使用）：
+  1. 页面/布局私有子组件 → 同级 `components/`（PascalCase，手动 import）
+  2. 可复用逻辑 → 同级 `useXxx.ts` / `helpers.ts`（布局、页面目录下，手动 import；跨页面复用放 `src/composables/`）
+  3. 样式过长 → 同级 `styles/` 下 SCSS partial（`@use` / `@forward`），或按区块拆分子组件各自 scoped 样式
 - **类名**：模板采用 **BEM**；布局层可用 **SMACSS** `l-*`；外观 token 见 **OOCSS** 约定。原子样式在 `<style lang="scss" scoped>` 内用 `@apply` 注入，禁止在模板堆叠长串 utility。详见 `.claude/rules/css-naming.md`
 
 ### 单文件组件模板
@@ -100,13 +105,16 @@ src/components/
 
 ```
 src/views/
-├── home/
-│   └── index.vue
+├── landing/
+│   ├── index.vue
+│   ├── constants.ts
+│   ├── components/           # HeroSection.vue 等
+│   └── styles/               # _mixins.scss、_tokens.scss
 └── about/
     ├── index.vue
     ├── constants.ts
     └── components/
-        └── TechStackTable.vue  # PascalCase，手动引入
+        └── TechStackGrid.vue   # PascalCase，手动引入
 ```
 
 ### 布局组件（`src/layouts/`）
@@ -118,10 +126,12 @@ src/views/
 
 ```
 src/layouts/
-└── devtools-layout/
+└── default-layout/
     ├── index.vue
+    ├── useSiteHeaderNav.ts      # 布局级导航逻辑（手动 import）
     └── components/
-        └── DevToolsNav.vue      # PascalCase，手动引入
+        ├── DefaultNav.vue         # 桌面顶栏
+        └── DefaultNavMobileMenu.vue
 ```
 
 ## 内置工具
@@ -401,7 +411,7 @@ export const useAppStore = defineStore(
 | 业务公共组件        | kebab-case 目录 + `index.vue`，`biz-` 前缀 | `components/biz-order-card/index.vue`    |
 | 页面                | kebab-case 目录 + `index.vue`              | `views/user-profile/index.vue`           |
 | 页面/布局私有子组件 | PascalCase `.vue`，放 `components/` 子目录 | `views/about/components/TechStackTable.vue` |
-| 布局                | kebab-case 目录 + `index.vue`              | `layouts/devtools-layout/index.vue`       |
+| 布局                | kebab-case 目录 + `index.vue`              | `layouts/default-layout/index.vue`        |
 | 辅助文件            | camelCase 或语义化命名，与组件同级         | `types.ts`、`constants.ts`、`helpers.ts` |
 | Composable          | camelCase 文件名，use 前缀，箭头函数导出   | `composables/useLocale.ts`               |
 | Store 模块          | kebab-case 文件名，use 前缀箭头函数导出   | `stores/modules/user-profile.ts` → `useUserProfileStore` |

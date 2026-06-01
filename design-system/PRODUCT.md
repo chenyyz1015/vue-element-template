@@ -1,6 +1,6 @@
 # Product Context
 
-> 项目展示名与包名见 [`PROJECT.md`](./PROJECT.md)。二次定制后请同步更新本文件中的用户/品牌描述。
+> 项目名（`VITE_APP_NAME`）与标识说明见 [`PROJECT.md`](./PROJECT.md)。二次定制后请同步更新本文件中的用户/品牌描述。
 
 ## Register
 
@@ -37,7 +37,7 @@ product
 
 | File | Role |
 |------|------|
-| `design-system/PROJECT.md` | displayName / packageName（二次定制时先改） |
+| `design-system/PROJECT.md` | `VITE_APP_NAME` / 缓存前缀（二次定制时先改 `.env.*`） |
 | `design-system/DESIGN.md` | Visual tokens (Impeccable DESIGN context) |
 | `design-system/THEME.md` | Runtime theme: EP 主色阶、明暗模式、Composable、工作流同步 |
 | `design-system/MASTER.md` | ui-ux-pro-max generated system (when present, overrides DESIGN) |
