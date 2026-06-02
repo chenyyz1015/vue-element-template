@@ -11,7 +11,8 @@
 - 🎨 Element Plus — 企业级 UI 组件库
 - 🌍 vue-i18n — 国际化（Composition API + TypeScript 类型推导）
 - 🎯 UnoCSS — 原子化 CSS
-- 🌐 Axios — HTTP 请求封装
+- 🌐 Axios — HTTP 请求封装（失败可上报 Sentry，`skipSentryReport` 可按请求关闭）
+- 📊 Sentry — 异常监控（`@sentry/vue`，配置见环境变量）
 - 🧩 VueUse / dayjs — 内置并 auto-import
 - 📦 lodash-es — 内置，按需手动 import（tree-shaking）
 - 🖼️ unplugin-svg-component — `src/assets/icons` SVG 图标组件
@@ -310,8 +311,30 @@ setLocale("zh-CN");
 | `VITE_API_BASE_URL`  | API 基础地址                                            | `/api`                                                                                    | 全部 env 文件         |
 | `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                        | `60_000`                                                                                  | 全部 env 文件         |
 | `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
+| `VITE_SENTRY_ENABLED` | 是否启用 Sentry（须同时配置有效 `VITE_SENTRY_DSN`） | 开发 `false`，stage/production `true` | 全部 env 文件 |
+| `VITE_SENTRY_DSN` | Sentry DSN（敏感项，建议写在 `.env.*.local`） | 空 | 全部 env 文件 |
+| `VITE_SENTRY_ENVIRONMENT` | Sentry 上报环境标识 | `development` / `stage` / `production` | 全部 env 文件 |
+| `VITE_SENTRY_RELEASE` | Release 版本（与 Source Map 上传、事件聚类一致） | 见 `.env.*` | 全部 env 文件 |
+| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1） | 开发 `0`，stage/production `0.1` | 全部 env 文件 |
+| `VITE_SENTRY_PROJECT_SLUG` | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*` | 全部 env 文件 |
+
+**构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
+
+| 变量 | 说明 | 配置位置 |
+|------|------|----------|
+| `SENTRY_UPLOAD_SOURCEMAPS` | 为 `true` 时生成 `hidden` sourcemap 并上传 | `.env.sentry-build-plugin` 或 CI |
+| `SENTRY_AUTH_TOKEN` | Organization Auth Token（UI 固定 `org:ci`，仅构建上传） | 同上（勿提交仓库） |
+| `SENTRY_RESOLVE_AUTH_TOKEN` | User Auth Token（`event:write`，`npm run sentry:resolve`） | `.env.sentry-resolve.local`（见 example） |
+| `SENTRY_ORG` | 组织 slug | 同上 |
+| `SENTRY_URL` | 自托管 Sentry 根地址 | 同上 |
+| `VITE_SENTRY_RELEASE` | 须与运行时 SDK `release` 一致 | `.env.stage` / `.env.production` |
+| `VITE_SENTRY_PROJECT_SLUG` | 上传目标项目 | 同上 |
+
+复制 `.env.sentry-build-plugin.example` → `.env.sentry-build-plugin` 后填写（`SENTRY_AUTH_TOKEN`、`SENTRY_ORG`、`SENTRY_URL` 等）；`SENTRY_UPLOAD_SOURCEMAPS=true` 也可写在该文件或 `.env.production.local`。合并优先级：`.env.sentry-build-plugin` → `.env.production(.local)` → `process.env`（后者覆盖前者）。实现：`vite/helpers/sentry-build.ts`、`vite/plugins/plugin-sentry.ts`。
 
 开发环境 `vite.config.ts` 通过 `vite/helpers/parse.ts` 解析 `VITE_API_PROXY_MAP` 配置 dev server 代理（仅 `npm run dev` 生效）；stage / production 部署时需自行配置反向代理。部署流程见 `.claude/skills/deploy/SKILL.md`。
+
+Sentry：`src/sentry/` 初始化；HTTP/业务 `RequestError` 自动上报（`contexts.api_error`，`type: api_request_error`）。生产堆栈还原源码需开启上述 Source Map 上传。本地调试可在 `.env.development.local` 设置 `VITE_SENTRY_ENABLED=true` 与 DSN。修复闭环见 `.cursor/skills/sentry-fix-workflow/`；Issue Resolved：`npm run sentry:resolve` 需 **User Token**（`.env.sentry-resolve.local.example`），Organization Token 仅 `org:ci` 不能改 Issue 状态。
 
 ## License
 

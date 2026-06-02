@@ -15,6 +15,7 @@ export function setupRequestInterceptor() {
       config.skipAuth ??= false;
       config.skipBizCheck ??= false;
       config.cancelDuplicate ??= true;
+      config.skipSentryReport ??= false;
 
       if (!config.skipAuth) {
         const token = getToken();

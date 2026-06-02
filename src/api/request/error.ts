@@ -6,6 +6,7 @@ import type {
   RequestError,
 } from "../types/common";
 import axios from "axios";
+import { captureApiRequestError } from "@/sentry";
 import {
   HTTP_ERROR_MESSAGES,
   NETWORK_ERROR_MESSAGE,
@@ -87,12 +88,14 @@ export function handleHttpError(error: AxiosError<ApiErrorBody>): RequestError {
   if (code === "ECONNABORTED" || message?.includes("timeout")) {
     const requestError = createRequestError(TIMEOUT_ERROR_MESSAGE);
     showError(requestError.message, config);
+    captureApiRequestError(requestError, config);
     return requestError;
   }
 
   if (!response) {
     const requestError = createRequestError(NETWORK_ERROR_MESSAGE);
     showError(requestError.message, config);
+    captureApiRequestError(requestError, config);
     return requestError;
   }
 
@@ -101,18 +104,22 @@ export function handleHttpError(error: AxiosError<ApiErrorBody>): RequestError {
 
   if (status === 401) {
     handleUnauthorized(errorMessage);
-    return createRequestError(errorMessage, {
+    const requestError = createRequestError(errorMessage, {
       httpStatus: status,
       responseData: data,
       bizCode: data?.code,
     });
+    captureApiRequestError(requestError, config);
+    return requestError;
   }
 
   showError(errorMessage, config);
 
-  return createRequestError(errorMessage, {
+  const requestError = createRequestError(errorMessage, {
     httpStatus: status,
     responseData: data,
     bizCode: data?.code,
   });
+  captureApiRequestError(requestError, config);
+  return requestError;
 }

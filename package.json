@@ -13,11 +13,13 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . && stylelint \"src/**/*.{css,scss,vue}\"",
     "lint:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . --fix && stylelint \"src/**/*.{css,scss,vue}\" --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "sentry:resolve": "bash scripts/sentry-resolve.sh"
   },
   "dependencies": {
     "@ant-design/colors": "^8.0.1",
     "@element-plus/icons-vue": "^2.3.2",
+    "@sentry/vue": "^10.55.0",
     "@vueuse/core": "^14.3.0",
     "axios": "^1.13.5",
     "dayjs": "^1.11.21",
@@ -33,6 +35,7 @@
     "@antfu/eslint-config": "^9.0.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@sentry/vite-plugin": "^5.3.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.19.19",
     "@unocss/eslint-plugin": "^66.7.0",

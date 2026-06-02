@@ -31,6 +31,8 @@ export interface CustomRequestConfig extends AxiosRequestConfig {
   skipBizCheck?: boolean;
   /** 是否取消重复请求（相同 method + url + params），默认 true */
   cancelDuplicate?: boolean;
+  /** 是否跳过 Sentry 上报，默认 false */
+  skipSentryReport?: boolean;
 }
 
 /** 请求错误对象 */
@@ -59,6 +61,7 @@ declare module "axios" {
     skipAuth?: boolean;
     skipBizCheck?: boolean;
     cancelDuplicate?: boolean;
+    skipSentryReport?: boolean;
     /** 内部使用：重复请求取消控制器 */
     _abortController?: AbortController;
     /** 内部使用：请求唯一标识 */

@@ -7,7 +7,7 @@ alwaysApply: false
 # API 约定
 
 - 所有 HTTP 请求通过 `src/api/request/` 封装（Axios）
-- 支持 `showError` / `skipAuth` / `skipBizCheck` / `cancelDuplicate` 等扩展配置
+- 支持 `showError` / `skipAuth` / `skipBizCheck` / `cancelDuplicate` / `skipSentryReport` 等扩展配置
 - 业务接口按域拆分到 `src/api/modules/`
 - 类型定义放 `src/api/types/`，文件命名为 **模块名.d.ts**
 - 通用类型放 `common.d.ts`（ApiResponse、PageResult 等）

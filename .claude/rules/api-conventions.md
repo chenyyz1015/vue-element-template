@@ -45,6 +45,7 @@ src/api/
 | `skipAuth`        | `boolean` | `false` | 是否跳过 Token 注入      |
 | `skipBizCheck`    | `boolean` | `false` | 是否跳过业务 `code` 校验 |
 | `cancelDuplicate` | `boolean` | `true`  | 是否取消重复请求         |
+| `skipSentryReport`| `boolean` | `false` | 是否跳过 Sentry 异常上报 |
 
 ```typescript
 import { get, post, put, patch, del, upload, download } from "@/api/request";
@@ -54,6 +55,9 @@ const { data } = await get<User[]>("/users");
 
 // 静默请求（不弹错误提示）
 const { data } = await get("/users", { showError: false });
+
+// 不上报 Sentry（如心跳、轮询、预期内失败）
+await get("/health", { showError: false, skipSentryReport: true });
 
 // 公开接口（无需 Token）
 await post("/auth/login", body, { skipAuth: true });
@@ -74,6 +78,8 @@ const blob = await download("/export/users");
 - `httpStatus` — HTTP 状态码
 - `responseData` — 原始响应体
 - `canceled` — 是否为取消的请求
+
+HTTP/业务失败（非取消、且未设 `skipSentryReport`）会自动经 `captureApiRequestError` 上报 Sentry，载荷 `contexts.api_error`（`type: api_request_error`）。配置见 `src/sentry/` 与 `VITE_SENTRY_*` 环境变量。`skipSentryReport` 与 `showError` 独立，可只关上报仍弹窗，或两者同时关闭。
 
 业务代码推荐从 `@/api` 或 `@/api/modules/xxx` 引入封装好的接口函数，而非直接调用 `get/post`。
 
@@ -186,6 +192,12 @@ async function fetchUsers() {
 | `VITE_API_BASE_URL` | API 基础路径                   | `/api`                 | `/api`（`constants.ts`）   | 全部 env 文件           |
 | `VITE_API_TIMEOUT`  | 请求超时（毫秒）                   | `60_000`               | `15_000`（`constants.ts`） | 全部 env 文件           |
 | `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | 见 `.env.development` | —                          | 仅 `.env.development` |
+| `VITE_SENTRY_ENABLED` | 是否启用 Sentry（须同时配置有效 DSN） | 开发 `false`，stage/production `true` | — | 全部 env 文件 |
+| `VITE_SENTRY_DSN` | Sentry DSN（敏感项建议放 `*.local`） | 空 | — | 全部 env 文件 |
+| `VITE_SENTRY_ENVIRONMENT` | 上报环境标识 | `development` / `stage` / `production` | — | 全部 env 文件 |
+| `VITE_SENTRY_RELEASE` | Release 版本（可选） | 空 | — | 全部 env 文件 |
+| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率 0–1 | 开发 `0`，stage/production `0.1` | — | 全部 env 文件 |
+| `VITE_SENTRY_PROJECT_SLUG` | Sentry 项目 slug（MCP；默认同 `VITE_APP_NAME`） | 空 | — | 全部 env 文件 |
 
 开发环境代理（`vite.config.ts` + `vite/helpers/parse.ts`，仅 `npm run dev` 生效）：
 
@@ -203,6 +215,8 @@ VITE_API_PROXY_MAP=[["/api","http://localhost:8080","/api"],["/upload","http://l
 ```
 
 stage / production 构建后需在 Nginx 或 CDN 层配置 `/api` 反向代理。
+
+Sentry 见 `src/sentry/`；与 `VITE_SENTRY_*` 及请求级 `skipSentryReport` 说明见上文「错误对象 `RequestError`」段落。
 
 ## 命名约定
 

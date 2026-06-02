@@ -1,21 +1,23 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import SvgIcon from "~virtual/svg-component";
 import { directivesPlugin } from "@/directives";
+import { initSentry } from "@/sentry";
 import { initThemePrimaryColor } from "@/utils/theme-color";
 import { initThemeMode } from "@/utils/theme-mode";
 import App from "./App.vue";
-import { i18n } from "./i18n";
 
+import { i18n } from "./i18n";
 import router from "./router";
 import { persistedState } from "./stores/persisted-state";
 import "@/styles/index.scss";
 import "virtual:uno.css";
 
 const bootstrap = () => {
+  const app = createApp(App);
+
   initThemeMode();
   initThemePrimaryColor();
-
-  const app = createApp(App);
+  initSentry(app);
 
   const pinia = createPinia();
   pinia.use(persistedState);

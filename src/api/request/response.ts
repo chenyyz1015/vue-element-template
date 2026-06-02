@@ -1,5 +1,6 @@
 import type { AxiosResponse } from "axios";
 import type { ApiResponse } from "../types/common";
+import { captureApiRequestError } from "@/sentry";
 import {
   SUCCESS_CODES,
   UNAUTHORIZED_BIZ_CODES,
@@ -50,19 +51,23 @@ export function handleBizResponse<T>(
   if (isUnauthorizedBizCode(code)) {
     const errorMessage = getUnauthorizedMessage(message);
     handleUnauthorized(errorMessage);
-    throw createRequestError(errorMessage, {
+    const requestError = createRequestError(errorMessage, {
       bizCode: code,
       httpStatus: status,
       responseData: data,
     });
+    captureApiRequestError(requestError, config);
+    throw requestError;
   }
 
   const errorMessage = message || UNKNOWN_ERROR_MESSAGE;
   showError(errorMessage, config);
 
-  throw createRequestError(errorMessage, {
+  const requestError = createRequestError(errorMessage, {
     bizCode: code,
     httpStatus: status,
     responseData: data,
   });
+  captureApiRequestError(requestError, config);
+  throw requestError;
 }
