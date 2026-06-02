@@ -103,9 +103,12 @@ design/
 ├── briefs/           # 设计简报
 ├── pages/            # 页面级 .pen
 │   └── <page>.pen
-└── components/       # 组件级 .pen（可选）
-    └── <component>.pen
+├── components/       # 组件级 .pen（可选）
+│   └── <component>.pen
+└── scripts/          # 创建 / 初始化 / 批量生成 .pen 的脚本（kebab-case）
 ```
+
+**AI 边界**：新页面用 Pencil 出稿时，**创建 `.pen` 的生成脚本**（非 ui-ux-pro-max `search.py`）**仅**放 `design/scripts/`；禁止放在 `.claude/skills/`、项目根 `scripts/`、`vite/`、`src/`。优先 Pencil MCP；仅当需可重复或离线初始化时再写脚本。`design/` 除 `README.md` 外均为本地临时产物，**勿提交 Git**。见 `design/README.md`、`.claude/rules/ai-frontend-design.md`。
 
 `.pen` 为加密格式 — **禁止** Read/Grep；仅通过 Pencil MCP 访问。
 

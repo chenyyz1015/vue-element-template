@@ -168,7 +168,9 @@ node .claude/skills/impeccable/scripts/detect.mjs src/views/<page>/
 design/
 ├── briefs/           # 设计简报
 ├── pages/            # 页面级 .pen
-└── components/       # 组件级 .pen（可选）
+├── components/       # 组件级 .pen（可选）
+└── scripts/          # 创建 .pen 的生成脚本（本地临时，勿提交）
+# design/ 仅 README.md 入库，见 design/README.md
 design-system/
 ├── MASTER.md         # 全局 Design System
 ├── THEME.md          # 运行时主题（EP 主色 + 明暗 + 工作流同步）

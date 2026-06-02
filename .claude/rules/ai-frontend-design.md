@@ -54,13 +54,28 @@ node .claude/skills/impeccable/scripts/detect.mjs <target-path>
 
 ## 设计产物
 
-| 路径 | 说明 |
-| ---- | ---- |
-| `design-system/MASTER.md` | ui-ux-pro-max 战略 Design System（优先级最高） |
-| `design-system/THEME.md` | 运行时主题（EP 主色 + 明暗 + 各 Phase 同步） |
-| `design-system/pages/*.md` | 页面级 override |
-| `design/briefs/` | 页面简报 |
-| `design/pages/*.pen` | Pencil 稿（仅 MCP 访问） |
+| 路径 | 说明 | Git |
+| ---- | ---- | --- |
+| `design-system/MASTER.md` | ui-ux-pro-max 战略 Design System（优先级最高） | 是 |
+| `design-system/THEME.md` | 运行时主题（EP 主色 + 明暗 + 各 Phase 同步） | 是 |
+| `design-system/pages/*.md` | 页面级 override | 是 |
+| `design/README.md` | `design/` 目录约定 SSOT | 是 |
+| `design/briefs/` | 页面简报（本地临时） | 否 |
+| `design/pages/*.pen` | Pencil 稿（仅 MCP 访问，本地临时） | 否 |
+| `design/scripts/` | 创建 / 初始化 / 批量生成 `.pen` 的脚本（本地临时） | 否 |
+
+`design/` 下除 `README.md` 外均为临时产物，**禁止提交**；需持久化的设计结论写入 `design-system/`。见 `design/README.md`。
+
+## Pencil 生成脚本（AI 边界）
+
+**新需求、新页面使用 Pencil 创建视觉稿时**，用于创建或初始化 `*.pen` 的脚本（shell、Python、Node 等）**必须**放在 `design/scripts/`，文件名 kebab-case。
+
+- **允许**：`design/scripts/init-<page>-pen.mjs` 等与本项目 `.pen` 画布相关的脚本
+- **禁止**：将上述脚本放在 `.cursor/skills/`、`.claude/skills/`、项目根 `scripts/`、`vite/`、`src/`
+- **例外**：ui-ux-pro-max 的 `search.py` 仍在 Skill 目录，仅用于 Design System 检索，不用于创建 `.pen`
+- **优先**：Pencil MCP（`batch_design` 等）；仅当需可重复、离线或批量初始化时再写 `design/scripts/`
+
+目录说明：`design/README.md`
 
 ## 静态资源（`src/assets`）
 
@@ -117,3 +132,5 @@ import heroImg from "@/assets/images/landing/hero.webp";
 - Phase 3 未 build 通过就交付
 - 跳过 Phase 4 gate（除非用户豁免）
 - 直接 Read/Grep `.pen` 文件
+- 将创建 `.pen` 的生成脚本放在 `design/scripts/` 以外
+- 将 `design/` 临时产物（briefs、`.pen`、`scripts/` 等）提交 Git

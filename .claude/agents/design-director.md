@@ -48,6 +48,7 @@ tools: Read, Grep, Glob, Bash, Task
 - Stack: Vue 3 + Element Plus + UnoCSS
 - Phases: 1 ✓ / 2 ✓ / 3 ✓ / 4 ✓
 - Pencil path: design/pages/….pen
+- Pencil scripts（若需）: design/scripts/….（禁止放 skills / 根 scripts / src）
 - Vue path: src/views/… or src/components/com-…
 ```
 

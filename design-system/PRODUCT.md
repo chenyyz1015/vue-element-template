@@ -41,5 +41,7 @@ product
 | `design-system/DESIGN.md` | Visual tokens (Impeccable DESIGN context) |
 | `design-system/THEME.md` | Runtime theme: EP 主色阶、明暗模式、Composable、工作流同步 |
 | `design-system/MASTER.md` | ui-ux-pro-max generated system (when present, overrides DESIGN) |
-| `design/briefs/` | Per-page design briefs |
-| `design/pages/*.pen` | Pencil visual specs (MCP only) |
+| `design/README.md` | `design/` layout & AI boundaries (only tracked file under `design/`) |
+| `design/briefs/` | Per-page design briefs (local temp, not in Git) |
+| `design/pages/*.pen` | Pencil visual specs, MCP only (local temp) |
+| `design/scripts/` | Scripts to create/init `.pen` (local temp; not in skills or `src/`) |

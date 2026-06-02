@@ -19,5 +19,7 @@ alwaysApply: false
 - **Agents**：`.cursor/agents/design-director.md` · `design-inspector.md`
 - **Commands**：`.cursor/commands/audit.md` · `polish.md` · `critique.md`
 - **静态资源**：页面/组件媒体统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）；Pencil `export_nodes` 产出按类型落盘，Vue 用 `@/assets/...`
-- **禁止**：无 Brief 大规模写 UI · 跳过 Phase 4 · 直接 Read/Grep `.pen` · 在 `views/`/`components/` 下自建资源目录
+- **design/**：仅 `design/README.md` 入库；`briefs/`、`pages/`、`components/`、`scripts/` 为本地临时，勿提交
+- **Pencil 脚本**：创建 `.pen` 的生成脚本仅放 `design/scripts/`（勿放 skills / 根 `scripts/` / `src/`）；见 `design/README.md`
+- **禁止**：无 Brief 大规模写 UI · 跳过 Phase 4 · 直接 Read/Grep `.pen` · 在 `views/`/`components/` 下自建资源目录 · 提交 `design/` 临时文件
 - 详细规范见 `.claude/rules/ai-frontend-design.md`

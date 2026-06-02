@@ -192,7 +192,7 @@ Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md` + **`THEME.md`**
 | **design-director**  | 多页面/复杂任务：Phase 1–4 规划与分派 |
 | **design-inspector** | Phase 4：audit、critique、polish      |
 
-设计产物目录：`design/briefs/`、`design/pages/`、`design-system/`（含 **`PROJECT.md`**、`PRODUCT.md`、`DESIGN.md`、**`THEME.md`**；`MASTER.md` 由 ui-ux-pro-max persist 生成）。导航 `ThemeControls` 可验证主色/明暗。
+设计产物：`design-system/`（入库，含 **`PROJECT.md`**、`PRODUCT.md`、`DESIGN.md`、**`THEME.md`**；`MASTER.md` 由 ui-ux-pro-max persist 生成）；`design/` 仅 **`design/README.md`** 入库，`briefs/`、`pages/`、`scripts/` 等为本地临时（见 `design/README.md`）。导航 `ThemeControls` 可验证主色/明暗。
 
 命令：`/audit` `/polish` `/critique`（pinned）· `/impeccable <cmd>` · `.claude/commands/`
 
