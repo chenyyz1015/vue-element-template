@@ -2,6 +2,7 @@ import { cwd } from "node:process";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import {
+  manualChunks,
   mergeSentryEnv,
   parseProxy,
   resolveSentryBuildConfig,
@@ -18,7 +19,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     build: {
+      // element-plus 按需 + manualChunks 后 vendor 约 750kB，高于默认 500kB 阈值
+      chunkSizeWarningLimit: 800,
       sourcemap: sentryBuild.shouldGenerateSourcemap ? "hidden" : false,
+      rollupOptions: {
+        output: { manualChunks },
+      },
     },
     plugins: [...plugins, ...pluginSentry(sentryOptions)],
     resolve: {

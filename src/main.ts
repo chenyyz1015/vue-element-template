@@ -1,4 +1,3 @@
-import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import SvgIcon from "~virtual/svg-component";
 import { directivesPlugin } from "@/directives";
 import { initSentry } from "@/sentry";
@@ -27,10 +26,6 @@ const bootstrap = () => {
   app.use(router);
   app.use(directivesPlugin);
   app.component(SvgIcon.name ?? "SvgIcon", SvgIcon);
-
-  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component);
-  }
 
   app.mount("#app");
 };
