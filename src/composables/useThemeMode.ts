@@ -1,12 +1,10 @@
 import type { ThemeMode } from "@/utils/theme-mode";
 import { applyElementPlusPrimaryColor } from "@/utils/element-plus-theme";
-import {
-  DEFAULT_PRIMARY_COLOR,
-  getThemePrimaryColor,
-} from "@/utils/theme-color";
 import { getThemeModeStorage, THEME_MODE_KEY } from "@/utils/theme-mode";
 
-export const useThemeMode = () => {
+export const useThemeMode = createSharedComposable(() => {
+  const { primaryColor } = useThemeColor();
+
   const mode = useColorMode<ThemeMode>({
     attribute: "class",
     modes: {
@@ -29,8 +27,7 @@ export const useThemeMode = () => {
   };
 
   watch(mode, () => {
-    const color = getThemePrimaryColor() ?? DEFAULT_PRIMARY_COLOR;
-    applyElementPlusPrimaryColor(color);
+    applyElementPlusPrimaryColor(primaryColor.value);
   });
 
   return {
@@ -39,4 +36,4 @@ export const useThemeMode = () => {
     setMode,
     toggleMode,
   };
-};
+});

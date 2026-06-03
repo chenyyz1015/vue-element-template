@@ -11,7 +11,7 @@ const themeColorPresets: ThemeColorPreset[] = Object.entries(
   presetPrimaryColors
 ).map(([name, value]) => ({ name, value }));
 
-export const useThemeColor = () => {
+export const useThemeColor = createSharedComposable(() => {
   const primaryColor = ref(getThemePrimaryColor() ?? DEFAULT_PRIMARY_COLOR);
 
   const setPrimaryColor = (color: string) => {
@@ -33,4 +33,4 @@ export const useThemeColor = () => {
     presetColors: themeColorPresets,
     setPrimaryColor,
   };
-};
+});
