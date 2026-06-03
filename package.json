@@ -1,6 +1,6 @@
 {
   "name": "vue-element-template",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "基于 Vite + Vue 3 + TypeScript 的企业级前端项目模板，集成 Element Plus、Pinia、Axios 与 AI 开发工具配置",
   "private": true,
   "type": "module",
