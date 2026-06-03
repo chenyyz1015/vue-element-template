@@ -38,7 +38,7 @@ Thumbs.db
 .env.local
 .env.*.local
 .env.sentry-build-plugin
-.env.sentry-resolve.local
+.env.sentry-resolve
 
 # AI personal overrides (local only)
 CLAUDE.local.md
