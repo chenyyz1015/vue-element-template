@@ -27,16 +27,8 @@
 
 ```
 vite/
-├── helpers/                 # Vite 配置辅助函数（如 parseProxy）
-│   ├── parse.ts
-│   └── index.ts
+├── helpers/                 # Vite 配置辅助函数
 └── plugins/                 # Vite 插件（kebab-case 单文件）
-    ├── plugin-vue.ts
-    ├── unocss.ts
-    ├── unplugin-auto-import.ts
-    ├── unplugin-vue-components.ts
-    ├── unplugin-svg-component.ts
-    └── index.ts
 
 types/                       # 构建生成的类型声明
 ├── auto-imports.d.ts
@@ -47,26 +39,10 @@ src/
 ├── assets/                  # 静态资源：icons/ images/ fonts/ videos/ audio/
 │   └── icons/               # SVG（unplugin-svg-component → SvgIcon）
 ├── components/              # 公共组件（kebab-case 目录 + index.vue，auto-import）
-│   ├── com-hello-card/      # 非业务型（com- 前缀）
-│   └── com-page-header/
 ├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
-│   └── useLocale.ts         # 语言切换
 ├── i18n/                    # 国际化（locales、createI18n）
 ├── layouts/                 # 布局组件（kebab-case 目录 + index.vue，手动引入）
-│   └── default-layout/
-│       ├── index.vue
-│       ├── useSiteHeaderNav.ts
-│       └── components/      # DefaultNav、DefaultNavMobileMenu、DefaultFooter、ThemeControls
-├── router/                  # 主路由、守卫、constantRoutes
-│   ├── index.ts             # createRouter + setupRouterGuard
-│   ├── routes.ts            # 系统路由 + 公开业务路由
-│   ├── guard.ts             # 导航守卫（登录态 + RBAC）
-│   ├── helpers.ts           # 路由过滤、resetRouter
-│   ├── constants.ts
-│   ├── types.ts
-│   └── modules/             # 业务路由模块（kebab-case）
-│       ├── index.ts         # asyncRoutes 聚合
-│       └── *.ts             # 按业务域拆分
+├── router/                  # 全局路由
 ├── directives/              # 自定义指令（modules/ + index.ts → app.use）
 │   ├── index.ts             # directivesPlugin 统一注册
 │   └── modules/             # kebab-case，按业务功能划分（如 permission.ts）
@@ -74,35 +50,15 @@ src/
 ├── stores/                  # Pinia
 │   ├── persisted-state.ts   # 持久化插件配置 + Pinia key 生成
 │   └── modules/             # Store 模块（auto-import，kebab-case）
-│       └── app.ts
-│       ├── user.ts          # 登录态、roles、permissions
-│       └── permission.ts    # 动态路由生成
 ├── styles/                  # 全局样式
-│   ├── index.scss           # 引入 semantic-vars + Element Plus
-│   ├── theme/
-│   │   ├── page-semantic.scss   # 页面语义色 SCSS 源值（light/dark）
-│   │   └── semantic-vars.scss   # 全局 --dl-* CSS 变量
-│   └── element/
-│       ├── var.scss         # Element Plus 主题变量
-│       └── index.scss       # Element Plus base 样式
 ├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 通用工具函数
 │   ├── auth.ts              # Token 读写封装
 │   ├── locale.ts            # 语言偏好读写封装
-│   ├── permission.ts        # RBAC 匹配工具
+│   ├── permission.ts        # 权限匹配工具
 │   ├── dayjs.ts             # dayjs 预配置
 │   └── storage.ts           # 底层浏览器缓存封装
 └── views/                   # 页面组件（kebab-case 目录 + index.vue）
-    ├── landing/             # 首页（/），i18n 键 `landing.*`
-    │   ├── constants.ts
-    │   ├── components/      # HeroSection、FeaturesSection 等
-    │   └── styles/          # _mixins.scss、_tokens.scss（转发全局 theme）
-    ├── demo/
-    ├── about/
-    ├── login/
-    ├── admin/
-    └── …                    # forbidden、not-found 等
-        └── components/      # 页面私有子组件（PascalCase，手动引入）
 ```
 
 ### 组件命名规范
@@ -169,15 +125,6 @@ src/
 - 需持久化的 Store 在 `defineStore` 第三参数配置 `persist`
 - 仅持久化必要字段，临时 UI 状态（如 `loading`）使用 `pick` / `omit` 排除
 
-### 路由与 RBAC
-
-- 根目录 `src/router/` 存放主路由、守卫、常量路由；业务路由按模块放在 `src/router/modules/`（kebab-case）
-- **constantRoutes**：启动即注册（登录/403/404、公开页面）；**asyncRoutes**：登录后按权限动态 `addRoute`
-- Store：`useUserStore`（登录、roles、permissions）· `usePermissionStore`（动态路由）
-- Composable：`usePermission()` — `hasRole()` / `hasPermission()`
-- 按钮级：`v-permission` 指令（`app.use(directivesPlugin)`，见 `src/directives/`、`.claude/rules/directives.md`）
-- 详细约定见 `.claude/rules/router.md`
-
 ### 代码规范
 
 - 遵循 ESLint、Stylelint、Commitlint 规范
@@ -222,11 +169,11 @@ npm run lint:fix     # 自动修复 lint 问题
 
 本项目遵循 Claude Code 官方推荐的项目结构，并兼容 Cursor 等主流 AI 开发工具：
 
-| 工具        | 配置文件                                                                                 |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| Claude Code | `CLAUDE.md`、`.claude/`（`rules/`、`commands/`、`agents/`、`skills/`）                  |
-| Cursor      | `AGENTS.md`、`.cursor/rules/`、`.cursor/skills/`、`.cursor/agents/`、`.cursor/commands/` |
-| 设计 SSOT   | `design-system/`（`PROJECT.md`、`THEME.md`、`TOKENS.md`、`MASTER.md` 等）                |
+| 工具        | 配置文件                                                               |
+| ----------- | ---------------------------------------------------------------------- |
+| Claude Code | `CLAUDE.md`、`.claude/`（`rules/`、`commands/`、`agents/`、`skills/`） |
+| Cursor      | `AGENTS.md`、`.cursor/`（`rules/`、`commands/`、`agents/`、`skills/`） |
+| 设计 SSOT   | `design-system/`                                                       |
 
 ```
 design-system/          # 产品与视觉 SSOT（AI UI 工作流上下文）
@@ -244,37 +191,35 @@ design-system/          # 产品与视觉 SSOT（AI UI 工作流上下文）
 
 > **ui-ux-pro-max** 出策略 · **pencil** 出视觉与代码 · **impeccable** 保质量
 
-**二次定制**：项目名以 **`VITE_APP_NAME`**（`.env.*`）为准；`ui-ux-pro-max --persist -p` 与之保持一致，勿写死模板初始名称。标识说明见 `design-system/PROJECT.md`。
+**二次定制**：项目名以 **`VITE_APP_NAME`**（`.env.*`）为准；`ui-ux-pro-max --persist -p` 与之保持一致，勿写死模板初始名称
 
 | Phase           | Skill / 工具                                                                     |
 | --------------- | -------------------------------------------------------------------------------- |
-| 1 战略规划      | `.cursor/skills/ui-ux-pro-max/`                                                  |
-| 2–3 视觉 + 代码 | `.cursor/skills/pencil-design-workflow/` + Pencil MCP                            |
-| 4 质量          | `.cursor/skills/impeccable/SKILL.md` + `project-bridge.md` · `/impeccable <cmd>` |
+| 1 战略规划      | `.claude/skills/ui-ux-pro-max/`                                                  |
+| 2–3 视觉 + 代码 | `.claude/skills/pencil-design-workflow/` + Pencil MCP                            |
+| 4 质量          | `.claude/skills/impeccable/SKILL.md` + `project-bridge.md` · `/impeccable <cmd>` |
 
-主编排：`.cursor/skills/ai-frontend-design-workflow/SKILL.md`  
-项目标识：`design-system/PROJECT.md`  
-运行时主题：`design-system/THEME.md`（`useThemeColor` / `useThemeMode`，与 Phase 1–4 同步）  
+主编排：`.claude/skills/ai-frontend-design-workflow/SKILL.md`
 Agents：`design-director`（规划分派）· `design-inspector`（Phase 4 监工）
 
 ## 环境变量
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-| 变量                 | 说明                                                    | 默认值                                                                                    | 适用范围              |
-| -------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| `VITE_APP_NAME`      | 项目名（`ui-ux-pro-max -p`、宜与 `package.json` name 一致） | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_APP_TITLE`     | 应用展示标题（与 i18n `app.title` 对齐）                | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_GITHUB_URL`    | GitHub 仓库地址（导航/页脚/关于等外链）                 | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_API_BASE_URL`  | API 基础地址                                            | `/api`                                                                                    | 全部 env 文件         |
-| `VITE_API_TIMEOUT`   | 请求超时（毫秒）                                        | `60_000`                                                                                  | 全部 env 文件         |
-| `VITE_API_PROXY_MAP` | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`） | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
-| `VITE_SENTRY_ENABLED` | 是否启用 Sentry（须同时配置有效 DSN） | 开发 `false`，stage/production `true` | 全部 env 文件 |
-| `VITE_SENTRY_DSN` | Sentry DSN（敏感项建议放 `*.local`） | 空 | 全部 env 文件 |
-| `VITE_SENTRY_ENVIRONMENT` | 上报环境标识 | `development` / `stage` / `production` | 全部 env 文件 |
-| `VITE_SENTRY_RELEASE` | Release 版本（Source Map 上传与事件聚类须一致） | 见 `.env.*` | 全部 env 文件 |
-| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率 0–1 | 开发 `0`，stage/production `0.1` | 全部 env 文件 |
-| `VITE_SENTRY_PROJECT_SLUG` | Sentry 项目 slug（MCP / 构建上传；默认同 `VITE_APP_NAME`） | 见 `.env.*` | 全部 env 文件 |
+| 变量                             | 说明                                                        | 默认值                                                                                    | 适用范围              |
+| -------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
+| `VITE_APP_NAME`                  | 项目名（`ui-ux-pro-max -p`、宜与 `package.json` name 一致） | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_APP_TITLE`                 | 应用展示标题（与 i18n `app.title` 对齐）                    | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_GITHUB_URL`                | GitHub 仓库地址（导航/页脚/关于等外链）                     | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_API_BASE_URL`              | API 基础地址                                                | `/api`                                                                                    | 全部 env 文件         |
+| `VITE_API_TIMEOUT`               | 请求超时（毫秒）                                            | `60_000`                                                                                  | 全部 env 文件         |
+| `VITE_API_PROXY_MAP`             | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`）     | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
+| `VITE_SENTRY_ENABLED`            | 是否启用 Sentry（须同时配置有效 DSN）                       | 开发 `false`，stage/production `true`                                                     | 全部 env 文件         |
+| `VITE_SENTRY_DSN`                | Sentry DSN（敏感项建议放 `*.local`）                        | 空                                                                                        | 全部 env 文件         |
+| `VITE_SENTRY_ENVIRONMENT`        | 上报环境标识                                                | `development` / `stage` / `production`                                                    | 全部 env 文件         |
+| `VITE_SENTRY_RELEASE`            | Release 版本（Source Map 上传与事件聚类须一致）             | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率 0–1                                          | 开发 `0`，stage/production `0.1`                                                          | 全部 env 文件         |
+| `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；默认同 `VITE_APP_NAME`）  | 见 `.env.*`                                                                               | 全部 env 文件         |
 
 **构建期 Source Map**：`SENTRY_UPLOAD_SOURCEMAPS`、`SENTRY_AUTH_TOKEN`、`SENTRY_ORG`、`SENTRY_URL`（自托管必填）；模板 `.env.sentry-build-plugin.example`。插件 `vite/plugins/plugin-sentry.ts`；`build.sourcemap: "hidden"` 仅在上传开启时生效，上传后删除 `dist/**/*.map`。
 

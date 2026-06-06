@@ -6,7 +6,6 @@
 src/directives/
 ├── index.ts              # import.meta.glob 自动扫描 modules 并注册
 └── modules/              # 按业务功能划分，kebab-case 文件名
-    └── permission.ts     # 示例：v-permission
 ```
 
 - **modules/**：每个文件对应一个指令实现，文件名 **kebab-case**（如 `permission.ts` → `v-permission`）
@@ -22,14 +21,11 @@ src/directives/
 ```typescript
 // modules/permission.ts
 export default {
-  mounted(el, binding) { /* ... */ },
+  mounted(el, binding) {
+    /* ... */
+  },
 } satisfies Directive;
 ```
-
-## 与 RBAC 的关系
-
-- 按钮级权限：`v-permission`、`v-permission.all`（见 `modules/permission.ts`）
-- 逻辑依赖 `usePermission()`（auto-import），路由级权限见 `.claude/rules/router.md`
 
 ```vue
 <el-button v-permission="'demo:edit'">编辑</el-button>
@@ -39,4 +35,3 @@ export default {
 ## 注意
 
 - Composables / stores 在指令内可直接使用（已 auto-import），无需手动 import `usePermission` 等
-

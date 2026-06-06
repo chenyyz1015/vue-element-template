@@ -1,11 +1,7 @@
 /** 权限匹配模式：some 满足任一，every 满足全部 */
 export type PermissionMatchMode = "some" | "every";
 
-const matchValues = (
-  owned: string[],
-  required: string[],
-  mode: PermissionMatchMode
-): boolean => {
+const matchValues = (owned: string[], required: string[], mode: PermissionMatchMode): boolean => {
   if (!required.length) return true;
   if (!owned.length) return false;
 
@@ -15,11 +11,8 @@ const matchValues = (
 };
 
 /** 角色匹配 */
-export const matchRole = (
-  userRoles: string[],
-  requiredRoles?: string[],
-  mode: PermissionMatchMode = "some"
-): boolean => matchValues(userRoles, requiredRoles ?? [], mode);
+export const matchRole = (userRoles: string[], requiredRoles?: string[], mode: PermissionMatchMode = "some"): boolean =>
+  matchValues(userRoles, requiredRoles ?? [], mode);
 
 /** 权限码匹配 */
 export const matchPermission = (
@@ -32,25 +25,3 @@ export interface RouteAccessMeta {
   roles?: string[];
   permissions?: string[];
 }
-
-/** 路由 meta 级访问校验（roles 与 permissions 同时存在时为 AND） */
-export const canAccessByMeta = (
-  meta: RouteAccessMeta | undefined,
-  userRoles: string[],
-  userPermissions: string[],
-  roleMode: PermissionMatchMode = "some",
-  permissionMode: PermissionMatchMode = "some"
-): boolean => {
-  if (!meta?.roles?.length && !meta?.permissions?.length) {
-    return true;
-  }
-
-  const roleOk = matchRole(userRoles, meta.roles, roleMode);
-  const permissionOk = matchPermission(
-    userPermissions,
-    meta.permissions,
-    permissionMode
-  );
-
-  return roleOk && permissionOk;
-};

@@ -11,6 +11,3 @@ const router = createRouter({
 setupRouterGuard(router);
 
 export default router;
-
-export { asyncRoutes } from "./modules";
-export { constantRoutes } from "./routes";

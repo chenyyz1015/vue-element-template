@@ -1,9 +1,0 @@
-// Teleport 到 body 的 EP 弹出层补丁：跟随 html.dark css-vars
-
-html.dark {
-  .el-color-picker-panel {
-    .el-color-picker-panel__wrapper .el-input {
-      color: var(--el-text-color-primary);
-    }
-  }
-}

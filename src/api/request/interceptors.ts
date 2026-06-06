@@ -1,6 +1,8 @@
-import type { AxiosError, InternalAxiosRequestConfig } from "axios";
+import type { AxiosError, AxiosHeaders, InternalAxiosRequestConfig } from "axios";
 import type { ApiErrorBody } from "../types/common";
+import { AxiosHeaders as AxiosHeadersCtor } from "axios";
 import { getToken } from "@/utils/auth";
+import { checkSubmitGuard } from "@/utils/submit-guard";
 import { UNKNOWN_ERROR_MESSAGE } from "../constants";
 import { createRequestError, handleHttpError } from "./error";
 import { service } from "./instance";
@@ -16,24 +18,30 @@ export function setupRequestInterceptor() {
       config.skipBizCheck ??= false;
       config.cancelDuplicate ??= true;
       config.skipSentryReport ??= false;
+      config.preventRepeatSubmit ??= true;
 
       if (!config.skipAuth) {
         const token = getToken();
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+          const headers = AxiosHeadersCtor.from(config.headers ?? {});
+          headers.set("Authorization", `Bearer ${token}`);
+          config.headers = headers as AxiosHeaders;
         }
       }
 
       config.headers["X-Request-Time"] = String(Date.now());
+
+      const method = config.method?.toUpperCase();
+      if (config.preventRepeatSubmit && (method === "POST" || method === "PUT")) {
+        checkSubmitGuard(config.url ?? "", config.data, config.repeatSubmitInterval);
+      }
 
       cancelDuplicateRequest(config);
 
       return config;
     },
     (error: AxiosError) => {
-      return Promise.reject(
-        createRequestError(UNKNOWN_ERROR_MESSAGE, { responseData: error })
-      );
+      return Promise.reject(createRequestError(UNKNOWN_ERROR_MESSAGE, { responseData: error }));
     }
   );
 }

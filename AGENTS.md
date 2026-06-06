@@ -56,25 +56,16 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 ### 组件目录规范
 
-| 类型           | 目录规范                                | 示例                                                     |
-| -------------- | --------------------------------------- | -------------------------------------------------------- |
-| 非业务公共组件 | `com-`\* + `index.vue`                  | `components/com-page-header/index.vue`                   |
-| 业务公共组件   | `biz-*` + `index.vue`                   | `components/biz-user-card/index.vue`                     |
-| 页面           | kebab-case + `index.vue`                | `views/user-profile/index.vue`                           |
-| 页面私有子组件 | PascalCase，放 `components/`            | `views/about/components/TechStackTable.vue`              |
-| 布局           | kebab-case + `index.vue`                | `layouts/default-layout/index.vue`                       |
-| 布局私有子组件 | PascalCase，放 `components/`            | `layouts/default-layout/components/DefaultNav.vue`       |
-| Composable     | camelCase 文件名，use 前缀，箭头函数    | `composables/useLocale.ts`                               |
-| Store 模块     | kebab-case 文件名，use 前缀箭头函数     | `stores/modules/user-profile.ts` → `useUserProfileStore` |
-| 路由模块       | kebab-case 文件名，放 `router/modules/` | `router/modules/admin.ts`                                |
-
-### 路由与 RBAC
-
-- `src/router/` 根目录：主路由实例、守卫（`guard.ts`）、常量路由（`routes.ts`）
-- 业务路由：`src/router/modules/` 按域拆分（kebab-case），经 `asyncRoutes` 聚合
-- 路由级：`meta.requiresAuth` / `meta.roles` / `meta.permissions` + 守卫动态注入
-- 按钮级：`usePermission()`、`v-permission` 指令
-- 详见 `.claude/rules/router.md`
+| 类型           | 目录规范                             | 示例                                                     |
+| -------------- | ------------------------------------ | -------------------------------------------------------- |
+| 非业务公共组件 | `com-`\* + `index.vue`               | `components/com-page-header/index.vue`                   |
+| 业务公共组件   | `biz-*` + `index.vue`                | `components/biz-user-card/index.vue`                     |
+| 页面           | kebab-case + `index.vue`             | `views/user-profile/index.vue`                           |
+| 页面私有子组件 | PascalCase，放 `components/`         | `views/about/components/TechStackTable.vue`              |
+| 布局           | kebab-case + `index.vue`             | `layouts/default-layout/index.vue`                       |
+| 布局私有子组件 | PascalCase，放 `components/`         | `layouts/default-layout/components/DefaultNav.vue`       |
+| Composable     | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                               |
+| Store 模块     | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user-profile.ts` → `useUserProfileStore` |
 
 ### 代码规范
 
@@ -98,20 +89,19 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 ```
 vite/
-├── helpers/                 # Vite 配置辅助函数（如 parseProxy）
-│   ├── parse.ts
-│   └── index.ts
+├── helpers/                 # Vite 配置辅助函数
 └── plugins/                 # Vite 插件（kebab-case 单文件，见 vite/plugins/index.ts）
 
 types/                       # 构建生成的类型声明（auto-imports、components、svg-component）
 
 src/
 ├── assets/                  # 静态资源（icons/ images/ fonts/ videos/ audio/）
+│   └── icons/               # SVG（unplugin-svg-component → SvgIcon）
 ├── components/              # 公共组件（com-*/biz-* + index.vue，auto-import）
 ├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
 ├── i18n/                    # 国际化（locales、createI18n）
-├── layouts/                 # default-layout/（DefaultNav、DefaultNavMobileMenu、ThemeControls 等）
-├── router/                  # 主路由、守卫、modules/ 业务路由（kebab-case）
+├── layouts/                 # 布局组件
+├── router/                  # 全局路由
 ├── directives/              # 自定义指令（modules/ + index.ts → app.use）
 │   ├── index.ts             # directivesPlugin 统一注册
 │   └── modules/             # kebab-case，按业务功能划分（如 permission.ts）
@@ -122,34 +112,27 @@ src/
 ├── styles/                  # index.scss、theme/semantic-vars、element/var.scss
 ├── types/                   # 全局类型声明（env.d.ts 等）
 ├── utils/                   # 工具函数（storage 底层 + auth/locale/permission 封装）
-└── views/                   # landing/（/）、demo/、about/、login/ 等
-    ├── landing/             # 首页；i18n `landing.*`
-    └── */components/        # 页面私有子组件（PascalCase，手动引入）
+└── views/                   # 页面组件
 ```
 
 ## AI 配置目录
 
-| 路径 | 用途 | 工具 |
-| ---- | ---- | ---- |
-| `CLAUDE.md` | 项目级 AI 指令 | Claude Code |
-| `AGENTS.md` | 通用 Agent 指令 | Cursor 等 |
-| `CLAUDE.local.md` | 个人覆盖（git ignored） | 本地 |
-| `design-system/` | 设计 SSOT：`PROJECT.md`、`THEME.md`、`TOKENS.md`、`MASTER.md`、`pages/` | UI 工作流 |
-| `.claude/rules/` | 规范详文（`code-style`、`router`、`css-naming`、`ai-frontend-design`…） | Claude Code |
-| `.claude/commands/` | `audit`、`critique`、`polish`、`review`、`fix-issue`、`deploy` | Claude Code |
-| `.claude/agents/` | `design-director`、`design-inspector`、`code-reviewer`、`security-auditor` | Claude Code |
-| `.claude/skills/` | 主编排 `ai-frontend-design-workflow`；`ui-ux-pro-max`、`pencil-design-workflow`、`impeccable` 等 | Claude Code |
-| `.cursor/rules/` | `.mdc` 规则摘要（详文 `.claude/rules/*.md`） | Cursor |
-| `.cursor/commands/` | 与 `.claude/commands/` 同名 | Cursor |
-| `.cursor/agents/` | 与 `.claude/agents/` 同名 | Cursor |
-| `.cursor/skills/` | 与 `.claude/skills/` 同名；**脚本路径用** `.cursor/skills/` | Cursor |
+| 路径                | 用途                                                                                             | 工具        |
+| ------------------- | ------------------------------------------------------------------------------------------------ | ----------- |
+| `CLAUDE.md`         | 项目级 AI 指令                                                                                   | Claude Code |
+| `AGENTS.md`         | 通用 Agent 指令                                                                                  | Cursor 等   |
+| `CLAUDE.local.md`   | 个人覆盖（git ignored）                                                                          | 本地        |
+| `design-system/`    | 设计 SSOT                                                                                        | UI 工作流   |
+| `.claude/rules/`    | 规范详文（`code-style`、`router`、`css-naming`、`ai-frontend-design`…）                          | Claude Code |
+| `.claude/commands/` | `audit`、`critique`、`polish`、`review`、`fix-issue`、`deploy`                                   | Claude Code |
+| `.claude/agents/`   | `design-director`、`design-inspector`、`code-reviewer`、`security-auditor`                       | Claude Code |
+| `.claude/skills/`   | 主编排 `ai-frontend-design-workflow`；`ui-ux-pro-max`、`pencil-design-workflow`、`impeccable` 等 | Claude Code |
+| `.cursor/rules/`    | `.mdc` 规则摘要（详文 `.claude/rules/*.md`）                                                     | Cursor      |
+| `.cursor/commands/` | 与 `.claude/commands/` 同名                                                                      | Cursor      |
+| `.cursor/agents/`   | 与 `.claude/agents/` 同名                                                                        | Cursor      |
+| `.cursor/skills/`   | 与 `.claude/skills/` 同名；**脚本路径用** `.cursor/skills/`                                      | Cursor      |
 
 ```
-design-system/
-├── PROJECT.md · PRODUCT.md · DESIGN.md · THEME.md · TOKENS.md · MASTER.md
-├── tokens/
-└── pages/
-
 .claude/  ──对齐──▶  .cursor/
 ├── rules/*.md          ├── rules/*.mdc
 ├── commands/*.md       ├── commands/*.md
@@ -159,12 +142,12 @@ design-system/
 
 ### `.cursor` 与 `.claude` 对齐约定
 
-| 类型 | 权威来源 | Cursor 侧 |
-| ---- | -------- | --------- |
-| 规则详文 | `.claude/rules/*.md` | `.cursor/rules/*.mdc`（frontmatter + 摘要） |
-| Skills | 两侧各一份，内容一致 | 脚本与命令内路径写 `.cursor/skills/` |
-| Agents / Commands | `.claude/agents/`、`.claude/commands/` | `.cursor/` 下同名文件，改路径前缀 |
-| 项目级指令 | `CLAUDE.md` | `AGENTS.md` + `.cursor/rules/` |
+| 类型              | 权威来源                               | Cursor 侧                                   |
+| ----------------- | -------------------------------------- | ------------------------------------------- |
+| 规则详文          | `.claude/rules/*.md`                   | `.cursor/rules/*.mdc`（frontmatter + 摘要） |
+| Skills            | 两侧各一份，内容一致                   | 脚本与命令内路径写 `.cursor/skills/`        |
+| Agents / Commands | `.claude/agents/`、`.claude/commands/` | `.cursor/` 下同名文件，改路径前缀           |
+| 项目级指令        | `CLAUDE.md`                            | `AGENTS.md` + `.cursor/rules/`              |
 
 修改 `agents` / `commands` / `skills` 时须**手动同步**两侧，并检查文档与脚本中的 `.claude` / `.cursor` 前缀。
 
@@ -181,7 +164,7 @@ design-system/
 | 3 代码实现 | Vue ↔ Pencil 同步     | `pencil-sync.md` + 项目 code-style           |
 | 4 质量审计 | audit → polish → gate | 上游 `impeccable` v3.1 + `project-bridge.md` |
 
-Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md` + **`THEME.md`**（`IMPECCABLE_CONTEXT_DIR=design-system`）。ui-ux-pro-max 生成 `MASTER.md` 后优先级更高。UI 变更须与 `useThemeColor` / `useThemeMode` 同步，见 `THEME.md`。
+UI 变更须与 `useThemeColor` / `useThemeMode` 同步
 
 **Gate**：Audit Health Score ≥ 14/20，无 P0/P1，`npm run build` 通过。
 
@@ -192,7 +175,7 @@ Impeccable 上下文：`design-system/PRODUCT.md` + `DESIGN.md` + **`THEME.md`**
 | **design-director**  | 多页面/复杂任务：Phase 1–4 规划与分派 |
 | **design-inspector** | Phase 4：audit、critique、polish      |
 
-设计产物：`design-system/`（入库，含 **`PROJECT.md`**、`PRODUCT.md`、`DESIGN.md`、**`THEME.md`**；`MASTER.md` 由 ui-ux-pro-max persist 生成）；`design/` 仅 **`design/README.md`** 入库，`briefs/`、`pages/`、`scripts/` 等为本地临时（见 `design/README.md`）。导航 `ThemeControls` 可验证主色/明暗。
+设计产物：`design-system/` ；`design/` 仅 **`design/README.md`** 入库，`briefs/`、`pages/`、`scripts/` 等为本地临时（见 `design/README.md`）。导航 `ThemeControls` 可验证主色/明暗。
 
 命令：`/audit` `/polish` `/critique`（pinned）· `/impeccable <cmd>` · `.claude/commands/`
 

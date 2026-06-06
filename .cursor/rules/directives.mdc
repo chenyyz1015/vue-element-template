@@ -10,4 +10,3 @@ alwaysApply: false
 - 实现放 `src/directives/modules/`，**kebab-case** 文件名（即 `v-` 指令名）
 - `index.ts` 通过 `import.meta.glob` 自动扫描注册；`main.ts` 中 `app.use(directivesPlugin)`
 - 新增指令：仅新增 module 文件，**`export default`** 导出指令，无需改 index.ts
-- RBAC 按钮级：`v-permission`（见 `modules/permission.ts`）；详文 `.claude/rules/directives.md`
