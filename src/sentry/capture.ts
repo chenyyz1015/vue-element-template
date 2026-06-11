@@ -1,8 +1,8 @@
-import type { SentryApiErrorPayload, SentryApiErrorSource } from "./types";
+import type { SentryApiErrorPayload, SentryApiErrorSource } from "./types.d";
 import type { CustomRequestConfig, RequestError } from "@/api/types/common";
 import * as Sentry from "@sentry/vue";
 import { getSentryConfig, sanitizeForSentry } from "./config";
-import { SENTRY_API_ERROR_TYPE } from "./types";
+import { SENTRY_API_ERROR_TYPE } from "./types.d";
 
 function resolveRequestUrl(config?: CustomRequestConfig): string | undefined {
   if (!config?.url) {
@@ -13,9 +13,7 @@ function resolveRequestUrl(config?: CustomRequestConfig): string | undefined {
     return config.url;
   }
   const normalizedBase = base.replace(/\/$/, "");
-  const normalizedPath = config.url.startsWith("/")
-    ? config.url
-    : `/${config.url}`;
+  const normalizedPath = config.url.startsWith("/") ? config.url : `/${config.url}`;
   return `${normalizedBase}${normalizedPath}`;
 }
 
@@ -33,12 +31,9 @@ function buildApiErrorPayload(
       url: resolveRequestUrl(config),
       baseURL: config?.baseURL,
     },
-    http:
-      error.httpStatus !== undefined ? { status: error.httpStatus } : undefined,
+    http: error.httpStatus !== undefined ? { status: error.httpStatus } : undefined,
     business: error.bizCode !== undefined ? { code: error.bizCode } : undefined,
-    response: error.responseData
-      ? { body: sanitizeForSentry(error.responseData) }
-      : undefined,
+    response: error.responseData ? { body: sanitizeForSentry(error.responseData) } : undefined,
     meta: {
       canceled: error.canceled,
       timestamp: new Date().toISOString(),
@@ -60,10 +55,7 @@ function resolveSource(error: RequestError): SentryApiErrorSource {
 }
 
 /** 将 API 请求错误按统一格式上报至 Sentry */
-export function captureApiRequestError(
-  error: RequestError,
-  config?: CustomRequestConfig
-): void {
+export function captureApiRequestError(error: RequestError, config?: CustomRequestConfig): void {
   const { enabled } = getSentryConfig();
   if (!enabled || error.canceled || config?.skipSentryReport) {
     return;

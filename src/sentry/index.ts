@@ -6,8 +6,8 @@ import { getSentryConfig, sanitizeForSentry } from "./config";
 
 export { captureApiRequestError } from "./capture";
 export { getSentryConfig, sanitizeForSentry } from "./config";
-export { SENTRY_API_ERROR_TYPE } from "./types";
-export type { SentryApiErrorPayload } from "./types";
+export { SENTRY_API_ERROR_TYPE } from "./types.d";
+export type { SentryApiErrorPayload } from "./types.d";
 
 /** 初始化 Sentry（配置来自环境变量；无 DSN 或未启用时不初始化） */
 export function initSentry(app: App): void {
@@ -16,8 +16,7 @@ export function initSentry(app: App): void {
     return;
   }
 
-  const integrations =
-    config.tracesSampleRate > 0 ? [browserTracingIntegration({ router })] : [];
+  const integrations = config.tracesSampleRate > 0 ? [browserTracingIntegration({ router })] : [];
 
   Sentry.init({
     app,

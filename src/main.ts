@@ -1,6 +1,7 @@
 import SvgIcon from "~virtual/svg-component";
 import { directivesPlugin } from "@/directives";
 import { initSentry } from "@/sentry";
+import { initPosthog } from "@/utils/posthog";
 import { initThemePrimaryColor } from "@/utils/theme-color";
 import { initThemeMode } from "@/utils/theme-mode";
 import App from "./App.vue";
@@ -17,6 +18,7 @@ const bootstrap = () => {
   initThemeMode();
   initThemePrimaryColor();
   initSentry(app);
+  initPosthog();
 
   const pinia = createPinia();
   pinia.use(persistedState);
