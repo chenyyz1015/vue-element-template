@@ -31,8 +31,8 @@ argument-hint: [file-or-directory]
    - 布局组件是否正确手动引入
 
 4. **目录与命名规范**
-   - 公共组件是否遵循 kebab-case 目录 + `index.vue`，前缀 `com-` / `biz-`
-   - 页面/布局是否遵循 kebab-case 目录 + `index.vue`
+   - 公共组件是否遵循 PascalCase 目录 + `index.vue`，前缀 `Com` / `Biz`
+   - 页面是否遵循 kebab-case 目录 + `index.vue`，布局是否遵循 PascalCase 目录 + `index.vue`
    - 私有子组件是否使用 PascalCase 命名
 
 5. **性能与安全**

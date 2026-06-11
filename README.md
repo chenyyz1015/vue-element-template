@@ -37,95 +37,60 @@ npm run build:stage
 
 ## AI 工具支持
 
-本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。项目级指令：`CLAUDE.md`（Claude Code）· `AGENTS.md`（通用 Agent）· `CLAUDE.local.md`（个人覆盖，git ignored）。
+本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。
 
 ```
 ├── design-system/                 # UI / AI 设计 SSOT
 ├── .claude/                       # Claude Code（规则与命令权威源）
 │   ├── settings.json
-│   ├── rules/                     # code-style、router、css-naming、ai-frontend-design 等
-│   ├── commands/                  # audit · critique · polish · review · fix-issue · deploy
-│   ├── agents/                    # design-director · design-inspector · code-reviewer · security-auditor
+│   ├── rules/
+│   ├── commands/
+│   ├── agents/
 │   └── skills/
-│       ├── ai-frontend-design-workflow/   # Phase 1–4 主编排
-│       ├── ui-ux-pro-max/                 # 设计系统策略与 persist
-│       ├── pencil-design-workflow/        # Pencil 视觉 + pencil-sync.md
-│       ├── impeccable/                    # 质量审计（含 scripts/、reference/）
-│       ├── audit · critique · polish/     # 快捷 Skill（指向 impeccable）
-│       ├── deploy · security-review/
-│       └── …
 └── .cursor/                       # Cursor（与 .claude 目录对齐）
-    ├── rules/                     # *.mdc 摘要（详文见 .claude/rules/*.md）
-    ├── commands/                  # 与 .claude/commands/ 同名
-    ├── agents/                    # 与 .claude/agents/ 同名
-    └── skills/                    # 与 .claude/skills/ 同名；脚本路径用 .cursor/skills/
+    ├── rules/
+    ├── commands/
+    ├── agents/
+    └── skills/
 ```
 
 **对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
 
 ### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
 
-| 命令        | 说明                          |
-| ----------- | ----------------------------- |
-| `audit`     | UI 技术质量审计（impeccable） |
-| `critique`  | UX 设计评审                   |
-| `polish`    | 交付前视觉精修                |
-| `review`    | 代码审查                      |
-| `fix-issue` | 按 Issue 修复                 |
-| `deploy`    | 构建与部署流程                |
-
-UI 设计任务优先走 `ai-frontend-design-workflow`；复杂多页面任务可 invoke **design-director**，Phase 4 可 invoke **design-inspector**。详见 `AGENTS.md` 与 `.claude/rules/ai-frontend-design.md`。
-
 ## 项目结构
 
 ```
 vite/
 ├── helpers/                       # Vite 配置辅助函数
-└── plugins/                       # Vite 插件（kebab-case 单文件）
+└── plugins/                       # Vite 插件
 
 types/                             # 构建生成的类型声明
-├── auto-imports.d.ts
-├── components.d.ts
-└── svg-component.d.ts
 
 src/
-├── assets/                        # 静态资源（按媒体类型分类，见下方说明）
-│   ├── icons/                     # SVG → <SvgIcon />
-│   ├── images/                    # 位图、装饰 SVG
-│   ├── fonts/                     # 自托管字体
-│   ├── videos/ · audio/           # 音视频（按需）
-│   └── …                          # Pencil export_nodes 等产出落盘 images/<page>/
+├── assets/                        # 静态资源
 ├── components/                    # 公共组件
-├── composables/                   # 组合式函数（auto-import，camelCase：useXxx.ts）
+├── composables/                   # 组合式函数
 ├── i18n/                          # 国际化
 ├── layouts/                       # 布局组件
 ├── router/                        # 全局路由
-├── directives/                    # 自定义指令
-│   ├── index.ts                   # directivesPlugin（app.use 注入）
-│   └── modules/                   # kebab-case 业务指令（如 permission.ts）
+├── directives/                    # 全局自定义指令
 ├── api/                           # HTTP 请求
 ├── stores/                        # Pinia
-│   ├── persisted-state.ts         # 持久化插件配置 + Pinia key 生成
-│   └── modules/                   # Store 模块（app、user、permission 等）
 ├── styles/                        # 全局样式
-├── types/                         # 全局类型声明（env.d.ts、i18n.d.ts 等）
-├── utils/
-│   ├── auth.ts                    # Token 读写封装
-│   ├── locale.ts                  # 语言偏好读写封装
-│   ├── permission.ts              # RBAC 匹配工具
-│   ├── dayjs.ts                   # dayjs 预配置
-│   └── storage.ts                 # 底层 localStorage / sessionStorage 封装
+├── types/                         # 全局类型声明
+├── utils/                         # 工具类函数
 └── views/                         # 页面组件
 ```
 
 ## 组件命名规范
 
-| 类型                | 规范                                  | 示例                                            |
-| ------------------- | ------------------------------------- | ----------------------------------------------- |
-| 非业务公共组件      | `com-*` kebab-case 目录 + `index.vue` | `com-hello-card/index.vue` → `<ComHelloCard />` |
-| 业务公共组件        | `biz-*` kebab-case 目录 + `index.vue` | `biz-order-card/index.vue` → `<BizOrderCard />` |
-| 页面                | kebab-case 目录 + `index.vue`         | `views/user-profile/index.vue`                  |
-| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录   | `TechStackTable.vue`                            |
+| 类型                | 规范                                 | 示例                                          |
+| ------------------- | ------------------------------------ | --------------------------------------------- |
+| 非业务公共组件      | `Com*` PascalCase 目录 + `index.vue` | `ComHelloCard/index.vue` → `<ComHelloCard />` |
+| 业务公共组件        | `Biz*` PascalCase 目录 + `index.vue` | `BizOrderCard/index.vue` → `<BizOrderCard />` |
+| 页面                | kebab-case 目录 + `index.vue`        | `views/user/index.vue`                        |
+| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录  | `views/user/components/UserProfile.vue`       |
 
 ## CSS 类名
 
@@ -134,7 +99,7 @@ src/
 - **OOCSS**：色板与字体变量（如 `src/views/<page>/styles/_tokens.scss`）
 - **UnoCSS**：在 `<style lang="scss" scoped>` 内通过 `@apply` 注入，避免模板堆叠长串 utility
 
-完整约定见 [`.claude/rules/css-naming.md`](.claude/rules/css-naming.md)。首页落地页示例：`src/views/landing/`。
+完整约定见 `[.claude/rules/css-naming.md](.claude/rules/css-naming.md)`。
 
 ## 主题定制
 
@@ -144,7 +109,7 @@ Element Plus 主题变量在 `src/styles/element/var.scss` 中维护（主色 `#
 
 基于 [vue-i18n](https://vue-i18n.intlify.dev/)（Composition API，`legacy: false`）：
 
-- 语言包：`src/i18n/locales/`（默认 `zh-CN`、`en-US`）；首页文案命名空间 **`landing.*`**，布局主题控件 **`nav.theme*`**（见 `nav.themeColor` 等）
+- 语言包：`src/i18n/locales/`（默认 `zh-CN`、`en-US`）
 - 实例配置：`src/i18n/index.ts`，在 `main.ts` 中 `app.use(i18n)`
 - 语言切换：`useLocale()` composable（通过 `src/utils/locale.ts` 持久化，同步 Element Plus locale）
 - 路由标题：路由 `meta.titleKey` 对应语言包 key，由 `router.afterEach` 与 `App.vue` 监听 locale 更新 `document.title`
@@ -232,7 +197,7 @@ setLocale("zh-CN");
 
 ### 静态资源（`src/assets`）
 
-页面与组件使用的图片、字体、音视频等统一放在 `src/assets/`，按类型分子目录（`images/`、`fonts/`、`videos/`、`audio/`）；可在各目录下按页面建 kebab-case 子目录（如 `images/landing/hero.webp`）。Pencil MCP `export_nodes` 导出的页面资源写入 `src/assets/images/<page>/`，在 Vue 中通过 `@/assets/...` 引用。约定详见 [`.claude/rules/ai-frontend-design.md`](.claude/rules/ai-frontend-design.md)。
+页面与组件使用的图片、字体、音视频等统一放在 `src/assets/`，按类型分子目录（`images/`、`fonts/`、`videos/`、`audio/`）；可在各目录下按页面建 kebab-case 子目录（如 `images/landing/hero.webp`）。Pencil MCP `export_nodes` 导出的页面资源写入 `src/assets/images/<page>/`，在 Vue 中通过 `@/assets/...` 引用。约定详见 `[.claude/rules/ai-frontend-design.md](.claude/rules/ai-frontend-design.md)`。
 
 以下需手动 import：布局组件、页面/布局私有子组件、同级辅助文件（`types.ts`、`constants.ts` 等）、`lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`）。
 

@@ -42,6 +42,7 @@ Thumbs.db
 
 # AI personal overrides (local only)
 CLAUDE.local.md
+AGENTS.local.md
 .claude/settings.local.json
 .cursor/settings.local.json
 

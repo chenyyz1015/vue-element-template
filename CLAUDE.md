@@ -2,8 +2,6 @@
 
 基于 Vite + Vue 3 + TypeScript 的企业级前端项目模板，集成 Pinia、Element Plus、Axios、UnoCSS 及 AI 开发工具配置。
 
-> **二次定制**：项目名以 `.env.*` 的 **`VITE_APP_NAME`** 为准（见 `design-system/PROJECT.md`）；同步 `package.json` `name`、`VITE_APP_TITLE` 与 i18n。AI 命令中的 `-p` 使用 **`VITE_APP_NAME`**，勿写死仓库初始名称。
-
 ## 技术栈
 
 | 类别       | 技术                                                 | 版本（`package.json`） |
@@ -27,50 +25,37 @@
 
 ```
 vite/
-├── helpers/                 # Vite 配置辅助函数
-└── plugins/                 # Vite 插件（kebab-case 单文件）
+├── helpers/                       # Vite 配置辅助函数
+└── plugins/                       # Vite 插件
 
-types/                       # 构建生成的类型声明
-├── auto-imports.d.ts
-├── components.d.ts
-└── svg-component.d.ts
+types/                             # 构建生成的类型声明
 
 src/
-├── assets/                  # 静态资源：icons/ images/ fonts/ videos/ audio/
-│   └── icons/               # SVG（unplugin-svg-component → SvgIcon）
-├── components/              # 公共组件（kebab-case 目录 + index.vue，auto-import）
-├── composables/             # 组合式函数（auto-import，camelCase：useXxx.ts）
-├── i18n/                    # 国际化（locales、createI18n）
-├── layouts/                 # 布局组件（kebab-case 目录 + index.vue，手动引入）
-├── router/                  # 全局路由
-├── directives/              # 自定义指令（modules/ + index.ts → app.use）
-│   ├── index.ts             # directivesPlugin 统一注册
-│   └── modules/             # kebab-case，按业务功能划分（如 permission.ts）
-├── api/                     # HTTP 请求（request + modules + types）
-├── stores/                  # Pinia
-│   ├── persisted-state.ts   # 持久化插件配置 + Pinia key 生成
-│   └── modules/             # Store 模块（auto-import，kebab-case）
-├── styles/                  # 全局样式
-├── types/                   # 全局类型声明（env.d.ts 等）
-├── utils/                   # 通用工具函数
-│   ├── auth.ts              # Token 读写封装
-│   ├── locale.ts            # 语言偏好读写封装
-│   ├── permission.ts        # 权限匹配工具
-│   ├── dayjs.ts             # dayjs 预配置
-│   └── storage.ts           # 底层浏览器缓存封装
-└── views/                   # 页面组件（kebab-case 目录 + index.vue）
+├── assets/                        # 静态资源
+├── components/                    # 公共组件
+├── composables/                   # 组合式函数
+├── i18n/                          # 国际化
+├── layouts/                       # 布局组件
+├── router/                        # 全局路由
+├── directives/                    # 全局自定义指令
+├── api/                           # HTTP 请求
+├── stores/                        # Pinia
+├── styles/                        # 全局样式
+├── types/                         # 全局类型声明
+├── utils/                         # 工具类函数
+└── views/                         # 页面组件
 ```
 
 ### 组件命名规范
 
-| 类型           | 目录规范           | 入口文件    | 私有子组件                       |
-| -------------- | ------------------ | ----------- | -------------------------------- |
-| 非业务公共组件 | `com-*` kebab-case | `index.vue` | —                                |
-| 业务公共组件   | `biz-*` kebab-case | `index.vue` | —                                |
-| 页面           | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
-| 布局           | kebab-case         | `index.vue` | `components/*.vue`（PascalCase） |
+| 类型           | 目录规范          | 入口文件    | 私有子组件                       |
+| -------------- | ----------------- | ----------- | -------------------------------- |
+| 非业务公共组件 | `Com*` PascalCase | `index.vue` | —                                |
+| 业务公共组件   | `Biz*` PascalCase | `index.vue` | —                                |
+| 页面           | kebab-case        | `index.vue` | `components/*.vue`（PascalCase） |
+| 布局           | PascalCase        | `index.vue` | `components/*.vue`（PascalCase） |
 
-同级目录可放置 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件。
+同级目录可放置 `types.d.ts`、`constants.ts`、`helpers.ts` 等辅助文件。
 
 ## 开发约定
 
@@ -91,7 +76,7 @@ src/
 
 - `<SvgIcon name="图标名" />`（图标放 `src/assets/icons/*.svg`，已在 `main.ts` 注册）
 - Element Plus 组件
-- `src/components/` 下公共组件（`com-`_ 非业务型、`biz-_` 业务型）
+- `src/components/` 下公共组件（`Com`_ 非业务型、`Biz_` 业务型，PascalCase 目录）
 
 以下场景**需手动 import**：
 
@@ -104,7 +89,6 @@ src/
 ### 国际化
 
 - 语言包放 `src/i18n/locales/`，类型基准为 `zh-CN.json`（见 `src/i18n/types.ts`）
-- 命名空间示例：`landing.*`（首页）、`nav.*`（含 `themeColor` / `themeMode*` 等布局控件）、`demo.*`、`about.*`
 - 组件内使用 `useI18n()` 的 `t()`，**禁止**手动 import `useI18n`
 - 路由标题使用 `meta.titleKey`，非硬编码字符串
 - 切换语言使用 `useLocale()`，通过 `src/utils/locale.ts` 持久化并同步 Element Plus locale
@@ -132,9 +116,11 @@ src/
 - Vue 组件统一使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
 - 单文件组件宜 **≤300 行**（含 style）；超出则拆子组件、同级 `useXxx.ts` / `helpers.ts` 或 `styles/` partial（见 `.claude/rules/code-style.md`）
-- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
+- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用（Element Plus 反馈组件方法如 `ElMessageBox.alert/confirm/prompt` 除外）
+- 除特殊情况外，方法统一使用箭头函数；存量重构时同步迁移 `function` 声明（见 `.claude/rules/code-style.md`「函数定义」「重构要求」）
+- 双向绑定优先 `defineModel`；`defineEmits` 自定义事件名使用 kebab-case（见 `.claude/rules/code-style.md`「双向绑定」）
 - 路径别名：`@/` → `src/`
-- CSS 类名：BEM + SMACSS `l-*` + scoped `@apply`（见 `.claude/rules/css-naming.md`）
+- CSS 类名：BEM + SMACSS `l-`\* + scoped `@apply`（见 `.claude/rules/css-naming.md`）
 - 详细规范见 `.claude/rules/code-style.md`
 
 ### Git 提交规范
@@ -165,42 +151,28 @@ npm run lint         # 运行 ESLint + Stylelint
 npm run lint:fix     # 自动修复 lint 问题
 ```
 
-## AI 工具配置
+## AI 工具支持
 
-本项目遵循 Claude Code 官方推荐的项目结构，并兼容 Cursor 等主流 AI 开发工具：
-
-| 工具        | 配置文件                                                               |
-| ----------- | ---------------------------------------------------------------------- |
-| Claude Code | `CLAUDE.md`、`.claude/`（`rules/`、`commands/`、`agents/`、`skills/`） |
-| Cursor      | `AGENTS.md`、`.cursor/`（`rules/`、`commands/`、`agents/`、`skills/`） |
-| 设计 SSOT   | `design-system/`                                                       |
+本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。
 
 ```
-design-system/          # 产品与视觉 SSOT（AI UI 工作流上下文）
-.claude/                # Claude Code 权威配置
-├── rules/              # *.md（code-style、router、ai-frontend-design…）
-├── commands/           # audit、critique、polish、review、fix-issue、deploy
-├── agents/             # design-director、design-inspector、code-reviewer、security-auditor
-└── skills/             # ai-frontend-design-workflow、ui-ux-pro-max、pencil-design-workflow、impeccable…
-.cursor/                # 与 .claude 对齐；Skill/脚本内路径使用 .cursor/skills/
+├── design-system/                 # UI / AI 设计 SSOT
+├── .claude/                       # Claude Code（规则与命令权威源）
+│   ├── settings.json
+│   ├── rules/
+│   ├── commands/
+│   ├── agents/
+│   └── skills/
+└── .cursor/                       # Cursor（与 .claude 目录对齐）
+    ├── rules/
+    ├── commands/
+    ├── agents/
+    └── skills/
 ```
 
-详细目录与对齐约定见 `README.md`（AI 工具支持）与 `AGENTS.md`（AI 配置目录）。维护 `agents` / `commands` / `skills` 时需同步两侧，并替换文档与脚本中的路径前缀（`.claude` ↔ `.cursor`）。
+**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
 
-### AI 前端设计
-
-> **ui-ux-pro-max** 出策略 · **pencil** 出视觉与代码 · **impeccable** 保质量
-
-**二次定制**：项目名以 **`VITE_APP_NAME`**（`.env.*`）为准；`ui-ux-pro-max --persist -p` 与之保持一致，勿写死模板初始名称
-
-| Phase           | Skill / 工具                                                                     |
-| --------------- | -------------------------------------------------------------------------------- |
-| 1 战略规划      | `.claude/skills/ui-ux-pro-max/`                                                  |
-| 2–3 视觉 + 代码 | `.claude/skills/pencil-design-workflow/` + Pencil MCP                            |
-| 4 质量          | `.claude/skills/impeccable/SKILL.md` + `project-bridge.md` · `/impeccable <cmd>` |
-
-主编排：`.claude/skills/ai-frontend-design-workflow/SKILL.md`
-Agents：`design-director`（规划分派）· `design-inspector`（Phase 4 监工）
+### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
 
 ## 环境变量
 

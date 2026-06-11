@@ -4,8 +4,8 @@
 
 - 使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：script → template → style
-- 公共组件：kebab-case 目录 + `index.vue`，非业务型 `com-` 前缀，业务型 `biz-` 前缀，放 `src/components/`
-- 页面/布局：kebab-case 目录 + `index.vue`；私有子组件 PascalCase 放 `components/` 子目录
+- 公共组件：PascalCase 目录 + `index.vue`，非业务型 `Com` 前缀，业务型 `Biz` 前缀，放 `src/components/`
+- 页面：kebab-case 目录 + `index.vue`；布局：PascalCase 目录 + `index.vue`；私有子组件 PascalCase 放 `components/` 子目录
 - Composables 放 `src/composables/useXxx.ts`（camelCase，箭头函数导出），禁止手动 import
 - vue / vue-router / pinia / vue-i18n / @vueuse/core / dayjs 及 composables、stores 禁止手动 import
 - 用户可见文案使用 `useI18n()` 的 `t()`，路由标题使用 `meta.titleKey`
@@ -17,5 +17,7 @@
 - 布局组件、页面/布局私有子组件、同级辅助文件需手动 import
 - HTTP 请求通过 `src/api/request/` 封装，业务接口放 `src/api/modules/`，类型放 `src/api/types/模块名.d.ts`
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
+- 除特殊情况外（如 `src/api/` 请求封装），方法统一使用箭头函数；存量重构时同步迁移（见 `.claude/rules/code-style.md`）
+- 双向绑定优先 `defineModel`；自定义事件名 kebab-case（ESLint `vue/custom-event-name-casing`）
 - 样式：模板用 BEM + `l-*`；UnoCSS 在 scoped SCSS 中通过 `@apply` 注入（见 `.claude/rules/css-naming.md`）
 - 详细规范见 CLAUDE.md 和 `.claude/rules/`

@@ -30,13 +30,17 @@ tools: Read, Grep, Glob, Bash
 - 是否使用 `<style lang="scss" scoped>`
 - 单文件组件顺序是否为 script → template → style
 - 异步逻辑是否使用 `async/await`（禁止 `.then()` / `.catch()` 链式调用）
+- 组件 / composable / helpers 内方法是否优先使用箭头函数（`function` 声明仅在规范例外场景）
+- 双向绑定是否使用 `defineModel`（而非 props + `update:*` + computed 包装）
+- `defineEmits` 非 v-model 事件是否 kebab-case（如 `query-table`，非 `queryTable`）
 - Composition API 使用是否恰当
 - 组件是否合理拆分，单一职责
 
 ### 目录与命名
 
-- 公共组件：kebab-case 目录 + `index.vue`，`com-` / `biz-` 前缀
-- 页面/布局：kebab-case 目录 + `index.vue`
+- 公共组件：PascalCase 目录 + `index.vue`，`Com` / `Biz` 前缀
+- 页面：kebab-case 目录 + `index.vue`
+- 布局：PascalCase 目录 + `index.vue`
 - 私有子组件：PascalCase，放 `components/` 子目录
 
 ### 自动引入

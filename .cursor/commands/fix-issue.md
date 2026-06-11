@@ -32,8 +32,8 @@ argument-hint: [issue-description-or-number]
 - Vue 组件统一使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：script → template → style
 - 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
-- 公共/页面/布局组件使用 kebab-case 目录 + `index.vue`
-- 非业务公共组件 `com-` 前缀，业务公共组件 `biz-` 前缀
+- 公共/布局组件使用 PascalCase 目录 + `index.vue`，页面使用 kebab-case 目录 + `index.vue`
+- 非业务公共组件 `Com` 前缀（PascalCase 目录），业务公共组件 `Biz` 前缀（PascalCase 目录）
 - 页面/布局私有子组件 PascalCase，放 `components/` 子目录，手动 import
 - 不手动 import 已由 auto-import 覆盖的 API
 - 不手动 import `src/components/` 公共组件（unplugin-vue-components 已配置）

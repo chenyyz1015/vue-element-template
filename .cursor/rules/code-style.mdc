@@ -8,22 +8,26 @@ alwaysApply: true
 - 使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
 - 单文件组件顺序：script → template → style
 - 单文件组件宜 **≤300 行**（含 style）；超出则拆子组件、`useXxx.ts` / `helpers.ts` 或 `styles/` partial（见 `.claude/rules/code-style.md`）
-- 公共/页面/布局组件：kebab-case 目录 + `index.vue`
-- 非业务公共组件：`com-` 前缀；业务公共组件：`biz-` 前缀
+- 公共组件：PascalCase 目录 + `index.vue`（`Com` / `Biz` 前缀）
+- 页面：kebab-case 目录 + `index.vue`
+- 布局：PascalCase 目录 + `index.vue`
+- 非业务公共组件：`Com` 前缀；业务公共组件：`Biz` 前缀（PascalCase 目录）
 - 页面/布局私有子组件：PascalCase，放同级 `components/` 目录，手动 import
 - Composables：`src/composables/useXxx.ts`（camelCase，箭头函数导出），禁止手动 import
-- 辅助文件（types、constants、helpers）与组件同级目录放置
+- 辅助文件（types.d.ts、useXxx.ts、constants.ts、helpers.ts）与组件同级目录放置
 - vue / vue-router / pinia / vue-i18n / @vueuse/core / dayjs 及 composables、stores 禁止手动 import
-- 静态资源统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）；禁止在 views/components 下散落资源目录
+- 静态资源统一 `src/assets/`（`icons/` `images/` `fonts/` `videos/` `audio/`）
 - SvgIcon 已在 main.ts 注册，图标放 src/assets/icons，模板中禁止 import SvgIcon
 - `src/components/` 公共组件禁止手动 import（自动注册为 PascalCase 组件名）
 - Element Plus 反馈 API（ElMessage、ElMessageBox、ElNotification、ElLoading）禁止手动 import
 - lodash-es 按需手动 import（禁止全量 import，不参与 auto-import）
 - 浏览器缓存统一使用 `@/utils/auth`、`@/utils/locale`；key 为 UPPER_SNAKE_CASE；Pinia 持久化见 `stores/persisted-state.ts`；禁止直接 import `@/utils/storage` 或使用 localStorage / sessionStorage / useLocalStorage
 - 布局组件、私有子组件、辅助文件允许手动 import
-- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用
-- 路由业务模块：`src/router/modules/`（kebab-case）；RBAC 见 `usePermission()` / `v-permission`
-- 自定义指令：`src/directives/modules/`（kebab-case），`app.use(directivesPlugin)` 统一注册
+- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用（Element Plus 反馈组件方法如 `ElMessageBox.alert/confirm/prompt` 除外）
+- 除特殊情况外，方法统一用箭头函数（`const fn = () => {}`）；存量重构时同步迁移 `function` 声明（例外见 `.claude/rules/code-style.md`「函数定义」）
+- 双向绑定优先 `defineModel`，替代 props + `update:*` emit + computed；自定义事件名用 kebab-case（ESLint `vue/custom-event-name-casing`）
+- 自定义指令：`src/directives/modules/`（camelCase），`app.use(directivesPlugin)` 统一注册
 - UI 设计工作流见 `.claude/rules/ai-frontend-design.md`（Cursor：`.cursor/rules/ai-frontend-design.mdc` 摘要）
 - CSS 类名：BEM + `l-*` 布局 + scoped `@apply`（见 `.claude/rules/css-naming.md`、`.cursor/rules/css-naming.mdc`）
-- 详细规范见 `.claude/rules/code-style.md`、`.claude/rules/router.md`、`.claude/rules/directives.md`
+- DOM 模板引用统一使用 `useTemplateRef('xxx')`（字符串参数），**禁止** `const xxx = ref<HTMLElement | null>(null)` 声明与模板引用的强绑定；泛型须显式标注：项目组件用 `InstanceType<typeof ComponentName>`，Element Plus 优先用 `FormInstance` / `TableInstance` 等库类型，原生 DOM 用 `HTMLElement` 等；跨组件访问仅用子组件 `defineExpose` 或根 DOM ref + `querySelector`，**禁止** `childRef.value?.$refs.xxx` / `childRef.value?.$el` 穿透（见 `.claude/rules/code-style.md`「DOM 模板引用」）
+- 详细规范见 `.claude/rules/code-style.md`、`.claude/rules/directives.md`
