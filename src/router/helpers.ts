@@ -9,7 +9,7 @@ export const addFallbackRoute = (router: Router) => {
   const fallbackRoute: RouteRecordRaw = {
     path: "/:pathMatch(.*)*",
     name: NOT_FOUND_CATCHALL_NAME,
-    component: () => import("@/views/not-found/index.vue"),
+    component: () => import("@/views/error/404.vue"),
     meta: { hidden: true },
   };
 

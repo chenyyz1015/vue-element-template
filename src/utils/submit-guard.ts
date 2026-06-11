@@ -10,6 +10,18 @@ interface SubmitGuardPayload {
   time: number;
 }
 
+export const getSubmitGuard = () => {
+  return storage.session.get<SubmitGuardPayload>(SUBMIT_GUARD);
+};
+
+export const setSubmitGuard = (payload: SubmitGuardPayload) => {
+  storage.session.set<SubmitGuardPayload>(SUBMIT_GUARD, payload);
+};
+
+export const removeSubmitGuard = () => {
+  storage.session.remove(SUBMIT_GUARD);
+};
+
 /** POST/PUT 防重复提交（会话级，与后端处理间隔对齐） */
 export const checkSubmitGuard = (url: string, data: unknown, intervalMs = DEFAULT_INTERVAL_MS): void => {
   const payload: SubmitGuardPayload = {
@@ -23,7 +35,7 @@ export const checkSubmitGuard = (url: string, data: unknown, intervalMs = DEFAUL
     return;
   }
 
-  const previous = storage.session.get<SubmitGuardPayload>(SUBMIT_GUARD);
+  const previous = getSubmitGuard();
 
   if (
     previous &&
@@ -34,9 +46,5 @@ export const checkSubmitGuard = (url: string, data: unknown, intervalMs = DEFAUL
     throw new Error("数据正在处理，请勿重复提交");
   }
 
-  storage.session.set(SUBMIT_GUARD, payload);
-};
-
-export const clearSubmitGuard = () => {
-  storage.session.remove(SUBMIT_GUARD);
+  setSubmitGuard(payload);
 };

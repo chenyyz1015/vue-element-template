@@ -28,15 +28,17 @@ export function handleBizResponse<T>(response: AxiosResponse<T>): Promise<T> {
     return Promise.resolve(data);
   } else if (!isApiResponse(data)) {
     return Promise.resolve(data);
+  } else if (config.skipBizCheck) {
+    return Promise.resolve(data);
   }
 
-  const { code, msg } = data;
+  const { code, message } = data;
 
-  if (isSuccessCode(code) || config.skipBizCheck) {
+  if (isSuccessCode(code)) {
     return Promise.resolve(data);
   } else {
     if (isUnauthorizedBizCode(code)) {
-      const errorMessage = getUnauthorizedMessage(msg);
+      const errorMessage = getUnauthorizedMessage(message);
       handleUnauthorized(errorMessage);
       const requestError = createRequestError(errorMessage, {
         bizCode: code,
@@ -46,7 +48,7 @@ export function handleBizResponse<T>(response: AxiosResponse<T>): Promise<T> {
       captureApiRequestError(requestError, config);
       return Promise.reject(requestError);
     } else {
-      const errorMessage = msg || UNKNOWN_ERROR_MESSAGE;
+      const errorMessage = message || UNKNOWN_ERROR_MESSAGE;
       if (isWarningCode(code)) {
         showWarning(errorMessage, config);
       } else {

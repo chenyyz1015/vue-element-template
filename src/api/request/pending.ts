@@ -19,24 +19,37 @@ export function removePendingRequest(config: InternalAxiosRequestConfig) {
   }
 }
 
+/** 取消所有待处理的请求 */
+export function cancelAllPendingRequests() {
+  for (const controller of pendingRequests.values()) {
+    controller.abort();
+  }
+  pendingRequests.clear();
+}
+
+/** 注册请求的 AbortController（所有请求均记录，用于离页取消） */
+export function registerRequest(config: InternalAxiosRequestConfig) {
+  const requestKey = getRequestKey(config);
+  config._requestKey = requestKey;
+
+  const controller = new AbortController();
+  config.signal = controller.signal;
+  config._abortController = controller;
+  pendingRequests.set(requestKey, controller);
+}
+
 /** 取消重复请求 */
 export function cancelDuplicateRequest(config: InternalAxiosRequestConfig) {
   const cancelDuplicate = config.cancelDuplicate ?? true;
-  if (!cancelDuplicate || config.signal) {
+  if (!cancelDuplicate) {
     return;
   }
 
   const requestKey = getRequestKey(config);
-  config._requestKey = requestKey;
 
   const existing = pendingRequests.get(requestKey);
   if (existing) {
     existing.abort();
     pendingRequests.delete(requestKey);
   }
-
-  const controller = new AbortController();
-  config.signal = controller.signal;
-  config._abortController = controller;
-  pendingRequests.set(requestKey, controller);
 }

@@ -34,6 +34,7 @@ src/
 ├── assets/                        # 静态资源
 ├── components/                    # 公共组件
 ├── composables/                   # 组合式函数
+├── constants/                     # 全局常量
 ├── i18n/                          # 国际化
 ├── layouts/                       # 布局组件
 ├── router/                        # 全局路由
@@ -52,8 +53,8 @@ src/
 | -------------- | ----------------- | ----------- | -------------------------------- |
 | 非业务公共组件 | `Com*` PascalCase | `index.vue` | —                                |
 | 业务公共组件   | `Biz*` PascalCase | `index.vue` | —                                |
-| 页面           | kebab-case        | `index.vue` | `components/*.vue`（PascalCase） |
-| 布局           | PascalCase        | `index.vue` | `components/*.vue`（PascalCase） |
+| 页面           | kebab-case 目录   | ...         | `components/*.vue`（PascalCase） |
+| 布局           | PascalCase 目录   | `index.vue` | `components/*.vue`（PascalCase） |
 
 同级目录可放置 `types.d.ts`、`constants.ts`、`helpers.ts` 等辅助文件。
 

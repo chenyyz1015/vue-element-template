@@ -6,7 +6,7 @@ import { checkSubmitGuard } from "@/utils/submit-guard";
 import { UNKNOWN_ERROR_MESSAGE } from "../constants";
 import { createRequestError, handleHttpError } from "./error";
 import { service } from "./instance";
-import { cancelDuplicateRequest, removePendingRequest } from "./pending";
+import { cancelDuplicateRequest, registerRequest, removePendingRequest } from "./pending";
 import { handleBizResponse } from "./response";
 
 /** 注册请求拦截器 */
@@ -36,6 +36,7 @@ export function setupRequestInterceptor() {
         checkSubmitGuard(config.url ?? "", config.data, config.repeatSubmitInterval);
       }
 
+      registerRequest(config);
       cancelDuplicateRequest(config);
 
       return config;

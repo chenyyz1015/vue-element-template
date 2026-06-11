@@ -71,6 +71,7 @@ src/
 ├── assets/                        # 静态资源
 ├── components/                    # 公共组件
 ├── composables/                   # 组合式函数
+├── constants/                     # 全局常量
 ├── i18n/                          # 国际化
 ├── layouts/                       # 布局组件
 ├── router/                        # 全局路由
@@ -85,12 +86,12 @@ src/
 
 ## 组件命名规范
 
-| 类型                | 规范                                 | 示例                                          |
-| ------------------- | ------------------------------------ | --------------------------------------------- |
-| 非业务公共组件      | `Com*` PascalCase 目录 + `index.vue` | `ComHelloCard/index.vue` → `<ComHelloCard />` |
-| 业务公共组件        | `Biz*` PascalCase 目录 + `index.vue` | `BizOrderCard/index.vue` → `<BizOrderCard />` |
-| 页面                | kebab-case 目录 + `index.vue`        | `views/user/index.vue`                        |
-| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录  | `views/user/components/UserProfile.vue`       |
+| 类型                | 规范                                 | 示例                                              |
+| ------------------- | ------------------------------------ | ------------------------------------------------- |
+| 非业务公共组件      | `Com*` PascalCase 目录 + `index.vue` | `ComHelloCard/index.vue` → `<ComHelloCard />`     |
+| 业务公共组件        | `Biz*` PascalCase 目录 + `index.vue` | `BizOrderCard/index.vue` → `<BizOrderCard />`     |
+| 页面                | kebab-case 目录                      | `views/auth/login.vue`、`views/auth/register.vue` |
+| 页面/布局私有子组件 | PascalCase，放 `components/` 子目录  | `views/user/components/UserProfile.vue`           |
 
 ## CSS 类名
 

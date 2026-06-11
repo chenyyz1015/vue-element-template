@@ -18,10 +18,6 @@ export const useThemeMode = createSharedComposable(() => {
 
   const isDark = computed(() => mode.value === "dark");
 
-  const setMode = (value: ThemeMode) => {
-    mode.value = value;
-  };
-
   const toggleMode = () => {
     mode.value = mode.value === "dark" ? "light" : "dark";
   };
@@ -33,7 +29,6 @@ export const useThemeMode = createSharedComposable(() => {
   return {
     mode,
     isDark,
-    setMode,
     toggleMode,
   };
 });

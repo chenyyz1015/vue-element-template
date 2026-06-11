@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/types";
 import { storage } from "@/utils/storage";
 
 /** 语言偏好存储键 */
-export const LOCALE_KEY = "LOCALE";
+const LOCALE_KEY = "LOCALE";
 
 /** 获取语言偏好 */
 export const getLocale = (): Locale | null => {

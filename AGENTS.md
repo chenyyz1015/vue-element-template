@@ -48,16 +48,16 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 ### 组件目录规范
 
-| 类型           | 目录规范                             | 示例                                               |
-| -------------- | ------------------------------------ | -------------------------------------------------- |
-| 非业务公共组件 | `Com*` + `index.vue`                 | `components/ComPageHeader/index.vue`               |
-| 业务公共组件   | `Biz*` + `index.vue`                 | `components/BizUserCard/index.vue`                 |
-| 页面           | kebab-case + `index.vue`             | `views/user/index.vue`                             |
-| 页面私有子组件 | PascalCase，放 `components/`         | `views/user/components/UserProfile.vue`            |
-| 布局           | PascalCase + `index.vue`             | `layouts/AdminLayout/index.vue`                    |
-| 布局私有子组件 | PascalCase，放 `components/`         | `layouts/AdminLayout/components/ThemeControls.vue` |
-| Composable     | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                         |
-| Store 模块     | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user.ts` → `useUserStore`          |
+| 类型           | 目录规范                             | 示例                                                 |
+| -------------- | ------------------------------------ | ---------------------------------------------------- |
+| 非业务公共组件 | `Com*` + `index.vue`                 | `components/ComPageHeader/index.vue`                 |
+| 业务公共组件   | `Biz*` + `index.vue`                 | `components/BizUserCard/index.vue`                   |
+| 页面           | kebab-case 目录                      | `views/auth/login.vue`、`views/auth/register.vue`    |
+| 页面私有子组件 | PascalCase，放 `components/`         | `views/user/components/UserProfile.vue`              |
+| 布局           | PascalCase 目录 + `index.vue`        | `layouts/DefaultLayout/index.vue`                    |
+| 布局私有子组件 | PascalCase，放 `components/`         | `layouts/DefaultLayout/components/ThemeControls.vue` |
+| Composable     | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                           |
+| Store 模块     | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user.ts` → `useUserStore`            |
 
 ### 代码规范
 
@@ -92,6 +92,7 @@ src/
 ├── assets/                        # 静态资源
 ├── components/                    # 公共组件
 ├── composables/                   # 组合式函数
+├── constants/                     # 全局常量
 ├── i18n/                          # 国际化
 ├── layouts/                       # 布局组件
 ├── router/                        # 全局路由

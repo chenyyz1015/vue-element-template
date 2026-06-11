@@ -1,10 +1,10 @@
 import { storage } from "@/utils/storage";
 
 /** Token 存储键 */
-export const TOKEN_KEY = "ACCESS_TOKEN";
+const TOKEN_KEY = "ACCESS_TOKEN";
 
 /** 刷新 Token 存储键 */
-export const REFRESH_TOKEN_KEY = "REFRESH_TOKEN";
+const REFRESH_TOKEN_KEY = "REFRESH_TOKEN";
 
 /** 获取 Token */
 export const getToken = (): string | null => {

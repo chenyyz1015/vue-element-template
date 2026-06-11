@@ -7,12 +7,12 @@ import { handleUnauthorized } from "./auth";
 
 /** 判断是否为统一业务响应结构 */
 export function isApiResponse(data: unknown): data is ApiResponse {
-  return typeof data === "object" && data !== null && "code" in data && "data" in data;
+  return typeof data === "object" && data !== null && "code" in data && "message" in data && "data" in data;
 }
 
 /** 从响应体提取错误信息 */
 export function extractErrorMessage(data: unknown, fallback: string): string {
-  return isApiResponse(data) && data.msg ? data.msg : fallback;
+  return isApiResponse(data) && data.message ? data.message : fallback;
 }
 
 /** 根据 HTTP 状态码获取提示文案 */

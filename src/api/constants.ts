@@ -7,9 +7,6 @@ export const UNAUTHORIZED_BIZ_CODES = [401, 40101, 40001] as const;
 /** 警告类业务状态码（展示 warning，仍 reject） */
 export const WARNING_BIZ_CODES = [601] as const;
 
-/** 默认请求地址前缀 */
-export const DEFAULT_BASE_URL = "/api";
-
 /** 通用上传/下载路径（相对 VITE_API_BASE_URL） */
 export const COMMON_UPLOAD_PATH = "/common/upload";
 export const COMMON_DOWNLOAD_PATH = "/common/download";

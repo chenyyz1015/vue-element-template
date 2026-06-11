@@ -228,10 +228,10 @@ emit("query-table");
 src/components/
 ├── ComHelloCard/            # 非业务型公共组件
 │   ├── index.vue
-│   └── types.ts
+│   └── types.d.ts
 └── BizUserCard/             # 业务型公共组件
     ├── index.vue
-    ├── types.ts
+    ├── types.d.ts
     └── constants.ts
 ```
 
@@ -239,7 +239,7 @@ src/components/
 
 ### 页面组件（`src/views/`）
 
-- 目录名：**kebab-case**，以 `index.vue` 作为页面入口
+- 目录名：**kebab-case**
 - 同级目录可放置 `types.d.ts`、`useXxx.ts`、`constants.ts`、`helpers.ts` 等辅助文件
 - 页面私有子组件放 `components/` 子目录，文件名 **PascalCase**，在页面中**手动 import**
 
@@ -269,7 +269,7 @@ src/views/
 
 ```
 src/layouts/
-└── AdminLayout/
+└── DefaultLayout/
     ├── index.vue
     └── components/
 ```
@@ -555,9 +555,9 @@ export const useAppStore = defineStore(
 | ---------------------- | ------------------------------------------ | ------------------------------------------------------- |
 | 非业务公共组件         | PascalCase 目录 + `index.vue`，`Com` 前缀  | `components/ComPageHeader/index.vue`                    |
 | 业务公共组件           | PascalCase 目录 + `index.vue`，`Biz` 前缀  | `components/BizOrderCard/index.vue`                     |
-| 页面                   | kebab-case 目录 + `index.vue`              | `views/home/index.vue`                                  |
-| 页面/布局私有子组件    | PascalCase `.vue`，放 `components/` 子目录 | `views/home/components/TechStackTable.vue`              |
-| 布局                   | PascalCase 目录 + `index.vue`              | `layouts/AdminLayout/index.vue`                         |
+| 页面                   | kebab-case 目录                            | `views/auth/login.vue`、`views/auth/register.vue`       |
+| 页面/布局私有子组件    | PascalCase `.vue`，放 `components/` 子目录 | `views/user/components/UserProfile.vue`                 |
+| 布局                   | PascalCase 目录 + `index.vue`              | `layouts/DefaultLayout/index.vue`                       |
 | 辅助文件               | camelCase 或语义化命名，与组件同级         | `types.d.ts`、`useXxx.ts`、`constants.ts`、`helpers.ts` |
 | Composable             | camelCase 文件名，use 前缀，箭头函数导出   | `composables/useLocale.ts`                              |
 | Store 模块             | kebab-case 文件名，use 前缀箭头函数导出    | `stores/modules/permission.ts` → `usePermissionStore`   |

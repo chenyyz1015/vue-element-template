@@ -3,8 +3,8 @@ import type { AxiosRequestConfig } from "axios";
 /** 统一 API 响应结构 */
 export interface ApiResponse<T = unknown> {
   code: number;
-  msg: string;
-  data?: T;
+  message: string;
+  data: T;
 }
 
 /** ApiResponse 别名，用于包装请求返回结果 */
@@ -14,31 +14,6 @@ export type AjaxResult<T = unknown> = ApiResponse<T>;
 export interface PageParams {
   page: number;
   size: number;
-}
-
-/** 分页响应数据 */
-export interface PageResult<T> {
-  list: T[];
-  total: number;
-  page: number;
-  size: number;
-}
-
-/** 表格分页响应 */
-export interface TableDataInfo<T = unknown> {
-  code: number;
-  msg: string;
-  rows: T[];
-  total: number;
-}
-
-/** 列表查询分页参数 */
-export interface PageQueryParams {
-  pageNum?: number;
-  pageSize?: number;
-  orderByColumn?: string;
-  isAsc?: string;
-  reasonable?: boolean;
 }
 
 /** 扩展请求配置 */
@@ -75,7 +50,7 @@ export interface RequestError extends Error {
 /** 错误响应体 */
 export interface ApiErrorBody {
   code?: number;
-  msg?: string;
+  message?: string;
   data?: unknown;
 }
 
