@@ -210,25 +210,25 @@ setLocale("zh-CN");
 
 配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
 
-| 变量                             | 说明                                                       | 默认值                                                                                    | 适用范围              |
-| -------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| `VITE_APP_NAME`                  | 项目名（宜与 `package.json` name 一致）                    | `vue-element-template`                                                                    | 全部 env 文件         |
-| `VITE_APP_TITLE`                 | 应用展示标题                                               | `Vue Element Template`                                                                    | 全部 env 文件         |
-| `VITE_GITHUB_URL`                | GitHub 仓库地址                                            | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_API_BASE_URL`              | API 基础地址                                               | `/api`                                                                                    | 全部 env 文件         |
-| `VITE_API_TIMEOUT`               | 请求超时（毫秒）                                           | `60_000`                                                                                  | 全部 env 文件         |
-| `VITE_API_PROXY_MAP`             | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`）    | `[["/api","http://localhost:8080","/api"],["/upload","http://localhost:8080","/upload"]]` | 仅 `.env.development` |
-| `VITE_SENTRY_ENABLED`            | 是否启用 Sentry（须同时配置有效 `VITE_SENTRY_DSN`）        | 开发 `false`，stage/production `true`                                                     | 全部 env 文件         |
-| `VITE_SENTRY_DSN`                | Sentry DSN（敏感项，建议写在 `.env.*.local`）              | 空                                                                                        | 全部 env 文件         |
-| `VITE_SENTRY_ENVIRONMENT`        | Sentry 上报环境标识                                        | `development` / `stage` / `production`                                                    | 全部 env 文件         |
-| `VITE_SENTRY_RELEASE`            | Release 版本（与 Source Map 上传、事件聚类一致）           | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1）                                      | 开发 `0`，stage/production `0.1`                                                          | 全部 env 文件         |
-| `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*`                                                                               | 全部 env 文件         |
-| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                     | 开发 `false`，stage/production `true`                                                     | 全部 env 文件         |
-| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                  | 空                                                                                        | 全部 env 文件         |
-| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                           | 空                                                                                        | 全部 env 文件         |
-| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）   | 空                                                                                        | 全部 env 文件         |
-| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）     | 空                                                                                        | 全部 env 文件         |
+| 变量                             | 说明                                                       | 默认值                                      | 适用范围              |
+| -------------------------------- | ---------------------------------------------------------- | ------------------------------------------- | --------------------- |
+| `VITE_APP_NAME`                  | 项目名（宜与 `package.json` name 一致）                    | `vue-element-template`                      | 全部 env 文件         |
+| `VITE_APP_TITLE`                 | 应用展示标题                                               | `Vue Element Template`                      | 全部 env 文件         |
+| `VITE_GITHUB_URL`                | GitHub 仓库地址                                            | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_API_BASE_URL`              | API 基础地址                                               | `/api`                                      | 全部 env 文件         |
+| `VITE_API_TIMEOUT`               | 请求超时（毫秒）                                           | `60_000`                                    | 全部 env 文件         |
+| `VITE_API_PROXY_MAP`             | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`）    | `[["/dev-api","http://localhost:8080",""]]` | 仅 `.env.development` |
+| `VITE_SENTRY_ENABLED`            | 是否启用 Sentry（须同时配置有效 `VITE_SENTRY_DSN`）        | 开发 `false`，stage/production `true`       | 全部 env 文件         |
+| `VITE_SENTRY_DSN`                | Sentry DSN（敏感项，建议写在 `.env.*.local`）              | 空                                          | 全部 env 文件         |
+| `VITE_SENTRY_ENVIRONMENT`        | Sentry 上报环境标识                                        | `development` / `stage` / `production`      | 全部 env 文件         |
+| `VITE_SENTRY_RELEASE`            | Release 版本（与 Source Map 上传、事件聚类一致）           | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1）                                      | 开发 `0`，stage/production `0.1`            | 全部 env 文件         |
+| `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                     | 开发 `false`，stage/production `true`       | 全部 env 文件         |
+| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                  | 空                                          | 全部 env 文件         |
+| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                           | 空                                          | 全部 env 文件         |
+| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）   | 空                                          | 全部 env 文件         |
+| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）     | 空                                          | 全部 env 文件         |
 
 **构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
 
