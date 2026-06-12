@@ -16,6 +16,14 @@ export interface PageParams {
   size: number;
 }
 
+/** 分页结果 */
+interface PageResult<T> {
+  list: T[];
+  total: number;
+  page: number;
+  size: number;
+}
+
 /** 扩展请求配置 */
 export interface CustomRequestConfig extends AxiosRequestConfig {
   /** 是否显示错误提示，默认 true */

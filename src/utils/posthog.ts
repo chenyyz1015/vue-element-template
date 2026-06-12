@@ -1,8 +1,8 @@
 import posthog from "posthog-js";
 
 const POSTHOG_ENABLED = import.meta.env.VITE_POSTHOG_ENABLED === "true";
-const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string;
-const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST as string;
+const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY;
+const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST;
 
 /** 初始化 PostHog 实例，须在应用启动时调用 */
 export const initPosthog = () => {
@@ -11,8 +11,8 @@ export const initPosthog = () => {
   posthog.init(POSTHOG_KEY, {
     api_host: POSTHOG_HOST,
     autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
+    capture_pageview: true,
+    capture_pageleave: "if_capture_pageview",
   });
 };
 

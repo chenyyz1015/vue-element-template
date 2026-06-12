@@ -13,6 +13,8 @@
 - 🎯 UnoCSS — 原子化 CSS
 - 🌐 Axios — HTTP 请求封装（失败可上报 Sentry，`skipSentryReport` 可按请求关闭）
 - 📊 Sentry — 异常监控（`@sentry/vue`，配置见环境变量）
+- 📈 PostHog — 用户行为分析（User Store 内 login/getInfo/logout 自动关联埋点）
+- 🔐 Crypto — 加解密工具（AES，环境变量管理密钥）
 - 🧩 VueUse / dayjs — 内置并 auto-import
 - 📦 lodash-es — 内置，按需手动 import（tree-shaking）
 - 🖼️ unplugin-svg-component — `src/assets/icons` SVG 图标组件
@@ -220,6 +222,11 @@ setLocale("zh-CN");
 | `VITE_SENTRY_RELEASE`            | Release 版本（与 Source Map 上传、事件聚类一致）           | 见 `.env.*`                                                                               | 全部 env 文件         |
 | `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1）                                      | 开发 `0`，stage/production `0.1`                                                          | 全部 env 文件         |
 | `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                      | 开发 `false`，stage/production `true`                                                     | 全部 env 文件         |
+| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                   | 空                                                                                        | 全部 env 文件         |
+| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                            | 空                                                                                        | 全部 env 文件         |
+| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）    | 空                                                                                        | 全部 env 文件         |
+| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）      | 空                                                                                        | 全部 env 文件         |
 
 **构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
 

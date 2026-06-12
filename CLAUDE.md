@@ -193,6 +193,11 @@ npm run lint:fix     # 自动修复 lint 问题
 | `VITE_SENTRY_RELEASE`            | Release 版本（Source Map 上传与事件聚类须一致）             | 见 `.env.*`                                                                               | 全部 env 文件         |
 | `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率 0–1                                          | 开发 `0`，stage/production `0.1`                                                          | 全部 env 文件         |
 | `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；默认同 `VITE_APP_NAME`）  | 见 `.env.*`                                                                               | 全部 env 文件         |
+| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                      | 开发 `false`，stage/production `true`                                                     | 全部 env 文件         |
+| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                   | 空                                                                                        | 全部 env 文件         |
+| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                            | 空                                                                                        | 全部 env 文件         |
+| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）    | 空                                                                                        | 全部 env 文件         |
+| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）      | 空                                                                                        | 全部 env 文件         |
 
 **构建期 Source Map**：`SENTRY_UPLOAD_SOURCEMAPS`、`SENTRY_AUTH_TOKEN`、`SENTRY_ORG`、`SENTRY_URL`（自托管必填）；模板 `.env.sentry-build-plugin.example`。插件 `vite/plugins/plugin-sentry.ts`；`build.sourcemap: "hidden"` 仅在上传开启时生效，上传后删除 `dist/**/*.map`。
 

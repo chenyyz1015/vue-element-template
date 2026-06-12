@@ -13,6 +13,11 @@ interface ImportMetaEnv {
   readonly VITE_SENTRY_RELEASE: string;
   readonly VITE_SENTRY_TRACES_SAMPLE_RATE: string;
   readonly VITE_SENTRY_PROJECT_SLUG: string;
+  readonly VITE_POSTHOG_ENABLED: string;
+  readonly VITE_POSTHOG_KEY: string;
+  readonly VITE_POSTHOG_HOST: string;
+  readonly VITE_CRYPTO_SECRET: string;
+  readonly VITE_CRYPTO_IV: string;
 }
 
 interface ImportMeta {
