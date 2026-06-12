@@ -1,12 +1,7 @@
 import { cwd } from "node:process";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
-import {
-  manualChunks,
-  mergeSentryEnv,
-  parseProxy,
-  resolveSentryBuildConfig,
-} from "./vite/helpers";
+import { manualChunks, mergeSentryEnv, parseProxy, resolveSentryBuildConfig } from "./vite/helpers";
 import { plugins } from "./vite/plugins";
 import { pluginSentry } from "./vite/plugins/plugin-sentry";
 
@@ -31,6 +26,9 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
+    },
+    optimizeDeps: {
+      exclude: ["@element-plus/icons-vue"],
     },
     css: {
       preprocessorOptions: {
