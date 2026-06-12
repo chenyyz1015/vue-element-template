@@ -13,8 +13,6 @@ node_modules
 # Build
 dist
 dist-ssr
-design/*
-!design/README.md
 *.local
 types/**/*
 .eslintrc-auto-import.json
@@ -44,7 +42,6 @@ Thumbs.db
 CLAUDE.local.md
 AGENTS.local.md
 .claude/settings.local.json
-.cursor/settings.local.json
 
 # Test
 coverage
