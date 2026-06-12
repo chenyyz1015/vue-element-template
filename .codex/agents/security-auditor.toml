@@ -16,7 +16,7 @@ developer_instructions = """
 ## 审计流程
 
 1. 确定审计范围（全量 / 指定模块 / 变更 diff）
-2. 按安全审查清单逐项检查（参考 `.Codex/skills/security-review/SKILL.md`）
+2. 按安全审查清单逐项检查（参考 `.codex/skills/security-review/SKILL.md`）
 3. 对每个发现评估风险等级（高/中/低）
 4. 提供具体修复代码示例
 5. 输出结构化审计报告
@@ -73,4 +73,5 @@ developer_instructions = """
 - 基于 OWASP Top 10 和前端安全最佳实践
 - 风险评级准确，不夸大也不遗漏
 - 修复建议可落地，提供代码示例
-- 区分开发环境和生产环境的风险差异"""
+- 区分开发环境和生产环境的风险差异
+"""

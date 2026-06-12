@@ -1,5 +1,10 @@
 approval_policy = "never"
 sandbox_mode = "workspace-write"
+
+# AGENTS.md / CLAUDE.md 作为项目指令的权威来源
+project_doc_fallback_filenames = ["CLAUDE.md", "AGENTS.md"]
+
+# 项目 specs/memories 来自 .agents 共享目录（与 Claude Code / Cursor 共用）
 [shell_environment_policy]
 inherit = "core"
 

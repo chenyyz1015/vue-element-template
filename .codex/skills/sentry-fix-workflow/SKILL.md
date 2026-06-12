@@ -40,13 +40,13 @@ Task Progress:
 
 按优先级判断 **是否应由当前仓库修复**：
 
-| 信号                                                       | 本项目      | 通常排除       |
-| ---------------------------------------------------------- | ----------- | -------------- |
-| `contexts.api_error.type` = `api_request_error`            | ✅ API 层   | —              |
-| 栈帧在 `src/` 且路径为 `.vue`/`.ts`                        | ✅ 应用代码 | —              |
-| 栈帧仅在 `node_modules`、浏览器扩展、chunk 哈希且无 `src/` | ❌          | 第三方/环境    |
-| `environment` 与当前修复目标环境不一致                     | ⚠️ 先确认   | 其他环境噪声   |
-| 重复 401/登录过期且无代码变更                              | ⚠️ 预期行为 | 可调采样或过滤 |
+| 信号 | 本项目 | 通常排除 |
+|------|--------|----------|
+| `contexts.api_error.type` = `api_request_error` | ✅ API 层 | — |
+| 栈帧在 `src/` 且路径为 `.vue`/`.ts` | ✅ 应用代码 | — |
+| 栈帧仅在 `node_modules`、浏览器扩展、chunk 哈希且无 `src/` | ❌ | 第三方/环境 |
+| `environment` 与当前修复目标环境不一致 | ⚠️ 先确认 | 其他环境噪声 |
+| 重复 401/登录过期且无代码变更 | ⚠️ 预期行为 | 可调采样或过滤 |
 
 **api_request_error** 字段对照：
 
@@ -58,7 +58,7 @@ Task Progress:
 
 ### Step 3：修复
 
-1. 最小改动修复根因，遵循 `AGENTS.md` / `.Codex/rules/code-style.md`。
+1. 最小改动修复根因，遵循 `CLAUDE.md` / `.codex/rules/code-style.md`。
 2. API 相关：优先修后端契约或前端错误处理，**不要**为掩盖问题关闭 `captureApiRequestError`。
 3. 敏感信息不得写入上报载荷；脱敏逻辑在 `src/sentry/config.ts` `sanitizeForSentry`。
 4. 若需本地复现：在 `.env.development.local` 设置 `VITE_SENTRY_ENABLED=true` 与有效 `VITE_SENTRY_DSN`。
@@ -97,41 +97,35 @@ bash scripts/sentry-resolve.sh --dry-run 4
 ## Sentry 修复报告
 
 ### Issue
-
 - ID / 短 ID：
 - 标题：
 - 环境：
 
 ### 归属
-
 - [ ] 本项目需修复 / [ ] 外部或预期行为
 
 ### 根因
-
 （一两句话）
 
 ### 修改
-
 - `path` — 说明
 
 ### 验证
-
 - [ ] `npm run build` 通过
 - [ ] 复现路径说明
 
 ### 闭环
-
 - Sentry Resolved：`npm run sentry:resolve -- <id>` 已执行 / 否（原因）
 ```
 
 ## MCP 工具速查
 
-| 工具                             | 用途                     |
-| -------------------------------- | ------------------------ |
-| `list_projects`                  | 确认 org 内项目          |
-| `list_issues`                    | 未解决 Issue 列表        |
-| `get_issue_with_stacktrace`      | Issue + 最新堆栈（首选） |
-| `get_issue` / `get_latest_event` | 仅需元数据或单事件时     |
+| 工具 | 用途 |
+|------|------|
+| `list_projects` | 确认 org 内项目 |
+| `list_issues` | 未解决 Issue 列表 |
+| `get_issue_with_stacktrace` | Issue + 最新堆栈（首选） |
+| `get_issue` / `get_latest_event` | 仅需元数据或单事件时 |
 
 调用前必须阅读 `mcps/user-sentry-selfhosted/tools/*.json` 参数 schema。
 
