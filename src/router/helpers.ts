@@ -1,18 +1,19 @@
 import type { Router, RouteRecordNameGeneric, RouteRecordRaw } from "vue-router";
 import { constantRoutes } from "./routes";
 
+/** 404 通配符路由名 */
+const NOT_FOUND_CATCHALL_NAME = "NotFoundCatchAll";
+
+/** 404 通配路由 */
+export const fallbackRoute: RouteRecordRaw = {
+  path: "/:pathMatch(.*)*",
+  name: NOT_FOUND_CATCHALL_NAME,
+  component: () => import("@/views/error/404.vue"),
+  meta: { hidden: true },
+};
+
 /** 动态路由注入完成后追加 404 兜底（必须最后注册） */
 export const addFallbackRoute = (router: Router) => {
-  /** 404 通配符路由名 */
-  const NOT_FOUND_CATCHALL_NAME = "NotFoundCatchAll";
-
-  const fallbackRoute: RouteRecordRaw = {
-    path: "/:pathMatch(.*)*",
-    name: NOT_FOUND_CATCHALL_NAME,
-    component: () => import("@/views/error/404.vue"),
-    meta: { hidden: true },
-  };
-
   if (router.hasRoute(NOT_FOUND_CATCHALL_NAME)) {
     router.removeRoute(NOT_FOUND_CATCHALL_NAME);
   }
