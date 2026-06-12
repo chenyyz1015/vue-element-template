@@ -204,11 +204,7 @@ setLocale("zh-CN");
 
 `name` 为文件名（不含 `.svg`），支持 TypeScript 智能提示（`types/svg-component.d.ts`）。
 
-### 静态资源（`src/assets`）
-
-页面与组件使用的图片、字体、音视频等统一放在 `src/assets/`，按类型分子目录（`images/`、`fonts/`、`videos/`、`audio/`）；可在各目录下按页面建 kebab-case 子目录（如 `images/landing/hero.webp`）。Pencil MCP `export_nodes` 导出的页面资源写入 `src/assets/images/<page>/`，在 Vue 中通过 `@/assets/...` 引用。约定详见 `[.claude/rules/ai-frontend-design.md](.claude/rules/ai-frontend-design.md)`。
-
-以下需手动 import：布局组件、页面/布局私有子组件、同级辅助文件（`types.ts`、`constants.ts` 等）、`lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`）。
+以下需手动 import：布局组件、页面/布局私有子组件、同级辅助文件（`types.d.ts`、`constants.ts` 等）、`lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`）。
 
 ## 环境变量
 
