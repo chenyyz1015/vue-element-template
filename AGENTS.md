@@ -1,6 +1,6 @@
 # AGENTS.md
 
-> 通用 AI Agent 指令文件，兼容 Cursor、Windsurf、GitHub Copilot 等主流 AI 开发工具。
+> 通用 AI Agent 指令文件，兼容 Cursor、Codex、GitHub Copilot 等主流 AI 开发工具。
 
 ## 项目概述
 
@@ -117,6 +117,12 @@ src/
 │   ├── commands/
 │   ├── agents/
 │   └── skills/
+├── .codex/                        # Codex（与 .claude 目录对齐）
+│   ├── config.toml
+│   ├── rules/
+│   ├── prompts/
+│   ├── agents/
+│   └── skills/
 └── .cursor/                       # Cursor（与 .claude 目录对齐）
     ├── rules/
     ├── commands/
@@ -127,6 +133,42 @@ src/
 **对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
 
 ### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
+
+## 环境变量
+
+配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
+
+| 变量                             | 说明                                                       | 默认值                                      | 适用范围              |
+| -------------------------------- | ---------------------------------------------------------- | ------------------------------------------- | --------------------- |
+| `VITE_APP_NAME`                  | 项目名（宜与 `package.json` name 一致）                    | `vue-element-template`                      | 全部 env 文件         |
+| `VITE_APP_TITLE`                 | 应用展示标题                                               | `Vue Element Template`                      | 全部 env 文件         |
+| `VITE_GITHUB_URL`                | GitHub 仓库地址                                            | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_API_BASE_URL`              | API 基础地址                                               | `/api`                                      | 全部 env 文件         |
+| `VITE_API_TIMEOUT`               | 请求超时（毫秒）                                           | `60_000`                                    | 全部 env 文件         |
+| `VITE_API_PROXY_MAP`             | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`）    | `[["/dev-api","http://localhost:8080",""]]` | 仅 `.env.development` |
+| `VITE_SENTRY_ENABLED`            | 是否启用 Sentry（须同时配置有效 `VITE_SENTRY_DSN`）        | 开发 `false`，stage/production `true`       | 全部 env 文件         |
+| `VITE_SENTRY_DSN`                | Sentry DSN（敏感项，建议写在 `.env.*.local`）              | 空                                          | 全部 env 文件         |
+| `VITE_SENTRY_ENVIRONMENT`        | Sentry 上报环境标识                                        | `development` / `stage` / `production`      | 全部 env 文件         |
+| `VITE_SENTRY_RELEASE`            | Release 版本（与 Source Map 上传、事件聚类一致）           | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1）                                      | 开发 `0`，stage/production `0.1`            | 全部 env 文件         |
+| `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*`                                 | 全部 env 文件         |
+| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                     | 开发 `false`，stage/production `true`       | 全部 env 文件         |
+| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                  | 空                                          | 全部 env 文件         |
+| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                           | 空                                          | 全部 env 文件         |
+| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）   | 空                                          | 全部 env 文件         |
+| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）     | 空                                          | 全部 env 文件         |
+
+**构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
+
+| 变量                        | 说明                                                       | 配置位置                                  |
+| --------------------------- | ---------------------------------------------------------- | ----------------------------------------- |
+| `SENTRY_UPLOAD_SOURCEMAPS`  | 为 `true` 时生成 `hidden` sourcemap 并上传                 | `.env.sentry-build-plugin` 或 CI          |
+| `SENTRY_AUTH_TOKEN`         | Organization Auth Token（UI 固定 `org:ci`，仅构建上传）    | 同上（勿提交仓库）                        |
+| `SENTRY_RESOLVE_AUTH_TOKEN` | User Auth Token（`event:write`，`npm run sentry:resolve`） | `.env.sentry-resolve.local`（见 example） |
+| `SENTRY_ORG`                | 组织 slug                                                  | 同上                                      |
+| `SENTRY_URL`                | Sentry 根地址                                              | 同上                                      |
+| `VITE_SENTRY_RELEASE`       | 须与运行时 SDK `release` 一致                              | `.env.stage` / `.env.production`          |
+| `VITE_SENTRY_PROJECT_SLUG`  | 上传目标项目                                               | 同上                                      |
 
 ## 常用命令
 
