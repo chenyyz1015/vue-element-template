@@ -18,7 +18,7 @@
 - 🧩 VueUse / dayjs — 内置并 auto-import
 - 📦 lodash-es — 内置，按需手动 import（tree-shaking）
 - 🖼️ unplugin-svg-component — `src/assets/icons` SVG 图标组件
-- 🤖 AI 工具配置 — Claude Code / Cursor 开箱即用
+- 🤖 AI 工具配置 — Claude Code / Codex / Cursor 开箱即用
 - 📏 ESLint + Stylelint + Commitlint — 代码规范保障
 
 ## 快速开始
