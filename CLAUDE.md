@@ -47,82 +47,16 @@ src/
 └── views/                         # 页面组件
 ```
 
-### 组件命名规范
-
-| 类型           | 目录规范          | 入口文件    | 私有子组件                       |
-| -------------- | ----------------- | ----------- | -------------------------------- |
-| 非业务公共组件 | `Com*` PascalCase | `index.vue` | —                                |
-| 业务公共组件   | `Biz*` PascalCase | `index.vue` | —                                |
-| 页面           | kebab-case 目录   | ...         | `components/*.vue`（PascalCase） |
-| 布局           | PascalCase 目录   | `index.vue` | `components/*.vue`（PascalCase） |
-
-同级目录可放置 `types.d.ts`、`constants.ts`、`helpers.ts` 等辅助文件。
-
 ## 开发约定
 
-### 自动引入
+项目的所有详细规则见 `.claude/rules/` 目录：
 
-以下模块通过 `unplugin-auto-import` 自动引入，**无需手动 import**：
-
-- `vue`（ref, computed, watch 等）
-- `vue-router`（useRouter, useRoute 等）
-- `pinia`（defineStore, storeToRefs 等）
-- `vue-i18n`（useI18n 等）
-- `src/composables/` 下的组合式函数（文件名 `useXxx.ts`，箭头函数导出）
-- `src/stores/modules/` 下的 Store（kebab-case 文件名，箭头函数导出）
-- `@vueuse/core` 组合式 API
-- `dayjs`（`src/utils/dayjs.ts` 预配置）
-
-以下组件通过 `unplugin-vue-components` 按需自动引入，**无需手动 import**：
-
-- `<SvgIcon name="图标名" />`（图标放 `src/assets/icons/*.svg`，已在 `main.ts` 注册）
-- Element Plus 组件
-- `src/components/` 下公共组件（`Com`_ 非业务型、`Biz_` 业务型，PascalCase 目录）
-
-以下场景**需手动 import**：
-
-- `src/layouts/` 布局组件（在 `App.vue` 或路由中）
-- 页面/布局 `components/` 下的私有子组件（PascalCase）
-- 同级目录的 `types.ts`、`constants.ts`、`helpers.ts` 等辅助文件
-- `src/i18n/index.ts`（`main.ts` 中注册 i18n 实例）
-- `lodash-es` 函数（如 `import { cloneDeep } from 'lodash-es'`，禁止全量 import）
-
-### 国际化
-
-- 语言包放 `src/i18n/locales/`，类型基准为 `zh-CN.json`（见 `src/i18n/types.ts`）
-- 组件内使用 `useI18n()` 的 `t()`，**禁止**手动 import `useI18n`
-- 路由标题使用 `meta.titleKey`，非硬编码字符串
-- 切换语言使用 `useLocale()`，通过 `src/utils/locale.ts` 持久化并同步 Element Plus locale
-
-### 缓存（Storage）
-
-- 底层：`src/utils/storage.ts`，导出 `storage.local` / `storage.session`
-- 逻辑 key 应使用 **UPPER_SNAKE_CASE**，不符合时在控制台 `console.warn`；物理 key 前缀 `VUE_ELEMENT_TEMPLATE_`
-- `get` / `set` 均支持泛型（`get<T>` / `set<T>`），自动 JSON 序列化与反序列化；`clear()` 仅清除带前缀的 key
-- **禁止**业务代码、composables、Store 模块直接 import `storage`
-- 业务缓存通过 `src/utils/` 封装文件读写（如 `auth.ts`、`locale.ts`）
-- Pinia 持久化：`src/stores/persisted-state.ts` 注册插件，并提供 `getPiniaPersistKey`（`app` → `PINIA_APP`）
-
-### Pinia 持久化
-
-- 插件：`pinia-plugin-persistedstate`，配置见 `src/stores/persisted-state.ts`（含 `getPiniaPersistKey`、`persistedState`）
-- Store 模块放 `src/stores/modules/`，文件名 kebab-case（如 `user-profile.ts`），导出 `useXxxStore`
-- 需持久化的 Store 在 `defineStore` 第三参数配置 `persist`
-- 仅持久化必要字段，临时 UI 状态（如 `loading`）使用 `pick` / `omit` 排除
-
-### 代码规范
-
-- 遵循 ESLint、Stylelint、Commitlint 规范
-- 配置文件使用 ESModule 格式（`.ts` + `"type": "module"`）
-- Vue 组件统一使用 `<script setup lang="ts">` + `<style lang="scss" scoped>`
-- 单文件组件顺序：`<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>`
-- 单文件组件宜 **≤300 行**（含 style）；超出则拆子组件、同级 `useXxx.ts` / `helpers.ts` 或 `styles/` partial（见 `.claude/rules/code-style.md`）
-- 异步逻辑统一使用 `async/await`，禁止 `.then()` / `.catch()` 链式调用（Element Plus 反馈组件方法如 `ElMessageBox.alert/confirm/prompt` 除外）
-- 除特殊情况外，方法统一使用箭头函数；存量重构时同步迁移 `function` 声明（见 `.claude/rules/code-style.md`「函数定义」「重构要求」）
-- 双向绑定优先 `defineModel`；`defineEmits` 自定义事件名使用 kebab-case（见 `.claude/rules/code-style.md`「双向绑定」）
-- 路径别名：`@/` → `src/`
-- CSS 类名：BEM + SMACSS `l-`\* + scoped `@apply`（见 `.claude/rules/css-naming.md`）
-- 详细规范见 `.claude/rules/code-style.md`
+| 规则文件             | 内容                                              |
+| -------------------- | ------------------------------------------------- |
+| `code-style.md`      | 组件命名、自动引入、国际化、缓存、Pinia、代码规范 |
+| `api-conventions.md` | API 请求封装、响应格式、环境变量                  |
+| `css-naming.md`      | BEM、SMACSS、OOCSS、`@apply` 约束                 |
+| `directives.md`      | 自定义指令目录与 RBAC                             |
 
 ### Git 提交规范
 
@@ -154,65 +88,28 @@ npm run lint:fix     # 自动修复 lint 问题
 
 ## AI 工具支持
 
-本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。
+本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor、Codex 等主流 AI 开发工具。
 
 ```
 ├── design-system/                 # UI / AI 设计 SSOT
+├── CLAUDE.md                      # Claude Code 项目指令
+├── AGENTS.md                      # Codex / GitHub Copilot 通用项目指令
 ├── .claude/                       # Claude Code（规则与命令权威源）
 │   ├── settings.json
 │   ├── rules/
 │   ├── commands/
 │   ├── agents/
 │   └── skills/
-├── .codex/                        # Codex（与 .claude 目录对齐）
+├── .codex/                        # Codex
 │   ├── config.toml
-│   ├── rules/
 │   ├── prompts/
 │   ├── agents/
 │   └── skills/
-└── .cursor/                       # Cursor（与 .claude 目录对齐）
+└── .cursor/                       # Cursor
     ├── rules/
     ├── commands/
     ├── agents/
     └── skills/
 ```
 
-**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
-
-### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
-
-## 环境变量
-
-配置文件：`.env.development`（开发）、`.env.stage`（预发）、`.env.production`（生产）。
-
-| 变量                             | 说明                                                       | 默认值                                      | 适用范围              |
-| -------------------------------- | ---------------------------------------------------------- | ------------------------------------------- | --------------------- |
-| `VITE_APP_NAME`                  | 项目名（宜与 `package.json` name 一致）                    | `vue-element-template`                      | 全部 env 文件         |
-| `VITE_APP_TITLE`                 | 应用展示标题                                               | `Vue Element Template`                      | 全部 env 文件         |
-| `VITE_GITHUB_URL`                | GitHub 仓库地址                                            | 见 `.env.*`                                 | 全部 env 文件         |
-| `VITE_API_BASE_URL`              | API 基础地址                                               | `/api`                                      | 全部 env 文件         |
-| `VITE_API_TIMEOUT`               | 请求超时（毫秒）                                           | `60_000`                                    | 全部 env 文件         |
-| `VITE_API_PROXY_MAP`             | 开发代理配置（JSON 数组：`[前缀, 目标地址, 重写前缀]`）    | `[["/dev-api","http://localhost:8080",""]]` | 仅 `.env.development` |
-| `VITE_SENTRY_ENABLED`            | 是否启用 Sentry（须同时配置有效 `VITE_SENTRY_DSN`）        | 开发 `false`，stage/production `true`       | 全部 env 文件         |
-| `VITE_SENTRY_DSN`                | Sentry DSN（敏感项，建议写在 `.env.*.local`）              | 空                                          | 全部 env 文件         |
-| `VITE_SENTRY_ENVIRONMENT`        | Sentry 上报环境标识                                        | `development` / `stage` / `production`      | 全部 env 文件         |
-| `VITE_SENTRY_RELEASE`            | Release 版本（与 Source Map 上传、事件聚类一致）           | 见 `.env.*`                                 | 全部 env 文件         |
-| `VITE_SENTRY_TRACES_SAMPLE_RATE` | 性能追踪采样率（0–1）                                      | 开发 `0`，stage/production `0.1`            | 全部 env 文件         |
-| `VITE_SENTRY_PROJECT_SLUG`       | Sentry 项目 slug（MCP / 构建上传；空则同 `VITE_APP_NAME`） | 见 `.env.*`                                 | 全部 env 文件         |
-| `VITE_POSTHOG_ENABLED`           | 是否启用 PostHog（须同时配置有效 KEY）                     | 开发 `false`，stage/production `true`       | 全部 env 文件         |
-| `VITE_POSTHOG_KEY`               | PostHog API Key（敏感项建议放 `*.local`）                  | 空                                          | 全部 env 文件         |
-| `VITE_POSTHOG_HOST`              | PostHog 实例地址                                           | 空                                          | 全部 env 文件         |
-| `VITE_CRYPTO_SECRET`             | Crypto 加解密密钥（16/24/32 位，敏感项建议放 `*.local`）   | 空                                          | 全部 env 文件         |
-| `VITE_CRYPTO_IV`                 | Crypto 加解密 IV（固定 16 位，敏感项建议放 `*.local`）     | 空                                          | 全部 env 文件         |
-
-**构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
-
-| 变量                        | 说明                                                       | 配置位置                                  |
-| --------------------------- | ---------------------------------------------------------- | ----------------------------------------- |
-| `SENTRY_UPLOAD_SOURCEMAPS`  | 为 `true` 时生成 `hidden` sourcemap 并上传                 | `.env.sentry-build-plugin` 或 CI          |
-| `SENTRY_AUTH_TOKEN`         | Organization Auth Token（UI 固定 `org:ci`，仅构建上传）    | 同上（勿提交仓库）                        |
-| `SENTRY_RESOLVE_AUTH_TOKEN` | User Auth Token（`event:write`，`npm run sentry:resolve`） | `.env.sentry-resolve.local`（见 example） |
-| `SENTRY_ORG`                | 组织 slug                                                  | 同上                                      |
-| `SENTRY_URL`                | Sentry 根地址                                              | 同上                                      |
-| `VITE_SENTRY_RELEASE`       | 须与运行时 SDK `release` 一致                              | `.env.stage` / `.env.production`          |
-| `VITE_SENTRY_PROJECT_SLUG`  | 上传目标项目                                               | 同上                                      |
+**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`commands` / `skills` 多工具共享软链接到 `.agents/` 统一管理。

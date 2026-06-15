@@ -43,14 +43,6 @@ const fetchData = async () => {
 };
 ```
 
-## 重构要求
-
-对存量代码做规范化重构时，除 BEM、TS Props、`async/await`、箭头函数等约定外，还应：
-
-- 将 `function foo()` / `async function foo()` 迁移为 `const foo = () =>` / `const foo = async () =>`（`src/api/` 等例外目录不在批量迁移范围内，除非该文件已在改动范围内）
-- 将 `props` + `emit('update:xxx')` / `computed` 包装的双向绑定迁移为 **`defineModel`**（见下文「双向绑定」）
-- 自定义事件名调整为 **kebab-case**，满足 ESLint `vue/custom-event-name-casing`（模板侧已用 kebab-case 的，同步修正 `defineEmits` 声明）
-
 ## 异步编程
 
 - 统一使用 `async/await` 处理异步逻辑，**禁止使用 `.then()` / `.catch()` 链式调用**
