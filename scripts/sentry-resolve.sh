@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 将 Sentry Issue 标为 resolved / ignored（自托管与 SaaS 通用）
-# 构建用 Organization Token（org:ci）与闭环用 Token 分离（见 .env.sentry-resolve.local.example）
+# 构建用 Organization Token（org:ci）与闭环用 Token 分离（见 .env.sentry-resolve.example）
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -25,11 +25,11 @@ usage() {
 
 环境变量:
   SENTRY_URL、SENTRY_ORG     可与 .env.sentry-build-plugin 共用
-  SENTRY_RESOLVE_AUTH_TOKEN  推荐：User Auth Token（event:write），见 .env.sentry-resolve.local
+  SENTRY_RESOLVE_AUTH_TOKEN  推荐：User Auth Token（event:write），见 .env.sentry-resolve
   SENTRY_AUTH_TOKEN          仅当含 event:write 时作兜底；Organization Token 通常仅 org:ci
 
 加载顺序（先加载的文件不覆盖已存在的变量）:
-  .env.sentry-build-plugin → .env.sentry-resolve.local → shell 环境
+  .env.sentry-build-plugin → .env.sentry-resolve → shell 环境
 
 示例:
   ./scripts/sentry-resolve.sh 4
@@ -61,7 +61,7 @@ load_env_file() {
 
 load_sentry_env() {
   load_env_file "$ROOT/.env.sentry-build-plugin"
-  load_env_file "$ROOT/.env.sentry-resolve.local"
+  load_env_file "$ROOT/.env.sentry-resolve"
 }
 
 select_api_token() {
@@ -87,7 +87,7 @@ require_env() {
   fi
   if ! select_api_token; then
     echo "[sentry-resolve] 缺少 SENTRY_RESOLVE_AUTH_TOKEN（推荐）或带 event:write 的 SENTRY_AUTH_TOKEN" >&2
-    echo "复制 .env.sentry-resolve.local.example → .env.sentry-resolve.local 并填写 User Token" >&2
+    echo "复制 .env.sentry-resolve.example → .env.sentry-resolve 并填写 User Token" >&2
     exit 1
   fi
   SENTRY_URL="${SENTRY_URL%/}"

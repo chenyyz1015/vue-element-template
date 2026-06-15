@@ -1,6 +1,6 @@
 ---
 name: sentry-fix-workflow
-description: Triages self-hosted Sentry issues via user-sentry-selfhosted MCP, classifies api_request_error vs runtime errors for this Vue app, implements fixes, verifies with npm run build, and resolves issues via scripts/sentry-resolve.sh. Use when fixing Sentry-reported exceptions, closing the monitoring loop, or investigating production errors from this project.
+description: Triages Sentry issues via Sentry official MCP, classifies api_request_error vs runtime errors for this Vue app, implements fixes, verifies with npm run build, and resolves issues via scripts/sentry-resolve.sh. Use when fixing Sentry-reported exceptions, closing the monitoring loop, or investigating production errors from this project.
 ---
 
 # Sentry 异常修复工作流
@@ -9,7 +9,7 @@ description: Triages self-hosted Sentry issues via user-sentry-selfhosted MCP, c
 
 ## 前置
 
-- 本地已配置 **user-sentry-selfhosted** MCP（`list_issues`、`get_issue_with_stacktrace` 等）。
+- 本地已配置 **Sentry 官方 MCP**（`mcp__sentry`，远程 HTTP 服务 `https://mcp.sentry.dev/mcp`，支持 OAuth 认证）。
 - 项目 Sentry 初始化见 `src/sentry/`；环境变量见 `.env.*` 中 `VITE_SENTRY_*`。
 - **闭环脚本**：`scripts/sentry-resolve.sh`（`npm run sentry:resolve`）。`SENTRY_URL`/`SENTRY_ORG` 可与构建共用；**Organization Token 仅 `org:ci`**，resolve 需 `.env.sentry-resolve.local` 中的 **`SENTRY_RESOLVE_AUTH_TOKEN`**（User Auth Token，`event:write`）。
 - API 请求异常统一 `type: api_request_error`，上下文键 `api_error`（见 `src/sentry/types.ts`）。
@@ -127,7 +127,7 @@ bash scripts/sentry-resolve.sh --dry-run 4
 | `get_issue_with_stacktrace` | Issue + 最新堆栈（首选） |
 | `get_issue` / `get_latest_event` | 仅需元数据或单事件时 |
 
-调用前必须阅读 `mcps/user-sentry-selfhosted/tools/*.json` 参数 schema。
+Sentry 官方 MCP 提供 16 个工具，以上为 Issue 修复流程的常用子集。
 
 ## 附加说明
 

@@ -1,1 +1,13 @@
-{}
+{
+  "app": {
+    "title": "Vue Element Template"
+  },
+  "router": {
+    "index": "首页",
+    "login": "登录",
+    "register": "注册",
+    "403": "403",
+    "404": "404",
+    "500": "500"
+  }
+}

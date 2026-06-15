@@ -11,5 +11,10 @@ inherit = "core"
 [shell_environment_policy.set]
 NODE_ENV = "development"
 
+# MCP 服务器
+[mcp_servers.sentry]
+enabled = true
+url = "https://mcp.sentry.dev/mcp"
+
 [sandbox_workspace_write]
 network_access = true

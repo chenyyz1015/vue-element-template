@@ -5,7 +5,6 @@ const { elementLocale, locale, t } = useLocale();
 watch(locale, () => {
   const titleKey = route.meta.titleKey;
   const appTitle = t("app.title");
-
   document.title = titleKey ? `${t(titleKey)} | ${appTitle}` : appTitle;
 });
 </script>

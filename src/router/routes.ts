@@ -10,37 +10,37 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: HOME_PATH,
     name: "Index",
-    meta: {},
+    meta: { titleKey: "router.index" },
     component: () => import("@/views/home/index.vue"),
   },
   {
     path: LOGIN_PATH,
     name: "Login",
-    meta: {},
+    meta: { titleKey: "router.login" },
     component: () => import("@/views/auth/login.vue"),
   },
   {
     path: REGISTER_PATH,
     name: "Register",
-    meta: {},
+    meta: { titleKey: "router.register" },
     component: () => import("@/views/auth/register.vue"),
   },
   {
     path: FORBIDDEN_PATH,
     name: "Forbidden",
-    meta: {},
+    meta: { titleKey: "router.403" },
     component: () => import("@/views/error/403.vue"),
   },
   {
     path: NOT_FOUND_PATH,
     name: "NotFound",
-    meta: {},
+    meta: { titleKey: "router.404" },
     component: () => import("@/views/error/404.vue"),
   },
   {
     path: SERVER_ERROR_PATH,
     name: "ServerError",
-    meta: {},
+    meta: { titleKey: "router.500" },
     component: () => import("@/views/error/500.vue"),
   },
 ];

@@ -1,6 +1,7 @@
 import type { SentryApiErrorPayload, SentryApiErrorSource } from "./types.d";
 import type { CustomRequestConfig, RequestError } from "@/api/types/common";
 import * as Sentry from "@sentry/vue";
+import { useUserStore } from "@/stores/modules/user";
 import { getSentryConfig, sanitizeForSentry } from "./config";
 import { SENTRY_API_ERROR_TYPE } from "./types.d";
 
@@ -88,6 +89,15 @@ export function captureApiRequestError(error: RequestError, config?: CustomReque
       String(payload.http?.status ?? "none"),
       String(payload.business?.code ?? "none"),
     ]);
+
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      scope.setUser({
+        id: userStore.userId,
+        email: userStore.email,
+        username: userStore.username,
+      });
+    }
 
     Sentry.captureException(error);
   });
