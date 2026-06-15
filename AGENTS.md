@@ -46,18 +46,14 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 - 同级目录的 `types.d.ts`、`constants.ts`、`helpers.ts` 等辅助文件
 - `src/i18n/index.ts`（main.ts 注册 i18n）
 
-### 组件目录规范
+### 自定义指令
 
-| 类型           | 目录规范                             | 示例                                                 |
-| -------------- | ------------------------------------ | ---------------------------------------------------- |
-| 非业务公共组件 | `Com*` + `index.vue`                 | `components/ComPageHeader/index.vue`                 |
-| 业务公共组件   | `Biz*` + `index.vue`                 | `components/BizUserCard/index.vue`                   |
-| 页面           | kebab-case 目录                      | `views/auth/login.vue`、`views/auth/register.vue`    |
-| 页面私有子组件 | PascalCase，放 `components/`         | `views/user/components/UserProfile.vue`              |
-| 布局           | PascalCase 目录 + `index.vue`        | `layouts/DefaultLayout/index.vue`                    |
-| 布局私有子组件 | PascalCase，放 `components/`         | `layouts/DefaultLayout/components/ThemeControls.vue` |
-| Composable     | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                           |
-| Store 模块     | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user.ts` → `useUserStore`            |
+- 实现放 `src/directives/modules/`，**camelCase** 文件名（如 `permission.ts` → `v-permission`）
+- `index.ts` 通过 `import.meta.glob` 自动扫描注册；`main.ts` 中 `app.use(directivesPlugin)`
+- 新增指令：仅新增 module 文件，**`export default`** 导出指令对象（`satisfies Directive`），无需改 `index.ts`
+- RBAC 按钮级：`v-permission` · `v-role`（`.all` 修饰符 = 需全部匹配，无权限/角色通过 `display: none` 隐藏）
+- `usePermission()` 已支持超管权限码 `*:*:*` 与角色 `admin`
+- 详情见 `.claude/rules/directives.md`
 
 ### 代码规范
 
@@ -76,8 +72,55 @@ Vue 3 + TypeScript 企业级前端模板。技术栈：Vite、Pinia、pinia-plug
 
 1. 最小改动范围 — 不做无关重构
 2. 遵循现有代码风格和命名约定
-3. 代码应自解释，仅在复杂逻辑处添加注释
+3. 代码应自解释，仅在复杂业务逻辑处添加注释
 4. 不编写 trivial 测试
+
+### API 请求约定
+
+- 所有 HTTP 请求通过 `src/api/request/` 封装（Axios，自动 Token、`X-Request-Time`、超时、去重）
+- **扩展配置 `CustomRequestConfig`**：支持 `showError`（默认 true）、`skipAuth`、`skipBizCheck`、`cancelDuplicate`、`skipSentryReport`
+- **`RequestError` 对象**：失败时抛出，含 `message` / `bizCode` / `httpStatus` / `responseData` / `canceled`
+- 响应格式：`{ code, data, message }`（code 为 0 或 200 表示成功）
+- 业务接口按域拆分到 `src/api/modules/`，从 `@/api` 或 `@/api/modules/xxx` 引入
+- 类型定义放 `src/api/types/`（`模块名.d.ts`），通用放 `common.d.ts`（`ApiResponse`、`PageParams`、`PageResult`）
+- 分页约定：`PageParams`（`{ page, size }`，page 从 1 开始）、`PageResult<T>`（`{ list, total, page, size }`）
+- API 函数命名：动词 + 名词 camelCase（如 `getUserList`、`createOrder`）
+- 详情见 `.claude/rules/api-conventions.md`
+
+### CSS 类名约定
+
+- **BEM**：`block__element` → `hero__title`，`block--modifier` → `hero__cta--primary`（kebab-case 语义块）
+- **SMACSS**：跨区块纯布局用 `l-container`、`l-section`、`l-grid` 前缀
+- **OOCSS**：颜色/字体走 `_tokens.scss` 或 SCSS 变量，结构（BEM）与外观分离
+- **Atomic**：Uno 工具类在 `<style lang="scss" scoped>` 内用 `@apply` 收敛，模板禁止长串 utility（`shortcuts` 如 `flex-center` 除外）
+- **`@apply` 约束**：仅复用组合，避免「万能类」；动态修饰符用 `:class` 绑定 BEM 名，禁止拼接 utility 字符串
+- **第三方穿透**：`:deep()` 以 BEM 为根；覆盖 Element Plus 避免 `!important`
+- **禁止**：硬编码色值、无 Block 孤立 utility、`_mixins.scss` 中用 `@apply !utility`
+- 详情见 `.claude/rules/css-naming.md`
+
+### 组件目录规范
+
+| 类型           | 目录规范                             | 示例                                                 |
+| -------------- | ------------------------------------ | ---------------------------------------------------- |
+| 非业务公共组件 | `Com*` + `index.vue`                 | `components/ComPageHeader/index.vue`                 |
+| 业务公共组件   | `Biz*` + `index.vue`                 | `components/BizUserCard/index.vue`                   |
+| 页面           | kebab-case 目录                      | `views/auth/login.vue`、`views/auth/register.vue`    |
+| 页面私有子组件 | PascalCase，放 `components/`         | `views/user/components/UserProfile.vue`              |
+| 布局           | PascalCase 目录 + `index.vue`        | `layouts/DefaultLayout/index.vue`                    |
+| 布局私有子组件 | PascalCase，放 `components/`         | `layouts/DefaultLayout/components/ThemeControls.vue` |
+| Composable     | camelCase 文件名，use 前缀，箭头函数 | `composables/useLocale.ts`                           |
+| Store 模块     | kebab-case 文件名，use 前缀箭头函数  | `stores/modules/user.ts` → `useUserStore`            |
+
+### 内置工具速查
+
+| 工具         | 要点                                                                                                                                                                    |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SVG 图标     | `src/assets/icons/`，`<SvgIcon name="xxx" />` 直接使用，禁止手动 import                                                                                                 |
+| dayjs        | auto-import 为 `dayjs`，已含中文 locale、relativeTime、customParseFormat                                                                                                |
+| lodash-es    | 按函数手动 import（`import { cloneDeep } from 'lodash-es'`），禁止全量 import                                                                                           |
+| Storage      | 底层 `storage.local` / `storage.session`，key UPPER*SNAKE_CASE + `VUE_ELEMENT_TEMPLATE*`前缀；业务用`@/utils/auth`、`@/utils/locale`；Pinia 持久化 `getPiniaPersistKey` |
+| @vueuse/core | auto-import，禁止手动 import；持久化场景用业务封装，禁止 `useLocalStorage`                                                                                              |
+| vue-i18n     | `useI18n()` auto-import；locale 切换用 `useLocale()` composable；路由标题 `meta.titleKey`                                                                               |
 
 ## 项目结构
 
@@ -107,10 +150,12 @@ src/
 
 ## AI 工具支持
 
-本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor 等主流 AI 开发工具。
+本项目遵循 [Claude Code 官方推荐项目结构](https://docs.anthropic.com/en/docs/claude-code)，并兼容 Cursor、Codex 等主流 AI 开发工具。
 
 ```
 ├── design-system/                 # UI / AI 设计 SSOT
+├── CLAUDE.md                      # Claude Code 项目指令
+├── AGENTS.md                      # Codex / GitHub Copilot 通用项目指令
 ├── .claude/                       # Claude Code（规则与命令权威源）
 │   ├── settings.json
 │   ├── rules/
@@ -119,7 +164,6 @@ src/
 │   └── skills/
 ├── .codex/                        # Codex（与 .claude 目录对齐）
 │   ├── config.toml
-│   ├── rules/
 │   ├── prompts/
 │   ├── agents/
 │   └── skills/
@@ -130,9 +174,7 @@ src/
     └── skills/
 ```
 
-**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`agents` / `commands` / `skills` 两侧内容一致，维护时 Skill 与脚本内路径分别使用 `.claude/` 或 `.cursor/` 前缀。
-
-### 斜杠命令（Claude Code：`/project:<name>` · Cursor：同名命令文件）
+**对齐约定**：规则详文以 `.claude/rules/*.md` 为准，Cursor 侧为 `.cursor/rules/*.mdc` 摘要；`commands` / `skills` 多工具共享软链接到 `.agents/` 统一管理。
 
 ## 环境变量
 
