@@ -1,0 +1,17 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@apply",
+      "description": "UnoCSS（transformerDirectives）：将 utility 组合注入当前选择器。"
+    },
+    {
+      "name": "@screen",
+      "description": "UnoCSS：按断点包裹样式。"
+    },
+    {
+      "name": "@theme",
+      "description": "UnoCSS：引用主题变量。"
+    }
+  ]
+}

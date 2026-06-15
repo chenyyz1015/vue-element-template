@@ -1,11 +1,14 @@
 import type { Router } from "vue-router";
 import NProgress from "nprogress";
 import { cancelAllPendingRequests } from "@/api/request/pending";
+import { i18n } from "@/i18n";
 import { getToken } from "@/utils/auth";
 import { LOGIN_PATH, ROUTE_WHITE_LIST } from "./constants";
 import "nprogress/nprogress.css";
 
 NProgress.configure({ showSpinner: false });
+
+const t = i18n.global.t;
 
 /** 注册路由守卫 */
 export const setupRouterGuard = (router: Router) => {
@@ -37,7 +40,11 @@ export const setupRouterGuard = (router: Router) => {
     }
   });
 
-  router.afterEach(() => {
+  router.afterEach((to) => {
     NProgress.done();
+
+    const titleKey = to.meta.titleKey;
+    const appTitle = t("app.title");
+    document.title = titleKey ? `${t(titleKey)} | ${appTitle}` : appTitle;
   });
 };
