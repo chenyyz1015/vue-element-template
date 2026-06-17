@@ -202,15 +202,15 @@ src/
 
 **构建期 Source Map（`npm run build` / `build:stage`，变量不进前端 bundle）**
 
-| 变量                        | 说明                                                       | 配置位置                                  |
-| --------------------------- | ---------------------------------------------------------- | ----------------------------------------- |
-| `SENTRY_UPLOAD_SOURCEMAPS`  | 为 `true` 时生成 `hidden` sourcemap 并上传                 | `.env.sentry-build-plugin` 或 CI          |
-| `SENTRY_AUTH_TOKEN`         | Organization Auth Token（UI 固定 `org:ci`，仅构建上传）    | 同上（勿提交仓库）                        |
-| `SENTRY_RESOLVE_AUTH_TOKEN` | User Auth Token（`event:write`，`npm run sentry:resolve`） | `.env.sentry-resolve.local`（见 example） |
-| `SENTRY_ORG`                | 组织 slug                                                  | 同上                                      |
-| `SENTRY_URL`                | Sentry 根地址                                              | 同上                                      |
-| `VITE_SENTRY_RELEASE`       | 须与运行时 SDK `release` 一致                              | `.env.stage` / `.env.production`          |
-| `VITE_SENTRY_PROJECT_SLUG`  | 上传目标项目                                               | 同上                                      |
+| 变量                        | 说明                                                       | 配置位置                            |
+| --------------------------- | ---------------------------------------------------------- | ----------------------------------- |
+| `SENTRY_UPLOAD_SOURCEMAPS`  | 为 `true` 时生成 `hidden` sourcemap 并上传                 | `.env.sentry-build-plugin` 或 CI    |
+| `SENTRY_AUTH_TOKEN`         | Organization Auth Token（UI 固定 `org:ci`，仅构建上传）    | 同上（勿提交仓库）                  |
+| `SENTRY_RESOLVE_AUTH_TOKEN` | User Auth Token（`event:write`，`npm run sentry:resolve`） | `.env.sentry-resolve`（见 example） |
+| `SENTRY_ORG`                | 组织 slug                                                  | 同上                                |
+| `SENTRY_URL`                | Sentry 根地址                                              | 同上                                |
+| `VITE_SENTRY_RELEASE`       | 须与运行时 SDK `release` 一致                              | `.env.stage` / `.env.production`    |
+| `VITE_SENTRY_PROJECT_SLUG`  | 上传目标项目                                               | 同上                                |
 
 ## 常用命令
 

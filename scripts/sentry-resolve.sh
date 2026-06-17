@@ -118,7 +118,7 @@ assert_token_can_update_issues() {
     echo "  Organization Token 在 Sentry 中固定为 org:ci（Source Map / Release），无法 resolve Issue。" >&2
   fi
   echo "  请使用 User Auth Token（个人设置 → Auth Tokens），勾选 event:write。" >&2
-  echo "  写入 .env.sentry-resolve.local：SENTRY_RESOLVE_AUTH_TOKEN=<token>" >&2
+  echo "  写入 .env.sentry-resolve：SENTRY_RESOLVE_AUTH_TOKEN=<token>" >&2
   echo "  或于 Sentry UI 手动 Resolve；MCP 若已配置独立凭证亦可拉取 Issue。" >&2
   exit 1
 }
