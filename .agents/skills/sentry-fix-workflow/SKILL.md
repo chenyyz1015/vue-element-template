@@ -11,7 +11,7 @@ description: Triages Sentry issues via Sentry official MCP, classifies api_reque
 
 - 本地已配置 **Sentry 官方 MCP**（`mcp__sentry`，远程 HTTP 服务 `https://mcp.sentry.dev/mcp`，支持 OAuth 认证）。
 - 项目 Sentry 初始化见 `src/sentry/`；环境变量见 `.env.*` 中 `VITE_SENTRY_*`。
-- **闭环脚本**：`scripts/sentry-resolve.sh`（`npm run sentry:resolve`）。`SENTRY_URL`/`SENTRY_ORG` 可与构建共用；**Organization Token 仅 `org:ci`**，resolve 需 `.env.sentry-resolve.local` 中的 **`SENTRY_RESOLVE_AUTH_TOKEN`**（User Auth Token，`event:write`）。
+- **闭环脚本**：`scripts/sentry-resolve.sh`（`npm run sentry:resolve`）。`SENTRY_URL`/`SENTRY_ORG` 可与构建共用；**Organization Token 仅 `org:ci`**，resolve 需 `.env.sentry-resolve` 中的 **`SENTRY_RESOLVE_AUTH_TOKEN`**（User Auth Token，`event:write`）。
 - API 请求异常统一 `type: api_request_error`，上下文键 `api_error`（见 `src/sentry/types.ts`）。
 - 生产堆栈若仍为 `assets/index-*.js`，检查 `VITE_SENTRY_RELEASE` 与构建期 Source Map 上传（`SENTRY_*`，见 README 环境变量）。
 
@@ -40,13 +40,13 @@ Task Progress:
 
 按优先级判断 **是否应由当前仓库修复**：
 
-| 信号 | 本项目 | 通常排除 |
-|------|--------|----------|
-| `contexts.api_error.type` = `api_request_error` | ✅ API 层 | — |
-| 栈帧在 `src/` 且路径为 `.vue`/`.ts` | ✅ 应用代码 | — |
-| 栈帧仅在 `node_modules`、浏览器扩展、chunk 哈希且无 `src/` | ❌ | 第三方/环境 |
-| `environment` 与当前修复目标环境不一致 | ⚠️ 先确认 | 其他环境噪声 |
-| 重复 401/登录过期且无代码变更 | ⚠️ 预期行为 | 可调采样或过滤 |
+| 信号                                                       | 本项目      | 通常排除       |
+| ---------------------------------------------------------- | ----------- | -------------- |
+| `contexts.api_error.type` = `api_request_error`            | ✅ API 层   | —              |
+| 栈帧在 `src/` 且路径为 `.vue`/`.ts`                        | ✅ 应用代码 | —              |
+| 栈帧仅在 `node_modules`、浏览器扩展、chunk 哈希且无 `src/` | ❌          | 第三方/环境    |
+| `environment` 与当前修复目标环境不一致                     | ⚠️ 先确认   | 其他环境噪声   |
+| 重复 401/登录过期且无代码变更                              | ⚠️ 预期行为 | 可调采样或过滤 |
 
 **api_request_error** 字段对照：
 
@@ -97,35 +97,41 @@ bash scripts/sentry-resolve.sh --dry-run 4
 ## Sentry 修复报告
 
 ### Issue
+
 - ID / 短 ID：
 - 标题：
 - 环境：
 
 ### 归属
+
 - [ ] 本项目需修复 / [ ] 外部或预期行为
 
 ### 根因
+
 （一两句话）
 
 ### 修改
+
 - `path` — 说明
 
 ### 验证
+
 - [ ] `npm run build` 通过
 - [ ] 复现路径说明
 
 ### 闭环
+
 - Sentry Resolved：`npm run sentry:resolve -- <id>` 已执行 / 否（原因）
 ```
 
 ## MCP 工具速查
 
-| 工具 | 用途 |
-|------|------|
-| `list_projects` | 确认 org 内项目 |
-| `list_issues` | 未解决 Issue 列表 |
-| `get_issue_with_stacktrace` | Issue + 最新堆栈（首选） |
-| `get_issue` / `get_latest_event` | 仅需元数据或单事件时 |
+| 工具                             | 用途                     |
+| -------------------------------- | ------------------------ |
+| `list_projects`                  | 确认 org 内项目          |
+| `list_issues`                    | 未解决 Issue 列表        |
+| `get_issue_with_stacktrace`      | Issue + 最新堆栈（首选） |
+| `get_issue` / `get_latest_event` | 仅需元数据或单事件时     |
 
 Sentry 官方 MCP 提供 16 个工具，以上为 Issue 修复流程的常用子集。
 
