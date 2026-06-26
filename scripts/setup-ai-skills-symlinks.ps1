@@ -1,4 +1,5 @@
 # Rebuild AI tool symlinks to .agents/skills for Claude / Codex / Cursor.
+# Uses relative symlink targets (via mklink) so Git/GitHub show repo paths.
 # Requires Windows Developer Mode or elevated shell for directory symlinks.
 
 $ErrorActionPreference = 'Stop'
@@ -13,6 +14,12 @@ $AiSkillDirs = @(
   '.cursor\skills'
 )
 
+function Normalize-SymlinkTarget {
+  param([string]$Target)
+
+  return ($Target -replace '\\', '/').TrimEnd('/')
+}
+
 function Remove-SkillSymlink {
   param([string]$LinkPath)
 
@@ -25,6 +32,39 @@ function Remove-SkillSymlink {
   $item.Delete()
 }
 
+function Get-ResolvedSymlinkTarget {
+  param(
+    [string]$LinkPath,
+    [string]$LinkTarget
+  )
+
+  if (-not [System.IO.Path]::IsPathRooted($LinkTarget)) {
+    $LinkTarget = Join-Path (Split-Path -Parent $LinkPath) $LinkTarget
+  }
+
+  return (Resolve-Path -LiteralPath $LinkTarget).Path
+}
+
+function New-RelativeDirectorySymlink {
+  param(
+    [string]$LinkPath,
+    [string]$RelativeTarget
+  )
+
+  $linkParent = Split-Path -Parent $LinkPath
+  $linkName = Split-Path -Leaf $LinkPath
+  Push-Location $linkParent
+  try {
+    cmd /c mklink /D $linkName $RelativeTarget | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "mklink failed for $LinkPath"
+    }
+  }
+  finally {
+    Pop-Location
+  }
+}
+
 function Ensure-SkillSymlink {
   param(
     [string]$LinkPath,
@@ -34,36 +74,28 @@ function Ensure-SkillSymlink {
   $resolvedTarget = (Resolve-Path -LiteralPath $TargetPath).Path
   $skillName = Split-Path -Leaf $TargetPath
   $relativeTarget = "..\..\.agents\skills\$skillName"
+  $expectedTarget = "../../.agents/skills/$skillName"
 
   if (Test-Path -LiteralPath $LinkPath) {
     $item = Get-Item -LiteralPath $LinkPath -Force
     if ($item.LinkType -eq 'SymbolicLink') {
       $linkTarget = @($item.Target)[0]
-      if (-not [System.IO.Path]::IsPathRooted($linkTarget)) {
-        $linkTarget = Join-Path (Split-Path -Parent $LinkPath) $linkTarget
-      }
-      $currentTarget = (Resolve-Path -LiteralPath $linkTarget).Path
-      if ($currentTarget -eq $resolvedTarget) {
+      $normalizedLinkTarget = Normalize-SymlinkTarget $linkTarget
+      $currentTarget = Get-ResolvedSymlinkTarget -LinkPath $LinkPath -LinkTarget $linkTarget
+      if ($normalizedLinkTarget -eq $expectedTarget -and $currentTarget -eq $resolvedTarget) {
         Write-Host "OK  $LinkPath"
         return
       }
       Remove-SkillSymlink -LinkPath $LinkPath
     }
     else {
-      throw "Path exists and is not a symlink: $LinkPath"
+      Write-Warning "SKIP $LinkPath (exists and is not a symlink)"
+      return
     }
   }
 
-  $linkParent = Split-Path -Parent $LinkPath
-  $linkName = Split-Path -Leaf $LinkPath
-  Push-Location $linkParent
-  try {
-    New-Item -ItemType SymbolicLink -Path $linkName -Target $relativeTarget | Out-Null
-  }
-  finally {
-    Pop-Location
-  }
-  Write-Host "LINK $LinkPath -> $relativeTarget"
+  New-RelativeDirectorySymlink -LinkPath $LinkPath -RelativeTarget $relativeTarget
+  Write-Host "LINK $LinkPath -> $expectedTarget"
 }
 
 foreach ($skillDir in $AiSkillDirs) {
