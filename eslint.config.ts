@@ -10,7 +10,17 @@ export default antfu(
     jsonc: false,
     yaml: false,
     stylistic: false,
-    ignores: ["node_modules/**", "dist/**", "types/**", "coverage/**"],
+    ignores: [
+      "node_modules/**",
+      "dist/**",
+      "types/**",
+      "coverage/**",
+      ".agents/**",
+      ".claude/**",
+      ".cursor/**",
+      ".codex/**",
+      ".github/**",
+    ],
   },
   {
     languageOptions: {
@@ -20,10 +30,7 @@ export default antfu(
       "vue/multi-word-component-names": "off",
       "no-console": "off",
       "ts/no-explicit-any": "warn",
-      "ts/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
+      "ts/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
     },
   },
   eslintConfigPrettier
