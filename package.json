@@ -14,7 +14,9 @@
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . && stylelint \"src/**/*.{css,scss,vue}\"",
     "lint:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue}\" && eslint . --fix && stylelint \"src/**/*.{css,scss,vue}\" --fix",
     "prepare": "husky",
-    "sentry:resolve": "bash scripts/sentry-resolve.sh"
+    "sentry:resolve": "bash scripts/sentry-resolve.sh",
+    "rebuild:skills-symlinks": "powershell -ExecutionPolicy Bypass -File scripts/setup-ai-skills-symlinks.ps1",
+    "rebuild:commands-symlinks": "powershell -ExecutionPolicy Bypass -File scripts/setup-ai-commands-symlinks.ps1"
   },
   "lint-staged": {
     "src/**/*.vue": [
