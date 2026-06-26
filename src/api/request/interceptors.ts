@@ -32,7 +32,7 @@ export function setupRequestInterceptor() {
       config.headers["X-Request-Time"] = String(Date.now());
 
       const method = config.method?.toUpperCase();
-      if (config.preventRepeatSubmit && (method === "POST" || method === "PUT")) {
+      if (config.preventRepeatSubmit && (method === "POST" || method === "PUT" || method === "PATCH")) {
         checkSubmitGuard(config.url ?? "", config.data, config.repeatSubmitInterval);
       }
 
