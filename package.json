@@ -16,6 +16,18 @@
     "prepare": "husky",
     "sentry:resolve": "bash scripts/sentry-resolve.sh"
   },
+  "lint-staged": {
+    "src/**/*.vue": [
+      "prettier --write",
+      "eslint --fix",
+      "stylelint --fix"
+    ],
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{css,scss}": "stylelint --fix"
+  },
   "dependencies": {
     "@ant-design/colors": "^8.0.1",
     "@element-plus/icons-vue": "^2.3.2",
