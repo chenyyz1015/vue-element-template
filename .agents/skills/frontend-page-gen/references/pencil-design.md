@@ -1,19 +1,19 @@
 # Pencil MCP 设计流程
 
-> 当用户在阶段 2 选择 Pencil MCP 时，使用此流程。分两步走：先页面布局确认大方向，再组件级高保真。
+> 当用户在阶段 4 选择 Pencil MCP 时，使用此流程。分三步走：页面布局线框 → 静态资源生成 → 组件级高保真。
 
 ## Pencil MCP 工具速查
 
-| 工具 | 用途 |
-|------|------|
+| 工具               | 用途                           |
+| ------------------ | ------------------------------ |
 | `get_editor_state` | 获取编辑器状态和 `.pen` schema |
-| `get_guidelines` | 获取设计指南和风格参考 |
-| `batch_design` | 批量创建/更新节点（核心工具） |
-| `batch_get` | 批量读取节点结构和属性 |
-| `get_screenshot` | 截图用于审核展示 |
-| `snapshot_layout` | 检查布局结构、重叠等问题 |
-| `get_variables` | 获取设计变量和主题 |
-| `export_html` | 导出为 HTML + Tailwind / CSS |
+| `get_guidelines`   | 获取设计指南和风格参考         |
+| `batch_design`     | 批量创建/更新节点（核心工具）  |
+| `batch_get`        | 批量读取节点结构和属性         |
+| `get_screenshot`   | 截图用于审核展示               |
+| `snapshot_layout`  | 检查布局结构、重叠等问题       |
+| `get_variables`    | 获取设计变量和主题             |
+| `export_html`      | 导出为 HTML + Tailwind / CSS   |
 
 ## 第一步：页面布局线框图
 
@@ -24,6 +24,7 @@
 3. **生成布局**：用 `batch_design` 创建页面级线框图，只关注**整体布局和区块划分**：
 
    **后台管理页面布局**：
+
    ```
    ┌─────────────────────────────────────┐
    │ 面包屑 / 页面标题                     │
@@ -39,6 +40,7 @@
    ```
 
    **前台落地页布局**：
+
    ```
    ┌─────────────────────────────────────┐
    │ 导航栏（Logo + 菜单 + CTA）           │
@@ -72,21 +74,33 @@
 
 5. **迭代修改**：用户反馈 → 调整布局 → 重新截图，直到确认。
 
+## 第零步：静态资源生成（openai-image）
+
+> 详见 [openai-image.md](openai-image.md)
+
+布局线框确认后、高保真设计之前执行：
+
+1. 根据需求与 [page-types.md](page-types.md) 清单列出资源表
+2. 调用 openai-image MCP（`user-openai-image`）逐项生成，保存至 `src/static/` 对应子目录
+3. 用户确认资源集后，在高保真设计中引用真实 PNG（`batch_design` 插入图片节点）
+4. 阶段 3 概念图（`design-system/mockups/`）作为布局与风格参考，高保真需与其对齐
+
 ## 第二步：组件级高保真设计
 
-布局确认后，细化到组件级别：
+静态资源就绪后，细化到组件级别：
 
 1. **细化内容**（用 `batch_design` 逐个区块细化）：
    - 颜色：主题色、中性色、语义色（成功/警告/危险/信息）
    - 字体：标题/正文层次（字号、行高、字重）
    - 间距：组件内边距、区块间距
-   - Element Plus 组件：表格、表单、按钮、弹窗等，与项目 `src/styles/element/var.scss` 一致
+   - 项目 UI 组件库：输入框、按钮、列表项、弹窗等，与设计 token / 主题变量一致
    - 交互状态：hover、focus、disabled、loading、empty、error
    - 响应式：标注移动/平板/桌面断点
 
 2. **加载设计变量**：调用 `get_variables` 确保与项目主题一致。
 
 3. **截图展示**：逐区块展示高保真效果：
+
    ```
    ## 组件级高保真设计
 
@@ -104,7 +118,7 @@
 
 ## 设计约束
 
-- **后台管理**：遵循 Element Plus 规范，使用 `el-table`、`el-form`、`el-pagination`、`el-dialog` 等
+- **后台管理**：遵循项目 UI 组件库规范（见 `.claude/rules/code-style.md`）
 - **前台页面**：颜色/字体/间距来自 UX token，使用 `get_variables` 导出的变量
 - **状态覆盖**：空状态、加载态、错误态
 - **响应式**：标注 ≥ 2 个断点

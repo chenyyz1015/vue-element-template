@@ -1,6 +1,6 @@
 # 代码规范速查
 
-> 在阶段 5 代码开发中必须遵循。详细规则见 `.claude/rules/`。
+> 在阶段 6 代码开发中必须遵循。详细规则见 `.claude/rules/`。
 
 ## 开发前必读文件
 
@@ -47,18 +47,18 @@ src/router/routes.ts              # 追加路由配置
 
 ## 规范速查表
 
-| 规范 | 要求 |
-|------|------|
+| 规范     | 要求                                                                     |
+| -------- | ------------------------------------------------------------------------ |
 | 组件结构 | `<script setup lang="ts">` → `<template>` → `<style lang="scss" scoped>` |
-| 方法定义 | 箭头函数 `const handleXxx = () => {}`（API 模块除外） |
-| 双向绑定 | `defineModel<T>('name', { default: ... })` |
-| 模板引用 | `useTemplateRef<FormInstance>('xxx')`，必须标注泛型 |
-| API 调用 | `async/await` + `try/catch`，禁止 `.then()` / `.catch()` |
-| 缓存读写 | 通过 `@/utils/xxx` 封装方法，禁止直接用 browserStorage |
-| 样式类名 | 模板用 BEM，scoped 内 `@apply` 收敛 UnoCSS 原子类 |
-| 组件命名 | 公共组件 PascalCase 目录（`Com`/`Biz` 前缀），页面 kebab-case 目录 |
-| i18n | 用户可见文本用 `t('key')` 或 `$t('key')`，禁止硬编码 |
-| 页面体量 | 单文件 ≤ 300 行，超出按职责拆分 |
+| 方法定义 | 箭头函数 `const handleXxx = () => {}`（API 模块除外）                    |
+| 双向绑定 | `defineModel<T>('name', { default: ... })`                               |
+| 模板引用 | `useTemplateRef<FormInstance>('xxx')`，必须标注泛型                      |
+| API 调用 | `async/await` + `try/catch`，禁止 `.then()` / `.catch()`                 |
+| 缓存读写 | 通过 `@/utils/xxx` 封装方法，禁止直接用 browserStorage                   |
+| 样式类名 | 模板用 BEM，scoped 内 `@apply` 收敛 UnoCSS 原子类                        |
+| 组件命名 | 公共组件 PascalCase 目录（`Com`/`Biz` 前缀），页面 kebab-case 目录       |
+| i18n     | 用户可见文本用 `t('key')` 或 `$t('key')`，禁止硬编码                     |
+| 页面体量 | 单文件 ≤ 300 行，超出按职责拆分                                          |
 
 ## 禁止事项
 
@@ -73,23 +73,23 @@ src/router/routes.ts              # 追加路由配置
 - 使用 `.then()` / `.catch()` 链式调用（ElMessageBox 等反馈 API 除外）
 - 穿透子组件 `$refs` 或 `$el`
 
-## 阶段 6 规范审查清单
+## 阶段 7 规范审查清单
 
-| 检查项 | 说明 |
-|--------|------|
-| 用户可见文案 | 无硬编码中文，全部走 `t('key')` |
-| 路由注册 | path 和 name 已在 `routes.ts` 注册 |
-| API 导出 | 已在 `src/api/index.ts` 添加 `export * from "./modules/<module>"` |
-| 公共组件 | 无手动 import，直接使用 auto-import 的 PascalCase 组件 |
-| 私有子组件 | 已手动 import（PascalCase） |
-| 原子类 | 模板中无长串 utility class，样式收敛在 scoped `@apply` |
-| 方法定义 | 使用箭头函数（API 模块除外） |
-| v-model | 使用 `defineModel`（如适用） |
-| 模板 ref | 使用 `useTemplateRef` 并标注泛型 |
-| Store | Setup Store 风格，持久化配置正确 |
-| 类型 | 无 `any`，Props/Emits 有 TS 类型 |
-| BEM 类名 | 模板使用 BEM 语义类名 |
-| 体量 | 单文件 ≤ 300 行 |
-| API 模块 | 可保留 `export function` |
-| APIs | `async/await` + `try/catch`，无 `.then()` |
-| 缓存 | 通过 `@/utils/xxx` 封装，无直接 browserStorage |
+| 检查项       | 说明                                                              |
+| ------------ | ----------------------------------------------------------------- |
+| 用户可见文案 | 无硬编码中文，全部走 `t('key')`                                   |
+| 路由注册     | path 和 name 已在 `routes.ts` 注册                                |
+| API 导出     | 已在 `src/api/index.ts` 添加 `export * from "./modules/<module>"` |
+| 公共组件     | 无手动 import，直接使用 auto-import 的 PascalCase 组件            |
+| 私有子组件   | 已手动 import（PascalCase）                                       |
+| 原子类       | 模板中无长串 utility class，样式收敛在 scoped `@apply`            |
+| 方法定义     | 使用箭头函数（API 模块除外）                                      |
+| v-model      | 使用 `defineModel`（如适用）                                      |
+| 模板 ref     | 使用 `useTemplateRef` 并标注泛型                                  |
+| Store        | Setup Store 风格，持久化配置正确                                  |
+| 类型         | 无 `any`，Props/Emits 有 TS 类型                                  |
+| BEM 类名     | 模板使用 BEM 语义类名                                             |
+| 体量         | 单文件 ≤ 300 行                                                   |
+| API 模块     | 可保留 `export function`                                          |
+| APIs         | `async/await` + `try/catch`，无 `.then()`                         |
+| 缓存         | 通过 `@/utils/xxx` 封装，无直接 browserStorage                    |

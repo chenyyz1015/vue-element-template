@@ -1,21 +1,21 @@
 # Figma MCP 设计流程
 
-> 当用户在阶段 2 选择 Figma MCP 时，使用此流程。分两步走：先页面布局确认大方向，再组件级高保真。
+> 当用户在阶段 4 选择 Figma MCP 时，使用此流程。分三步走：页面布局线框 → 静态资源生成 → 组件级高保真。
 
 ## Figma MCP 工具速查
 
-| 工具 | 用途 |
-|------|------|
-| `whoami` | 获取用户信息和 plan 列表 |
-| `create_new_file` | 创建新的 Figma 设计文件 |
-| `use_figma` | 执行 Figma Plugin API JS 代码（核心工具） |
-| `get_design_context` | 获取设计上下文和代码参考 |
-| `get_screenshot` | 截图用于审核展示 |
-| `get_variable_defs` | 获取变量定义 |
-| `search_design_system` | 搜索设计系统组件/变量/样式 |
-| `get_metadata` | 获取节点元数据（XML 结构） |
-| `generate_figma_design` | 从网页/代码捕获页面到 Figma |
-| `get_libraries` | 获取文件关联的设计库 |
+| 工具                    | 用途                                      |
+| ----------------------- | ----------------------------------------- |
+| `whoami`                | 获取用户信息和 plan 列表                  |
+| `create_new_file`       | 创建新的 Figma 设计文件                   |
+| `use_figma`             | 执行 Figma Plugin API JS 代码（核心工具） |
+| `get_design_context`    | 获取设计上下文和代码参考                  |
+| `get_screenshot`        | 截图用于审核展示                          |
+| `get_variable_defs`     | 获取变量定义                              |
+| `search_design_system`  | 搜索设计系统组件/变量/样式                |
+| `get_metadata`          | 获取节点元数据（XML 结构）                |
+| `generate_figma_design` | 从网页/代码捕获页面到 Figma               |
+| `get_libraries`         | 获取文件关联的设计库                      |
 
 ## 准备
 
@@ -34,15 +34,26 @@
 
 3. **迭代修改**：用户反馈 → `use_figma` 调整 → 重新截图，直到确认。
 
+## 第零步：静态资源生成（openai-image）
+
+> 详见 [openai-image.md](openai-image.md)
+
+布局线框确认后、高保真设计之前执行：
+
+1. 根据需求与 [page-types.md](page-types.md) 清单列出资源表
+2. 调用 openai-image MCP（`user-openai-image`）逐项生成，保存至 `src/assets/` 对应子目录
+3. 用户确认资源集后，在高保真设计中引用真实 PNG（`upload_assets` 或 `use_figma` 置入 Image 节点）
+4. 阶段 3 概念图（`design-system/mockups/`）作为布局与风格参考，高保真需与其对齐
+
 ## 第二步：组件级高保真设计
 
-布局确认后，细化到组件级别：
+静态资源就绪后，细化到组件级别：
 
 1. **细化内容**（用 `use_figma` 逐个区块更新）：
    - 颜色：主题色、中性色、语义色（成功/警告/危险/信息）
    - 字体：标题/正文层次（字号、行高、字重）
    - 间距：组件内边距、区块间距，设置正确的 auto-layout
-   - Element Plus 组件：表格、表单、按钮、弹窗等，与项目 `src/styles/element/var.scss` 一致
+   - 项目 UI 组件库：输入框、按钮、列表项、弹窗等，与设计 token / 主题变量一致
    - 交互状态：hover、focus、disabled、loading、empty、error（用 variant 表达）
    - 响应式：标注移动/平板/桌面断点的布局变化
 
@@ -55,7 +66,7 @@
 
 ## 设计约束
 
-- **后台管理**：遵循 Element Plus 规范，使用 `el-table`、`el-form`、`el-pagination`、`el-dialog` 等
+- **后台管理**：遵循项目 UI 组件库规范（见 `.claude/rules/code-style.md`）
 - **前台页面**：颜色/字体/间距来自 UX token
 - **状态覆盖**：空状态、加载态、错误态
 - **响应式**：标注 ≥ 2 个断点
