@@ -1,3 +1,4 @@
+import presetLegacyCompat from "@unocss/preset-legacy-compat";
 import {
   defineConfig,
   presetAttributify,
@@ -29,6 +30,10 @@ export default defineConfig({
     }),
     presetTypography(),
     presetWebFonts(),
+    presetLegacyCompat({
+      commaStyleColorFunction: true,
+      legacyColorSpace: true,
+    }),
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   // 注册本地图标类名
