@@ -3,26 +3,26 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { FileSystemIconLoader } from "@iconify/utils/lib/loader/node-loaders";
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetWebFonts,
-  presetWind3,
-  transformerDirectives,
-  transformerVariantGroup,
-} from "unocss";
-import { getPresetIconsConfig } from "./scripts/unocss-preset-icons";
-
-const { safelist, collections } = getPresetIconsConfig();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const svgIconDir = path.resolve(__dirname, "src/assets/icons");
+const svgIconDir = path.resolve(__dirname, "../src/assets/icons");
 
-// 递归获取所有 SVG 文件，返回 { 集合名: 图标名 }
+// 配置：需要保留原始颜色的目录名（不进行颜色替换）
+const PRESERVE_COLOR_DIRS = ["preserve-color", "brand", "logo"];
+
+/**
+ * 判断目录是否需要保留原始颜色
+ */
+const shouldPreserveColor = (dirPath: string): boolean => {
+  const dirName = path.basename(dirPath);
+  return PRESERVE_COLOR_DIRS.includes(dirName);
+};
+
+/**
+ * 递归获取所有 SVG 文件，返回 { 集合名: 图标名 }
+ */
 const getSvgIconCollections = (dir: string, baseDir: string = dir): Record<string, string[]> => {
   const collections: Record<string, string[]> = {};
 
@@ -60,8 +60,16 @@ const getSvgIconCollections = (dir: string, baseDir: string = dir): Record<strin
   return collections;
 };
 
-// 处理 SVG 内容
-const processSvgContent = (svg: string): string => {
+/**
+ * 处理 SVG 内容：替换颜色为 currentColor（可控制是否保留原始颜色）
+ */
+const processSvgContent = (svg: string, preserveColor: boolean = false): string => {
+  if (preserveColor) {
+    // 保留原始颜色：不做任何替换
+    return svg;
+  }
+
+  // 替换颜色为 currentColor
   // 处理 fill：none 保留，其他替换为 currentColor
   svg = svg
     .replace(/fill\s*=\s*"([^"]*)"/g, (match, value) => {
@@ -91,8 +99,10 @@ const processSvgContent = (svg: string): string => {
   return svg;
 };
 
-/** 生成本地预设图标配置 */
-const getPresetIconsConfig = () => {
+/**
+ * 生成本地预设图标配置
+ */
+export const getPresetIconsConfig = () => {
   const safelist: string[] = [];
   const collections: Record<string, CustomIconLoader> = {};
 
@@ -108,14 +118,19 @@ const getPresetIconsConfig = () => {
     // 为每个集合创建加载器
     for (const [collectionName, icons] of Object.entries(iconCollections)) {
       const collectionDir = path.join(svgIconDir, collectionName);
-
-      // 检查目录是否存在
       const dirExists = fs.existsSync(collectionDir) && fs.statSync(collectionDir).isDirectory();
+
+      // 判断是否需要保留原始颜色
+      const preserveColor = shouldPreserveColor(collectionDir);
 
       if (dirExists) {
         // 子目录：使用目录加载器
-        collections[collectionName] = FileSystemIconLoader(collectionDir, processSvgContent);
-        console.log(`[unocss:presetIcons] 📁 加载集合: ${collectionName} (目录)`);
+        collections[collectionName] = FileSystemIconLoader(collectionDir, (svg) =>
+          processSvgContent(svg, preserveColor)
+        );
+        console.log(
+          `[unocss:presetIcons] 📁 加载集合: ${collectionName} (目录) ${preserveColor ? "🎨 [保留颜色]" : "🔄 [可着色]"}`
+        );
       } else {
         // 根目录：使用自定义加载器（直接从 svgIconDir 读取）
         collections[collectionName] = (iconName: string) => {
@@ -125,9 +140,12 @@ const getPresetIconsConfig = () => {
             return "";
           }
           const svg = fs.readFileSync(filePath, "utf-8");
-          return processSvgContent(svg);
+          // 根目录永远是可着色的（除非单独配置）
+          return processSvgContent(svg, false);
         };
-        console.log(`[unocss:presetIcons] 📄 加载集合: ${collectionName} (根目录)`);
+        console.log(
+          `[unocss:presetIcons] 📄 加载集合: ${collectionName} (根目录) ${preserveColor ? "🎨 [保留颜色]" : "🔄 [可着色]"}`
+        );
       }
 
       // 生成 safelist
@@ -147,32 +165,3 @@ const getPresetIconsConfig = () => {
 
   return { safelist, collections };
 };
-
-const { safelist, collections } = getPresetIconsConfig();
-
-export default defineConfig({
-  presets: [
-    presetWind3(),
-    presetAttributify({ attributify: false }),
-    presetIcons({
-      scale: 1.2,
-      warn: true,
-      // 设置图标的默认 CSS 属性
-      extraProperties: {
-        display: "inline-block",
-        width: "1em",
-        height: "1em",
-      },
-      collections,
-    }),
-    presetTypography(),
-    presetWebFonts(),
-  ],
-  transformers: [transformerDirectives(), transformerVariantGroup()],
-  // 注册本地图标类名
-  safelist,
-  shortcuts: {
-    "flex-center": "flex items-center justify-center",
-    "flex-between": "flex items-center justify-between",
-  },
-});
